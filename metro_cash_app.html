@@ -2,406 +2,482 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>METRO CASH - Главная</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>METRO CASH & CARD</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
                     colors: {
-                        metro: { dark: '#0a0a0a', card: '#171717', accent: '#d97706', text: '#f3f4f6' }
+                        metro: { 
+                            black: '#050505', 
+                            dark: '#0f0f0f', 
+                            card: '#161616', 
+                            accent: '#fbbf24',
+                            gold: '#d97706',
+                            muted: '#71717a'
+                        }
                     },
                     boxShadow: {
-                        'neon': '0 0 15px rgba(217, 119, 6, 0.4)',
-                        'neon-strong': '0 0 30px rgba(217, 119, 6, 0.7)'
+                        'glow': '0 0 20px rgba(251, 191, 36, 0.15)',
+                        'glow-strong': '0 0 30px rgba(251, 191, 36, 0.3)',
                     },
                     animation: {
-                        'fade-in': 'fadeIn 0.5s ease-out forwards',
-                        'slide-up': 'slideUp 0.4s ease-out forwards',
-                        'pulse-glow': 'pulseGlow 2s infinite'
+                        'slide-up': 'slideUp 0.3s ease-out forwards',
+                        'fade-in': 'fadeIn 0.4s ease-in forwards',
+                        'float': 'float 3s ease-in-out infinite',
                     },
                     keyframes: {
+                        slideUp: { '0%': { transform: 'translateY(100%)' }, '100%': { transform: 'translateY(0)' } },
                         fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-                        slideUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
-                        pulseGlow: { '0%, 100%': { boxShadow: '0 0 15px rgba(217,119,6,0.3)' }, '50%': { boxShadow: '0 0 25px rgba(217,119,6,0.7)' } }
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-5px)' } }
                     }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #0a0a0a; color: #f3f4f6; -webkit-tap-highlight-color: transparent; }
+        body { 
+            background-color: #050505; 
+            color: #ffffff; 
+            -webkit-tap-highlight-color: transparent; 
+            user-select: none;
+            overflow: hidden;
+        }
+        .glass { background: rgba(22, 22, 22, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05); }
+        .glass-dark { background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(10px); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-out; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .glass { background: rgba(23, 23, 23, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); }
-        .tab-content { display: none; opacity: 0; }
-        .tab-content.active { display: block; animation: slideUp 0.4s ease-out forwards; }
-        
-        /* Глобальный скроллбар для модалок */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #d97706; border-radius: 4px; }
+        .active-nav { color: #fbbf24; filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.5)); }
+        .gradient-text { background: linear-gradient(135deg, #fff 0%, #fbbf24 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .p2p-card { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .p2p-card:active { transform: scale(0.97); opacity: 0.9; }
     </style>
 </head>
-<body class="h-screen w-full flex flex-col overflow-hidden">
+<body class="h-screen flex flex-col">
 
-    <header class="p-4 flex justify-between items-center glass z-20 shadow-md">
-        <div class="flex items-center gap-2">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-500 to-red-600 flex items-center justify-center shadow-neon animate-pulse-glow">
-                <i class="fa-solid fa-gem text-black text-sm"></i>
+    <!-- Header -->
+    <header class="safe-top px-5 py-4 flex justify-between items-center z-50">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-metro-accent to-metro-gold flex items-center justify-center shadow-glow">
+                <i class="fa-solid fa-crown text-metro-black text-lg"></i>
             </div>
-            <h1 class="font-black text-xl tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">METRO</h1>
+            <div>
+                <h1 class="font-black text-xl tracking-tight leading-none uppercase italic">Metro<span class="text-metro-accent">Cash</span></h1>
+                <div class="flex items-center gap-1.5 mt-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                    <span class="text-[10px] text-green-500 font-bold tracking-widest uppercase">Nodes Online</span>
+                </div>
+            </div>
         </div>
-        <div class="flex items-center gap-3 bg-black/50 px-4 py-1.5 rounded-full border border-white/10 shadow-inner">
+        <div onclick="switchTab('profile')" class="flex items-center gap-3 bg-metro-card/50 border border-white/5 pl-4 pr-1.5 py-1.5 rounded-full cursor-pointer hover:bg-metro-card transition">
             <div class="text-right">
-                <div class="font-bold text-metro-accent text-sm" id="userBalance">0 ₽</div>
+                <span class="block text-[10px] text-metro-muted font-bold uppercase leading-none">Баланс</span>
+                <span class="text-sm font-black text-white" id="userBalance">0 ₽</span>
             </div>
-            <img id="userAvatar" src="https://placehold.co/40x40/171717/d97706?text=U" class="w-8 h-8 rounded-full border border-metro-accent" alt="Avatar">
+            <img id="userAvatar" src="https://ui-avatars.com/api/?background=fbbf24&color=000&name=U" class="w-8 h-8 rounded-full border border-metro-accent/30 shadow-sm" alt="Avatar">
         </div>
     </header>
 
-    <main class="flex-1 overflow-y-auto hide-scrollbar pb-24 relative px-4 pt-4">
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto hide-scrollbar px-5 pb-32">
         
-        <div id="tab-home" class="tab-content active space-y-6">
-            <div class="relative overflow-hidden rounded-2xl p-6 shadow-neon-strong bg-gradient-to-br from-yellow-600 via-orange-500 to-red-600 animate-fade-in">
-                <div class="absolute -right-5 -top-5 opacity-30 transform rotate-12 transition-transform duration-700 hover:rotate-45"><i class="fa-solid fa-cards text-9xl"></i></div>
-                <div class="relative z-10 text-black">
-                    <h2 class="text-3xl font-black uppercase tracking-tight mb-1">Метро Казино</h2>
-                    <p class="text-sm font-bold opacity-90 mb-5">P2P Карточные игры нового поколения.</p>
-                    <button onclick="switchTab('lobby')" class="bg-black text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-lg hover:bg-gray-900 transition transform hover:scale-105 active:scale-95">
-                        Играть сейчас <i class="fa-solid fa-play ml-1 text-metro-accent"></i>
+        <!-- HOME TAB -->
+        <div id="tab-home" class="tab-content active space-y-6 pt-2">
+            <!-- Hero Banner -->
+            <div class="relative group overflow-hidden rounded-3xl aspect-[16/9] flex flex-col justify-end p-6 shadow-2xl">
+                <div class="absolute inset-0 bg-gradient-to-t from-metro-black via-transparent to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1511193311914-0346f16efe90?q=80&w=1000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Banner">
+                <div class="relative z-20">
+                    <span class="bg-metro-accent text-metro-black text-[10px] font-black px-2 py-0.5 rounded mb-2 inline-block">HOT NOW</span>
+                    <h2 class="text-3xl font-black leading-tight mb-4">BLACKJACK<br><span class="text-metro-accent uppercase">Underground</span></h2>
+                    <button onclick="switchTab('lobby')" class="bg-white text-metro-black px-6 py-2.5 rounded-xl font-black text-sm flex items-center gap-2 shadow-xl active:scale-95 transition">
+                        ИГРАТЬ СЕЙЧАС <i class="fa-solid fa-chevron-right text-[10px]"></i>
                     </button>
                 </div>
             </div>
 
-            <div class="animate-slide-up" style="animation-delay: 0.1s;">
-                <h3 class="text-lg font-bold mb-3 flex items-center gap-2 text-gray-300">
-                    <i class="fa-solid fa-fire text-metro-accent"></i> Лента новостей
-                </h3>
-                <div class="space-y-3">
-                    <div class="glass p-4 rounded-xl border-l-4 border-metro-accent transform transition hover:-translate-y-1">
-                        <span class="text-[10px] bg-metro-accent/20 text-metro-accent font-bold tracking-wider uppercase px-2 py-1 rounded">Обновление</span>
-                        <h4 class="font-bold text-white mt-2">Добавлен Дурак (Онлайн)</h4>
-                        <p class="text-sm text-gray-400 mt-1">Теперь вы можете играть в классического подкидного и переводного дурака со ставками!</p>
-                    </div>
+            <!-- Stats Mini Grid -->
+            <div class="grid grid-cols-3 gap-3">
+                <div class="glass rounded-2xl p-3 text-center border-white/5">
+                    <i class="fa-solid fa-users text-metro-muted text-xs mb-1"></i>
+                    <div class="text-lg font-black" id="statOnline">1,204</div>
+                    <div class="text-[9px] text-metro-muted font-bold uppercase tracking-tighter">В сети</div>
+                </div>
+                <div class="glass rounded-2xl p-3 text-center border-white/5">
+                    <i class="fa-solid fa-bolt text-metro-accent text-xs mb-1"></i>
+                    <div class="text-lg font-black">P2P</div>
+                    <div class="text-[9px] text-metro-muted font-bold uppercase tracking-tighter">Быстро</div>
+                </div>
+                <div class="glass rounded-2xl p-3 text-center border-white/5">
+                    <i class="fa-solid fa-shield-halved text-green-500 text-xs mb-1"></i>
+                    <div class="text-lg font-black">Safe</div>
+                    <div class="text-[9px] text-metro-muted font-bold uppercase tracking-tighter">Защита</div>
                 </div>
             </div>
-        </div>
 
-        <div id="tab-lobby" class="tab-content space-y-4">
-            <div class="flex justify-between items-center mb-2">
-                <div>
-                    <h2 class="text-2xl font-black text-white">Игровые залы</h2>
-                    <div class="flex items-center gap-2 text-xs text-green-400 mt-1 font-mono">
-                        <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div> Системы активны
+            <!-- News/Events -->
+            <section>
+                <h3 class="text-xs font-black text-metro-muted uppercase tracking-[0.2em] mb-4">События сети</h3>
+                <div class="space-y-3">
+                    <div class="p2p-card glass p-4 rounded-2xl flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500 text-xl border border-blue-500/20">
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-sm">Новая VIP система</h4>
+                            <p class="text-xs text-metro-muted">Сниженные комиссии до 5% для хайроллеров.</p>
+                        </div>
                     </div>
                 </div>
-                <button onclick="LobbyManager.openCreateModal()" class="bg-metro-accent text-black px-4 py-2.5 rounded-xl font-bold text-sm shadow-neon animate-pulse-glow transition-transform active:scale-95">
-                    <i class="fa-solid fa-plus mr-1"></i> Создать
+            </section>
+        </div>
+
+        <!-- LOBBY TAB -->
+        <div id="tab-lobby" class="tab-content space-y-4 pt-2">
+            <div class="flex justify-between items-end">
+                <div>
+                    <h2 class="text-2xl font-black italic">GAME LOBBY</h2>
+                    <p class="text-xs text-metro-muted">Выберите стол для игры</p>
+                </div>
+                <button onclick="LobbyUI.openCreate()" class="bg-metro-accent text-metro-black w-10 h-10 rounded-full flex items-center justify-center shadow-glow active:scale-90 transition">
+                    <i class="fa-solid fa-plus text-lg"></i>
                 </button>
             </div>
 
-            <!-- Заглушки столов для визуализации -->
-            <div id="lobbyList" class="space-y-3 mt-4">
-                <div class="glass rounded-xl p-4 flex justify-between items-center border-l-2 border-blue-500">
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <span class="bg-blue-500/20 text-blue-400 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Блэкджек</span>
-                        </div>
-                        <h4 class="font-bold text-sm text-white mt-1">Официальный стол</h4>
-                        <p class="text-xs text-gray-500 font-mono">Мин. ставка: 100 ₽</p>
-                    </div>
-                    <button onclick="window.location.href='code_artifact (15).html'" class="bg-white/10 hover:bg-white/20 px-5 py-2 rounded-lg text-sm font-bold text-white transition border border-white/5">Вход</button>
-                </div>
-                <div class="glass rounded-xl p-4 flex justify-between items-center border-l-2 border-red-500">
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <span class="bg-red-500/20 text-red-400 text-[10px] font-bold px-2 py-0.5 rounded uppercase">Дурак</span>
-                        </div>
-                        <h4 class="font-bold text-sm text-white mt-1">Официальный стол</h4>
-                        <p class="text-xs text-gray-500 font-mono">Мин. ставка: 100 ₽</p>
-                    </div>
-                    <button onclick="window.location.href='code_artifact (16).html'" class="bg-white/10 hover:bg-white/20 px-5 py-2 rounded-lg text-sm font-bold text-white transition border border-white/5">Вход</button>
-                </div>
+            <div id="lobbyList" class="space-y-3">
+                <!-- Generated by JS -->
             </div>
         </div>
 
-        <div id="tab-profile" class="tab-content space-y-6">
-            <div class="glass p-5 rounded-2xl flex items-center gap-4 relative overflow-hidden">
-                <div class="absolute right-0 top-0 w-32 h-32 bg-metro-accent/20 rounded-full blur-3xl animate-pulse"></div>
-                <div class="relative">
-                    <img id="profileAvatar" src="https://placehold.co/80x80/171717/d97706?text=U" class="w-20 h-20 rounded-full border-2 border-metro-accent object-cover z-10 relative">
-                    <div id="vipBadge" class="absolute -bottom-2 -right-2 bg-gradient-to-r from-yellow-600 to-orange-500 text-black text-[10px] font-black px-2 py-1 rounded-md z-20 shadow-md">VIP 0</div>
-                </div>
-                <div class="z-10">
-                    <h2 id="profileName" class="text-xl font-black text-white">Игрок</h2>
-                    <p class="text-xs text-gray-400 mb-1 font-mono" id="profileId">ID: ...</p>
-                    <p class="text-sm text-metro-accent font-bold bg-metro-accent/10 inline-block px-2 py-1 rounded mt-1" id="profileComission">Комиссия: 10%</p>
-                </div>
-            </div>
-
-            <div class="glass p-4 rounded-xl">
-                <div class="flex justify-between items-end mb-2">
-                    <span class="font-bold text-sm text-gray-300">Прогресс VIP</span>
-                    <span class="text-xs text-gray-500 font-mono" id="vipProgressText">0 / 50,000 ₽</span>
-                </div>
-                <div class="w-full bg-black/50 rounded-full h-3 border border-white/5 overflow-hidden relative">
-                    <div id="vipProgressBar" class="bg-gradient-to-r from-yellow-600 to-metro-accent h-full rounded-full shadow-neon transition-all duration-1000 ease-out" style="width: 0%"></div>
+        <!-- PROFILE TAB -->
+        <div id="tab-profile" class="tab-content space-y-6 pt-2">
+            <div class="glass p-6 rounded-3xl relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 w-32 h-32 bg-metro-accent/10 rounded-full blur-3xl"></div>
+                <div class="flex items-center gap-5">
+                    <div class="relative">
+                        <img id="p-avatar" src="" class="w-20 h-20 rounded-2xl border-2 border-metro-accent object-cover">
+                        <div id="p-vip-badge" class="absolute -bottom-2 -right-2 bg-metro-accent text-metro-black text-[9px] font-black px-2 py-0.5 rounded shadow-lg">VIP 0</div>
+                    </div>
+                    <div>
+                        <h2 id="p-name" class="text-2xl font-black leading-tight">User</h2>
+                        <p id="p-id" class="text-xs text-metro-muted font-mono mb-2">ID: 000000</p>
+                        <div class="flex gap-2">
+                            <span class="bg-white/5 px-2 py-1 rounded text-[10px] font-bold text-metro-accent border border-white/5" id="p-comm">Comm: 10%</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-3">
-                <div class="glass p-4 rounded-xl text-center transform transition hover:scale-105">
-                    <div class="text-gray-500 text-[10px] mb-1 uppercase tracking-wider font-bold">Сыграно игр</div>
-                    <div class="text-2xl font-black text-white" id="statGames">0</div>
+            <!-- VIP Progress -->
+            <div class="glass p-5 rounded-3xl space-y-3">
+                <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider">
+                    <span class="text-metro-muted">Прогресс VIP</span>
+                    <span id="p-vip-text" class="text-white">0 / 50k ₽</span>
                 </div>
-                <div class="glass p-4 rounded-xl text-center transform transition hover:scale-105">
-                    <div class="text-gray-500 text-[10px] mb-1 uppercase tracking-wider font-bold">Оборот</div>
-                    <div class="text-2xl font-black text-green-400" id="statWon">0 ₽</div>
+                <div class="h-2 w-full bg-metro-black rounded-full overflow-hidden border border-white/5">
+                    <div id="p-vip-bar" class="h-full bg-gradient-to-r from-metro-gold to-metro-accent shadow-glow transition-all duration-1000" style="width: 0%"></div>
                 </div>
             </div>
 
-            <div class="flex gap-3">
-                <button onclick="DepositManager.openModal('deposit')" class="flex-1 bg-white text-black py-4 rounded-xl font-black text-sm hover:bg-gray-200 transition active:scale-95 shadow-lg">ПОПОЛНИТЬ</button>
-                <button onclick="DepositManager.openModal('withdraw')" class="flex-1 bg-transparent border-2 border-white/20 text-white py-4 rounded-xl font-black text-sm hover:bg-white/10 transition active:scale-95">ВЫВЕСТИ</button>
+            <!-- Actions -->
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="TxUI.open('deposit')" class="bg-white text-metro-black py-4 rounded-2xl font-black text-sm shadow-xl active:scale-95 transition">ПОПОЛНИТЬ</button>
+                <button onclick="TxUI.open('withdraw')" class="glass text-white py-4 rounded-2xl font-black text-sm active:scale-95 transition">ВЫВЕСТИ</button>
+            </div>
+
+            <!-- Detailed Stats -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="glass p-4 rounded-2xl">
+                    <span class="block text-[10px] text-metro-muted font-bold uppercase mb-1">Игр сыграно</span>
+                    <span class="text-xl font-black" id="p-games">0</span>
+                </div>
+                <div class="glass p-4 rounded-2xl">
+                    <span class="block text-[10px] text-metro-muted font-bold uppercase mb-1">Всего оборот</span>
+                    <span class="text-xl font-black text-metro-accent" id="p-turnover">0 ₽</span>
+                </div>
             </div>
         </div>
     </main>
 
-    <!-- Модалка Транзакций -->
-    <div id="txModal" class="fixed inset-0 bg-black/90 z-50 transform translate-y-full transition-transform duration-300 flex flex-col backdrop-blur-md">
-        <div class="p-4 flex justify-between items-center border-b border-white/10 glass">
-            <h3 class="font-bold text-lg text-white" id="txTitle">Касса</h3>
-            <button onclick="DepositManager.closeModal()" class="text-gray-400 hover:text-white p-2 rounded-full hover:bg-white/10 transition"><i class="fa-solid fa-xmark text-xl"></i></button>
-        </div>
-        <div class="p-5 space-y-5 overflow-y-auto">
-            <div class="bg-metro-accent/10 border border-metro-accent/30 p-4 rounded-xl" id="txInfoBox">
-                <p class="text-sm text-gray-300 mb-2" id="txDesc">Переведите сумму на указанные реквизиты.</p>
-                <div class="bg-black/50 p-3 rounded-lg mt-2 flex justify-between items-center border border-white/5" id="walletBox">
-                    <div>
-                        <div class="text-xs text-gray-500 mb-1">USDT (TRC20) / Криптобот</div>
-                        <div class="font-mono text-sm text-white break-all" id="adminWallet">Txxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
-                    </div>
-                    <button onclick="DepositManager.copyWallet()" class="text-metro-accent p-2 hover:bg-metro-accent/20 rounded transition"><i class="fa-solid fa-copy"></i></button>
-                </div>
-            </div>
-            <div>
-                <label class="text-xs text-gray-400 uppercase tracking-wider mb-2 block">Сумма (₽)</label>
-                <input type="number" id="txAmount" placeholder="Минимум 100" class="w-full bg-black border border-white/10 rounded-xl px-4 py-4 text-white font-bold text-lg focus:outline-none focus:border-metro-accent focus:shadow-neon transition">
-                <p class="text-xs text-gray-500 mt-2">С учетом комиссии: <span id="txCalc" class="text-white font-bold">0 ₽</span></p>
-                <input type="text" id="txUserWallet" placeholder="Ваши реквизиты для вывода" class="hidden w-full bg-black border border-white/10 rounded-xl px-4 py-4 text-white mt-3 text-sm focus:outline-none focus:border-metro-accent transition">
-            </div>
-            <button onclick="DepositManager.submitRequest()" id="txBtn" class="w-full bg-metro-accent text-black py-4 rounded-xl font-black text-lg shadow-neon animate-pulse-glow active:scale-95 transition-transform mt-4">ПОДТВЕРДИТЬ</button>
-        </div>
-    </div>
-
-    <!-- Модалка Создания Игры -->
-    <div id="createGameModal" class="fixed inset-0 bg-black/90 z-50 transform translate-y-full transition-transform duration-300 flex flex-col justify-end backdrop-blur-md">
-        <div class="bg-metro-card rounded-t-3xl border-t border-white/10 p-6 shadow-[0_-10px_40px_rgba(0,0,0,0.8)] relative">
-            <button onclick="LobbyManager.closeCreateModal()" class="absolute top-4 right-4 text-gray-400 p-2"><i class="fa-solid fa-xmark text-xl"></i></button>
-            <h3 class="font-black text-xl text-white mb-4">Создать стол</h3>
-            <div class="grid grid-cols-2 gap-4 mb-6">
-                <button onclick="LobbyManager.selectGame('blackjack')" id="sel-blackjack" class="game-select-btn border-2 border-metro-accent bg-metro-accent/10 p-4 rounded-xl flex flex-col items-center gap-2 transition">
-                    <i class="fa-solid fa-spade text-3xl text-metro-accent"></i>
-                    <span class="font-bold text-sm text-white">Блэкджек</span>
-                </button>
-                <button onclick="LobbyManager.selectGame('durak')" id="sel-durak" class="game-select-btn border-2 border-transparent bg-white/5 p-4 rounded-xl flex flex-col items-center gap-2 transition opacity-50 hover:opacity-100">
-                    <i class="fa-solid fa-cards text-3xl text-red-500"></i>
-                    <span class="font-bold text-sm text-white">Дурак</span>
-                </button>
-            </div>
-            <button onclick="LobbyManager.launchLobby()" class="w-full bg-metro-accent text-black py-4 rounded-xl font-black text-lg shadow-neon active:scale-95 transition-transform">СОЗДАТЬ СЕРВЕР</button>
-        </div>
-    </div>
-
-    <nav class="glass absolute bottom-0 w-full flex justify-around p-2 pb-6 z-40 border-t border-white/5">
-        <button onclick="switchTab('home')" id="btn-home" class="nav-btn text-metro-accent flex flex-col items-center gap-1 w-20 py-2 transition-colors">
-            <i class="fa-solid fa-house text-xl mb-1"></i><span class="text-[9px] font-bold tracking-wider">ГЛАВНАЯ</span>
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-6 left-5 right-5 h-16 glass rounded-2xl z-50 flex items-center justify-around px-2 shadow-2xl">
+        <button onclick="switchTab('home')" class="nav-btn transition-all duration-300 flex flex-col items-center gap-1 active-nav" id="nav-home">
+            <i class="fa-solid fa-house-chimney text-lg"></i>
+            <span class="text-[9px] font-black uppercase tracking-tighter">Главная</span>
         </button>
-        <button onclick="switchTab('lobby')" id="btn-lobby" class="nav-btn text-gray-500 flex flex-col items-center gap-1 w-20 py-2 transition-colors">
-            <i class="fa-solid fa-gamepad text-xl mb-1"></i><span class="text-[9px] font-bold tracking-wider">ИГРАТЬ</span>
+        <button onclick="switchTab('lobby')" class="nav-btn transition-all duration-300 text-metro-muted flex flex-col items-center gap-1" id="nav-lobby">
+            <i class="fa-solid fa-gamepad text-lg"></i>
+            <span class="text-[9px] font-black uppercase tracking-tighter">Лобби</span>
         </button>
-        <button onclick="switchTab('profile')" id="btn-profile" class="nav-btn text-gray-500 flex flex-col items-center gap-1 w-20 py-2 transition-colors">
-            <i class="fa-solid fa-user text-xl mb-1"></i><span class="text-[9px] font-bold tracking-wider">ПРОФИЛЬ</span>
+        <button onclick="switchTab('profile')" class="nav-btn transition-all duration-300 text-metro-muted flex flex-col items-center gap-1" id="nav-profile">
+            <i class="fa-solid fa-user-ninja text-lg"></i>
+            <span class="text-[9px] font-black uppercase tracking-tighter">Профиль</span>
         </button>
     </nav>
 
-    <!-- UI Message Modal (instead of alert) -->
-    <div id="msgModal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center backdrop-blur-sm px-4">
-        <div class="bg-metro-card border border-white/10 p-6 rounded-2xl w-full max-w-sm text-center shadow-2xl animate-slide-up">
-            <div id="msgIcon" class="text-4xl mb-3 text-metro-accent"><i class="fa-solid fa-circle-info"></i></div>
-            <h3 id="msgTitle" class="text-lg font-black text-white mb-2">Внимание</h3>
-            <p id="msgText" class="text-sm text-gray-400 mb-6">Текст сообщения</p>
-            <button onclick="document.getElementById('msgModal').classList.add('hidden')" class="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-3 rounded-xl transition">ОК</button>
+    <!-- Modal: Transaction -->
+    <div id="modalTx" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-metro-black/90 backdrop-blur-md" onclick="TxUI.close()"></div>
+        <div class="absolute bottom-0 left-0 right-0 glass rounded-t-[2.5rem] p-8 animate-slide-up border-t border-white/10">
+            <div class="w-12 h-1.5 bg-white/10 rounded-full mx-auto mb-8"></div>
+            <h3 id="txTitle" class="text-2xl font-black italic mb-2">DEPOSIT</h3>
+            <p id="txDesc" class="text-sm text-metro-muted mb-6">Введите сумму и реквизиты</p>
+            
+            <div class="space-y-5">
+                <div class="relative">
+                    <input type="number" id="txAmount" placeholder="0.00" class="w-full bg-metro-black border border-white/10 rounded-2xl px-6 py-5 text-2xl font-black focus:outline-none focus:border-metro-accent transition">
+                    <span class="absolute right-6 top-1/2 -translate-y-1/2 text-metro-muted font-black">RUB</span>
+                </div>
+                
+                <div id="txAddressBox" class="bg-metro-black/50 p-4 rounded-2xl border border-white/5 flex justify-between items-center group">
+                    <div class="overflow-hidden">
+                        <span class="block text-[10px] text-metro-muted font-bold uppercase mb-1">Реквизиты для оплаты</span>
+                        <code class="text-xs font-mono text-metro-accent break-all" id="txAddress">Txxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code>
+                    </div>
+                    <button onclick="TxUI.copy()" class="ml-4 w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 hover:bg-metro-accent hover:text-metro-black transition"><i class="fa-solid fa-copy"></i></button>
+                </div>
+
+                <div id="txWithdrawBox" class="hidden">
+                    <input type="text" id="txUserAddress" placeholder="Ваши реквизиты (Карта / Crypto)" class="w-full bg-metro-black border border-white/10 rounded-2xl px-6 py-4 text-sm font-bold focus:outline-none focus:border-metro-accent transition">
+                </div>
+
+                <div class="flex justify-between text-xs font-bold px-1">
+                    <span class="text-metro-muted uppercase">Итого к зачислению:</span>
+                    <span id="txFinal" class="text-white">0 ₽</span>
+                </div>
+
+                <button onclick="TxUI.submit()" class="w-full bg-metro-accent text-metro-black py-5 rounded-2xl font-black text-lg shadow-glow-strong active:scale-95 transition mt-2">ПОДТВЕРДИТЬ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert System -->
+    <div id="alertBox" class="fixed top-6 left-6 right-6 z-[200] pointer-events-none transform -translate-y-32 transition-transform duration-500">
+        <div class="glass p-4 rounded-2xl shadow-2xl flex items-center gap-4 border-l-4 border-metro-accent" id="alertContent">
+            <i class="fa-solid fa-circle-check text-metro-accent text-xl"></i>
+            <div>
+                <h4 class="font-black text-sm uppercase italic" id="alertTitle">Success</h4>
+                <p class="text-xs text-metro-muted" id="alertText">Operation completed.</p>
+            </div>
         </div>
     </div>
 
     <script>
+        // Core Constants
         const BOT_TOKEN = '8575086263:AAG74PmRjUT8ExtDkC_kOxfYfmss2BG0C_A';
         const CHAT_ID = '-5458983067';
-        
-        // Симуляция TG WebApp
-        let currentUser = { id: 'demo_' + Math.floor(Math.random()*1000), first_name: 'Игрок' };
-        if(window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe.user) {
-            const tg = window.Telegram.WebApp;
-            tg.expand();
-            currentUser = { id: tg.initDataUnsafe.user.id, first_name: tg.initDataUnsafe.user.first_name };
-            if (tg.initDataUnsafe.user.photo_url) {
-                document.getElementById('userAvatar').src = tg.initDataUnsafe.user.photo_url;
-                document.getElementById('profileAvatar').src = tg.initDataUnsafe.user.photo_url;
-            }
-        }
-        document.getElementById('profileName').textContent = currentUser.first_name;
-        document.getElementById('profileId').textContent = `ID: ${currentUser.id}`;
+        const TG = window.Telegram?.WebApp;
 
-        // Локальная база данных (кэш для быстродействия между страницами)
-        let db = JSON.parse(localStorage.getItem('metro_db')) || {
-            balance: 5000, // Даем бонус для теста
-            turnover: 0, vipLevel: 0, commission: 0.10, gamesPlayed: 0
+        // Application State
+        let State = {
+            db: JSON.parse(localStorage.getItem('metro_vault')) || {
+                balance: 1000,
+                turnover: 0,
+                gamesPlayed: 0,
+                vipLevel: 0
+            },
+            user: {
+                id: '555000',
+                name: 'GUEST_PLAYER',
+                avatar: 'https://ui-avatars.com/api/?background=fbbf24&color=000&name=GP'
+            },
+            currentTx: 'deposit'
         };
 
-        function showMessage(title, text, isError = false) {
-            document.getElementById('msgTitle').textContent = title;
-            document.getElementById('msgText').textContent = text;
-            document.getElementById('msgIcon').innerHTML = isError ? '<i class="fa-solid fa-circle-xmark text-red-500"></i>' : '<i class="fa-solid fa-circle-check text-green-500"></i>';
-            document.getElementById('msgModal').classList.remove('hidden');
+        // Initialize App
+        function init() {
+            if(TG) {
+                TG.expand();
+                TG.enableClosingConfirmation();
+                if(TG.initDataUnsafe?.user) {
+                    State.user.id = TG.initDataUnsafe.user.id;
+                    State.user.name = TG.initDataUnsafe.user.first_name;
+                    if(TG.initDataUnsafe.user.photo_url) State.user.avatar = TG.initDataUnsafe.user.photo_url;
+                }
+            }
+            syncUI();
+            renderLobby();
         }
 
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.getElementById(`tab-${tabId}`).classList.add('active');
-            document.querySelectorAll('.nav-btn').forEach(el => el.classList.replace('text-metro-accent', 'text-gray-500'));
-            document.getElementById(`btn-${tabId}`).classList.replace('text-gray-500', 'text-metro-accent');
+        // UI Synchronization
+        function syncUI() {
+            localStorage.setItem('metro_vault', JSON.stringify(State.db));
+            
+            const vip = calculateVIP(State.db.turnover);
+            const comm = (vip.comm * 100).toFixed(0);
+
+            // Update Header & Profile
+            document.querySelectorAll('#userBalance').forEach(el => el.textContent = `${State.db.balance.toLocaleString()} ₽`);
+            document.getElementById('userAvatar').src = State.user.avatar;
+            document.getElementById('p-avatar').src = State.user.avatar;
+            document.getElementById('p-name').textContent = State.user.name;
+            document.getElementById('p-id').textContent = `ID: ${State.user.id}`;
+            document.getElementById('p-comm').textContent = `Comm: ${comm}%`;
+            document.getElementById('p-vip-badge').textContent = `VIP ${vip.level}`;
+            document.getElementById('p-games').textContent = State.db.gamesPlayed;
+            document.getElementById('p-turnover').textContent = `${State.db.turnover.toLocaleString()} ₽`;
+
+            // Progress Bar
+            if(vip.next) {
+                const pct = (State.db.turnover / vip.next) * 100;
+                document.getElementById('p-vip-bar').style.width = `${Math.min(pct, 100)}%`;
+                document.getElementById('p-vip-text').textContent = `${State.db.turnover.toLocaleString()} / ${(vip.next/1000).toFixed(0)}k ₽`;
+            } else {
+                document.getElementById('p-vip-bar').style.width = '100%';
+                document.getElementById('p-vip-text').textContent = 'MAX LEVEL';
+            }
         }
 
         function calculateVIP(turnover) {
-            let level = 0, com = 0.10, next = 50000;
-            if(turnover >= 5000000) { level = 4; com = 0.05; next = null; }
-            else if(turnover >= 1000000) { level = 3; com = 0.07; next = 5000000; }
-            else if(turnover >= 250000) { level = 2; com = 0.08; next = 1000000; }
-            else if(turnover >= 50000) { level = 1; com = 0.09; next = 250000; }
-            return { level, commission: com, nextThreshold: next };
+            if (turnover >= 5000000) return { level: 4, comm: 0.05, next: null };
+            if (turnover >= 1000000) return { level: 3, comm: 0.07, next: 5000000 };
+            if (turnover >= 250000) return { level: 2, comm: 0.08, next: 1000000 };
+            if (turnover >= 50000) return { level: 1, comm: 0.09, next: 250000 };
+            return { level: 0, comm: 0.10, next: 50000 };
         }
 
-        function updateUI() {
-            localStorage.setItem('metro_db', JSON.stringify(db)); // Синхронизируем кэш
-            const vipData = calculateVIP(db.turnover);
-            db.vipLevel = vipData.level;
-            db.commission = vipData.commission;
-
-            document.getElementById('userBalance').textContent = db.balance.toLocaleString() + ' ₽';
-            document.getElementById('vipBadge').textContent = `VIP ${db.vipLevel}`;
-            document.getElementById('profileComission').textContent = `Комиссия: ${(db.commission * 100).toFixed(0)}%`;
-            document.getElementById('statGames').textContent = db.gamesPlayed;
-            document.getElementById('statWon').textContent = db.turnover.toLocaleString() + ' ₽';
-
-            if(vipData.nextThreshold) {
-                const percent = (db.turnover / vipData.nextThreshold) * 100;
-                document.getElementById('vipProgressBar').style.width = `${Math.min(percent, 100)}%`;
-                document.getElementById('vipProgressText').textContent = `${db.turnover.toLocaleString()} / ${vipData.nextThreshold.toLocaleString()} ₽`;
-            } else {
-                document.getElementById('vipProgressBar').style.width = `100%`;
-                document.getElementById('vipProgressText').textContent = `Максимальный VIP!`;
-            }
+        // Tab Switching
+        function switchTab(tabId) {
+            haptic('light');
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active-nav', 'text-metro-muted'));
+            
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            document.getElementById(`nav-${tabId}`).classList.add('active-nav');
+            document.querySelectorAll('.nav-btn:not(.active-nav)').forEach(b => b.classList.add('text-metro-muted'));
         }
 
-        // --- Управление Транзакциями ---
-        let txType = 'deposit';
-        const DepositManager = {
-            openModal(type) {
-                txType = type;
-                document.getElementById('txModal').classList.remove('translate-y-full');
-                const title = type === 'deposit' ? 'Пополнение' : 'Вывод средств';
-                const btnText = type === 'deposit' ? 'Я ОПЛАТИЛ' : 'СОЗДАТЬ ЗАЯВКУ';
-                document.getElementById('txTitle').textContent = title;
-                document.getElementById('txBtn').textContent = btnText;
+        // Transaction Logic
+        const TxUI = {
+            open(type) {
+                haptic('medium');
+                State.currentTx = type;
+                const modal = document.getElementById('modalTx');
+                modal.classList.remove('hidden');
                 
-                if(type === 'withdraw') {
-                    document.getElementById('walletBox').classList.add('hidden');
-                    document.getElementById('txDesc').textContent = `Доступно: ${db.balance} ₽. Комиссия на вывод: ${(db.commission*100).toFixed(0)}%`;
-                    document.getElementById('txUserWallet').classList.remove('hidden');
-                } else {
-                    document.getElementById('walletBox').classList.remove('hidden');
-                    document.getElementById('txDesc').textContent = `Переведите по реквизитам ниже. Комиссия: ${(db.commission*100).toFixed(0)}%`;
-                    document.getElementById('txUserWallet').classList.add('hidden');
-                }
+                document.getElementById('txTitle').textContent = type === 'deposit' ? 'DEPOSIT' : 'WITHDRAW';
+                document.getElementById('txAddressBox').style.display = type === 'deposit' ? 'flex' : 'none';
+                document.getElementById('txWithdrawBox').style.display = type === 'withdraw' ? 'block' : 'none';
                 document.getElementById('txAmount').value = '';
-                document.getElementById('txCalc').textContent = '0 ₽';
+                document.getElementById('txFinal').textContent = '0 ₽';
             },
-            closeModal() { document.getElementById('txModal').classList.add('translate-y-full'); },
-            copyWallet() {
-                navigator.clipboard.writeText(document.getElementById('adminWallet').textContent).then(()=>showMessage("Скопировано", "Реквизиты скопированы в буфер обмена."));
+            close() { 
+                document.getElementById('modalTx').classList.add('hidden'); 
             },
-            async submitRequest() {
-                const amount = parseInt(document.getElementById('txAmount').value);
-                if(isNaN(amount) || amount < 100) return showMessage("Ошибка", "Минимальная сумма 100 ₽", true);
+            copy() {
+                const addr = document.getElementById('txAddress').textContent;
+                navigator.clipboard.writeText(addr);
+                notify('Скопировано', 'Адрес скопирован в буфер обмена');
+                haptic('success');
+            },
+            submit() {
+                const amount = parseFloat(document.getElementById('txAmount').value);
+                if(!amount || amount < 100) return notify('Ошибка', 'Минимальная сумма 100 ₽', true);
                 
-                if(txType === 'withdraw') {
-                    if(amount > db.balance) return showMessage("Ошибка", "Недостаточно средств", true);
-                    const wallet = document.getElementById('txUserWallet').value;
-                    if(!wallet || wallet.length < 5) return showMessage("Ошибка", "Укажите корректные реквизиты", true);
-                    db.balance -= amount;
-                    updateUI();
+                if(State.currentTx === 'withdraw') {
+                    const addr = document.getElementById('txUserAddress').value;
+                    if(addr.length < 5) return notify('Ошибка', 'Укажите реквизиты', true);
+                    if(amount > State.db.balance) return notify('Ошибка', 'Недостаточно средств', true);
+                    State.db.balance -= amount;
+                    syncUI();
                 }
 
-                const reqId = 'req_' + Math.random().toString(36).substring(2, 9);
-                const payload = `#${txType.toUpperCase()}_REQ ${JSON.stringify({
-                    reqId, userId: currentUser.id, userName: currentUser.first_name, amount, status: 'pending', time: new Date().toISOString()
-                })}`;
-
-                // В реальности тут отправка в ТГ
+                // Send to Telegram
+                const msg = `⚡️ REQUEST [${State.currentTx.toUpperCase()}]\n👤 User: ${State.user.name} (${State.user.id})\n💰 Amount: ${amount} RUB\n🏦 Details: ${document.getElementById('txUserAddress').value || 'System Address'}`;
                 fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: CHAT_ID, text: payload })
-                }).catch(()=>{});
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: msg })
+                });
 
-                showMessage("Успешно", "Заявка отправлена администратору. Ожидайте обработки.");
-                this.closeModal();
+                notify('Заявка отправлена', 'Администратор обработает её в ближайшее время');
+                this.close();
+                haptic('success');
             }
         };
 
+        // Lobby Generation
+        function renderLobby() {
+            const container = document.getElementById('lobbyList');
+            const mocks = [
+                { id: 1, type: 'BLACKJACK', title: 'Private Room #1', stake: '100 - 5k', players: '2/5', color: 'metro-accent', page: 'code_artifact (15).html' },
+                { id: 2, type: 'DURAK', title: 'Classic P2P', stake: '50 - 1k', players: '3/6', color: 'red-500', page: 'code_artifact (16).html' }
+            ];
+
+            container.innerHTML = mocks.map(m => `
+                <div class="p2p-card glass p-4 rounded-2xl flex justify-between items-center border-l-4 border-${m.color}">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-[9px] font-black bg-${m.color}/10 text-${m.color} px-2 py-0.5 rounded uppercase tracking-widest">${m.type}</span>
+                            <span class="text-[10px] text-metro-muted font-bold">${m.players} players</span>
+                        </div>
+                        <h4 class="font-black text-sm italic uppercase">${m.title}</h4>
+                        <p class="text-[10px] text-metro-muted font-mono uppercase mt-0.5">Ставки: ${m.stake} ₽</p>
+                    </div>
+                    <button onclick="enterGame('${m.page}')" class="bg-white/5 hover:bg-white/10 px-6 py-2.5 rounded-xl text-xs font-black transition border border-white/5 uppercase italic">Вход</button>
+                </div>
+            `).join('');
+        }
+
+        const LobbyUI = {
+            openCreate() {
+                notify('Разработка', 'Функция создания приватных столов будет доступна в следующем патче.');
+                haptic('warning');
+            }
+        };
+
+        function enterGame(page) {
+            haptic('impact');
+            window.location.href = page;
+        }
+
+        // Helpers
+        function haptic(style) {
+            if(!TG) return;
+            const impact = { light: 'light', medium: 'medium', heavy: 'heavy', success: 'success', warning: 'warning' };
+            if(impact[style]) {
+                if(['success', 'warning'].includes(style)) TG.HapticFeedback.notificationOccurred(style);
+                else TG.HapticFeedback.impactOccurred(style);
+            }
+        }
+
+        function notify(title, text, isError = false) {
+            const box = document.getElementById('alertBox');
+            const content = document.getElementById('alertContent');
+            document.getElementById('alertTitle').textContent = title;
+            document.getElementById('alertText').textContent = text;
+            
+            content.className = `glass p-4 rounded-2xl shadow-2xl flex items-center gap-4 border-l-4 ${isError ? 'border-red-500' : 'border-metro-accent'}`;
+            content.querySelector('i').className = isError ? 'fa-solid fa-triangle-exclamation text-red-500 text-xl' : 'fa-solid fa-circle-check text-metro-accent text-xl';
+
+            box.style.transform = 'translateY(0)';
+            setTimeout(() => { box.style.transform = 'translateY(-130%)'; }, 3000);
+        }
+
+        // Amount Calculation
         document.getElementById('txAmount').addEventListener('input', (e) => {
-            const val = parseInt(e.target.value) || 0;
-            const net = txType === 'deposit' ? val - (val * db.commission) : val - (val * db.commission);
-            document.getElementById('txCalc').textContent = net > 0 ? net.toLocaleString() + ' ₽' : '0 ₽';
+            const val = parseFloat(e.target.value) || 0;
+            const vip = calculateVIP(State.db.turnover);
+            const final = State.currentTx === 'deposit' ? val * (1 - vip.comm) : val * (1 - vip.comm);
+            document.getElementById('txFinal').textContent = `${Math.max(0, final).toLocaleString()} ₽`;
         });
 
-        // --- Создание Игры ---
-        const LobbyManager = {
-            selectedGame: 'blackjack',
-            openCreateModal() { document.getElementById('createGameModal').classList.remove('translate-y-full'); },
-            closeCreateModal() { document.getElementById('createGameModal').classList.add('translate-y-full'); },
-            selectGame(game) {
-                this.selectedGame = game;
-                document.querySelectorAll('.game-select-btn').forEach(b => {
-                    b.classList.remove('border-metro-accent', 'bg-metro-accent/10', 'opacity-100');
-                    b.classList.add('border-transparent', 'bg-white/5', 'opacity-50');
-                });
-                const activeBtn = document.getElementById(`sel-${game}`);
-                activeBtn.classList.remove('border-transparent', 'bg-white/5', 'opacity-50');
-                activeBtn.classList.add('border-metro-accent', 'bg-metro-accent/10', 'opacity-100');
-            },
-            launchLobby() {
-                const name = this.selectedGame === 'blackjack' ? 'Блэкджек' : 'Дурак';
-                const hash = 'pear://' + Array.from({length: 16}, () => Math.random().toString(16).charAt(2)).join('');
-                
-                // Симуляция отправки в ТГ
-                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: CHAT_ID, text: `🎰 Новая игра (${name})!\nХост: ${currentUser.first_name}\n🔗 ${hash}` })
-                }).catch(()=>{});
+        // Online Counter Simulation
+        setInterval(() => {
+            const el = document.getElementById('statOnline');
+            const current = parseInt(el.textContent.replace(',', ''));
+            const next = current + Math.floor(Math.random() * 5) - 2;
+            el.textContent = next.toLocaleString();
+        }, 5000);
 
-                showMessage("Запуск сервера", `Создаем лобби для игры ${name}...`);
-                setTimeout(() => {
-                    window.location.href = this.selectedGame === 'blackjack' ? 'code_artifact (15).html' : 'code_artifact (16).html';
-                }, 1500);
-            }
-        };
-
-        window.onload = () => updateUI();
+        window.onload = init;
     </script>
 </body>
 </html>
