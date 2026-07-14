@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>METRO DURAK P2P | NEXUS ARCHITECT</title>
+    <title>METRO DURAK P2P | TRANSFER EDITION</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
@@ -20,12 +20,14 @@
                             gold: '#d97706',
                             emerald: '#10b981',
                             rose: '#f43f5e',
-                            slate: '#1e293b'
+                            slate: '#1e293b',
+                            indigo: '#6366f1'
                         }
                     },
                     boxShadow: {
                         'premium': '0 20px 50px -12px rgba(0, 0, 0, 0.8)',
-                        'glow': '0 0 20px rgba(251, 191, 36, 0.2)'
+                        'glow': '0 0 20px rgba(251, 191, 36, 0.3)',
+                        'card': '0 5px 15px rgba(0,0,0,0.4)'
                     }
                 }
             }
@@ -34,14 +36,13 @@
     <style>
         :root {
             --tg-bg: var(--tg-theme-bg-color, #050505);
-            --tg-text: var(--tg-theme-text-color, #ffffff);
-            --card-w: 76px;
-            --card-h: 110px;
+            --card-w: 68px;
+            --card-h: 98px;
         }
 
         body {
             background-color: var(--tg-bg);
-            color: var(--tg-text);
+            color: white;
             margin: 0; padding: 0;
             overflow: hidden;
             height: 100vh;
@@ -52,27 +53,20 @@
 
         .felt-surface {
             background: 
-                radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.15) 0%, transparent 80%),
-                radial-gradient(circle at 100% 0%, rgba(251, 191, 36, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.12) 0%, transparent 80%),
+                radial-gradient(circle at 0% 100%, rgba(99, 102, 241, 0.05) 0%, transparent 40%),
                 #050505;
             position: relative;
             height: 100%;
         }
 
-        .felt-surface::after {
-            content: ""; position: absolute; inset: 0;
-            background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
-            opacity: 0.03; pointer-events: none;
-        }
-
-        /* Card Architecture */
+        /* Card Styles */
         .card-node {
             width: var(--card-w);
             height: var(--card-h);
             position: absolute;
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
             perspective: 1000px;
-            cursor: pointer;
         }
 
         .card-inner {
@@ -85,33 +79,36 @@
         .card-face {
             position: absolute; inset: 0;
             backface-visibility: hidden;
-            border-radius: 12px;
+            border-radius: 10px;
             background: #ffffff;
             color: #1a1a1a;
-            padding: 8px;
+            padding: 6px;
             display: flex; flex-direction: column; justify-content: space-between;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(0,0,0,0.05);
+            box-shadow: var(--shadow-card), inset 0 0 0 1px rgba(0,0,0,0.05);
             font-weight: 800;
         }
 
         .card-back {
-            background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+            background: linear-gradient(135deg, #1e293b 0%, #020617 100%);
             transform: rotateY(180deg);
-            border: 3px solid #ffffff;
+            border: 2px solid #ffffff;
             display: flex; align-items: center; justify-content: center;
         }
 
-        .card-back::before {
-            content: "M"; font-size: 2.5rem; color: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
-            width: 80%; height: 80%; display: flex; align-items: center; justify-content: center; border-radius: 8px;
+        .card-back::after {
+            content: "M"; font-size: 2rem; color: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            width: 70%; height: 70%; display: flex; align-items: center; justify-content: center; border-radius: 6px;
         }
 
         .is-flipped .card-inner { transform: rotateY(180deg); }
         .card-red { color: #e11d48; }
         
-        .playable:hover { transform: translateY(-25px) scale(1.05) !important; z-index: 100 !important; }
-        .playable:active { transform: translateY(-15px) scale(0.95) !important; }
+        .playable { cursor: pointer; }
+        .playable:hover { transform: translateY(-20px) scale(1.05) !important; z-index: 100 !important; }
+        .playable:active { transform: translateY(-10px) scale(0.95) !important; }
+
+        .transfer-glow { box-shadow: 0 0 15px #6366f1, 0 0 30px rgba(99, 102, 241, 0.4) !important; }
 
         .glass-panel {
             background: rgba(255, 255, 255, 0.03);
@@ -119,136 +116,126 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .btn-primary {
+        .btn-action {
             background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
             color: #050505;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            box-shadow: 0 10px 30px rgba(217, 119, 6, 0.3);
+            box-shadow: 0 10px 25px rgba(217, 119, 6, 0.3);
             transition: all 0.3s ease;
         }
-
-        .btn-primary:active { transform: scale(0.96); opacity: 0.9; }
-        .btn-primary:disabled { filter: grayscale(1); opacity: 0.5; cursor: not-allowed; }
+        .btn-action:active { transform: scale(0.95); }
+        .btn-action:disabled { filter: grayscale(1); opacity: 0.3; }
 
         #battle-grid {
-            position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%);
-            width: 90%; height: 260px; display: flex; justify-content: center; align-items: center; gap: 12px;
+            position: absolute; top: 48%; left: 50%; transform: translate(-50%, -50%);
+            width: 90%; height: 220px; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 10px;
         }
 
-        .status-indicator {
-            width: 8px; height: 8px; border-radius: 50%;
-            display: inline-block; margin-right: 6px;
+        .player-badge {
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            display: flex; align-items: center; gap: 6px;
+            transition: all 0.3s ease;
+        }
+        .active-turn-badge {
+            border-color: #fbbf24;
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
+            background: rgba(251, 191, 36, 0.1);
         }
 
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(251, 191, 36, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+        @keyframes deal-anim {
+            from { transform: translate(300px, -300px) rotate(45deg); opacity: 0; }
+            to { transform: translate(0, 0) rotate(0); opacity: 1; }
         }
-        .active-turn { animation: pulse-glow 2s infinite; }
     </style>
 </head>
 <body class="felt-surface">
 
-    <!-- HUD Layer -->
+    <!-- HUD -->
     <header class="fixed top-0 w-full z-50 px-6 py-5 flex justify-between items-center bg-black/40 backdrop-blur-xl border-b border-white/5">
         <div class="flex items-center gap-4">
-            <button onclick="Nexus.exit()" class="w-11 h-11 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 active:scale-90 transition">
-                <i class="fa-solid fa-arrow-left text-metro-accent"></i>
+            <button onclick="Nexus.exit()" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 active:scale-90 transition">
+                <i class="fa-solid fa-chevron-left text-metro-accent"></i>
             </button>
             <div>
-                <div class="text-[10px] text-metro-muted font-black uppercase tracking-[0.2em] leading-none mb-1">P2P Network</div>
-                <div id="net-status" class="text-xs font-bold text-white flex items-center">
-                    <span class="status-indicator bg-gray-500"></span>
-                    DISCONNECTED
+                <div class="text-[9px] text-gray-500 font-black uppercase tracking-widest leading-none mb-1">Multiplayer P2P</div>
+                <div id="net-status" class="text-[11px] font-bold text-white flex items-center">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
+                    3 PLAYERS CONNECTED
                 </div>
             </div>
         </div>
         <div class="text-right">
-            <span class="text-[10px] text-gray-500 font-black uppercase tracking-widest block">Vault Balance</span>
-            <div class="font-black text-white text-xl" id="ui-balance">0 ₽</div>
+            <span class="text-[9px] text-gray-500 font-black uppercase tracking-widest block">Stake</span>
+            <div class="font-black text-metro-accent text-lg" id="ui-stake">0 ₽</div>
         </div>
     </header>
 
     <!-- Game Arena -->
     <main class="relative h-full w-full pt-24 pb-40">
-        <!-- Opponent Hand -->
-        <div id="opponent-hand" class="absolute top-28 left-0 right-0 h-[var(--card-h)] flex justify-center pointer-events-none"></div>
+        
+        <!-- Opponent 1 (Top Left) -->
+        <div class="absolute top-24 left-10 flex flex-col items-center gap-2">
+            <div id="badge-p1" class="player-badge">
+                <i class="fa-solid fa-user text-blue-400"></i>
+                <span id="name-p1">Player 2</span>
+                <span id="count-p1" class="text-gray-400 ml-1">6</span>
+            </div>
+            <div id="hand-p1" class="relative h-10 w-20 flex justify-center"></div>
+        </div>
+
+        <!-- Opponent 2 (Top Right) -->
+        <div class="absolute top-24 right-10 flex flex-col items-center gap-2">
+            <div id="badge-p2" class="player-badge">
+                <i class="fa-solid fa-user text-purple-400"></i>
+                <span id="name-p2">Player 3</span>
+                <span id="count-p2" class="text-gray-400 ml-1">6</span>
+            </div>
+            <div id="hand-p2" class="relative h-10 w-20 flex justify-center"></div>
+        </div>
 
         <!-- Deck & Trump -->
-        <div class="absolute right-6 top-1/2 -translate-y-1/2 flex flex-col items-center gap-4 z-10">
-            <div id="deck-area" class="relative w-[var(--card-w)] h-[var(--card-h)]">
+        <div class="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col items-center gap-3 z-10">
+            <div id="deck-area" class="relative w-[var(--card-w)] h-[var(--card-h)] scale-75">
                 <div id="trump-slot" class="absolute inset-0"></div>
-                <div id="deck-stack" class="absolute inset-0 -translate-x-2"></div>
+                <div id="deck-stack" class="absolute inset-0 -translate-x-1 -translate-y-1"></div>
             </div>
-            <div id="deck-count" class="bg-black/80 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] font-black border border-white/10 shadow-xl">0</div>
+            <div id="deck-count" class="bg-black/80 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-black border border-white/10">0</div>
         </div>
 
         <!-- Battle Zone -->
         <div id="battle-grid"></div>
 
         <!-- Player Hand -->
-        <div id="player-hand" class="absolute bottom-36 left-0 right-0 h-[var(--card-h)] flex justify-center"></div>
+        <div id="player-hand" class="absolute bottom-32 left-0 right-0 h-[var(--card-h)] flex justify-center"></div>
 
         <!-- Action Bar -->
-        <div id="action-bar" class="absolute bottom-10 left-0 right-0 px-8 flex justify-center gap-4 z-40 opacity-0 translate-y-10 transition-all duration-500">
-            <button id="btn-action" onclick="Engine.handleAction()" class="btn-primary w-full max-w-md py-5 rounded-3xl text-lg italic">
+        <div id="action-bar" class="absolute bottom-8 left-0 right-0 px-8 flex justify-center gap-3 z-40 transition-all duration-500 opacity-0 translate-y-10">
+            <button id="btn-action" onclick="Engine.handleAction()" class="btn-action w-full max-w-xs py-5 rounded-2xl text-base italic">
                 БИТО
             </button>
         </div>
     </main>
 
-    <!-- Connection Overlay -->
-    <div id="overlay-connect" class="fixed inset-0 z-[100] glass-panel flex items-center justify-center p-8">
-        <div class="w-full max-w-sm text-center space-y-8">
-            <div class="relative inline-block">
-                <div class="w-24 h-24 bg-metro-accent/10 rounded-[2.5rem] flex items-center justify-center border border-metro-accent/20 mx-auto">
-                    <i class="fa-solid fa-tower-broadcast text-4xl text-metro-accent animate-pulse"></i>
-                </div>
-            </div>
-            
-            <div>
-                <h2 class="text-4xl font-black italic tracking-tighter uppercase">Durak <span class="text-metro-accent">Elite</span></h2>
-                <p class="text-gray-400 text-[10px] font-black uppercase tracking-[0.4em] mt-3">Peer-to-Peer Protocol</p>
-            </div>
-
-            <div class="bg-black/60 rounded-[3rem] p-8 border border-white/5 shadow-premium">
-                <div class="mb-8">
-                    <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest block mb-3">Table Stake</span>
-                    <div class="text-5xl font-black text-white" id="ui-bet">0 <span class="text-metro-accent text-2xl">₽</span></div>
-                </div>
-                
-                <div class="flex justify-between items-center gap-3 mb-8">
-                    <div onclick="Engine.adjustBet(100)" class="flex-1 py-3 rounded-2xl bg-white/5 border border-white/10 text-xs font-black hover:bg-white/10 transition cursor-pointer">100</div>
-                    <div onclick="Engine.adjustBet(500)" class="flex-1 py-3 rounded-2xl bg-white/5 border border-white/10 text-xs font-black hover:bg-white/10 transition cursor-pointer">500</div>
-                    <div onclick="Engine.adjustBet(1000)" class="flex-1 py-3 rounded-2xl bg-white/5 border border-white/10 text-xs font-black hover:bg-white/10 transition cursor-pointer">1K</div>
-                </div>
-
-                <button id="btn-connect" onclick="Network.connect()" class="btn-primary w-full py-5 rounded-2xl text-sm">
-                    FIND OPPONENT
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- Result Overlay -->
     <div id="overlay-result" class="fixed inset-0 z-[110] hidden glass-panel flex items-center justify-center p-8">
-        <div class="text-center animate-in fade-in zoom-in duration-300">
-            <div id="res-icon" class="text-9xl mb-6 drop-shadow-[0_0_30px_rgba(251,191,36,0.5)]">🏆</div>
-            <h2 id="res-title" class="text-7xl font-black italic tracking-tighter mb-4">VICTORY</h2>
-            <p id="res-desc" class="text-gray-400 font-bold mb-12 uppercase tracking-[0.2em]">You earned 2,000 ₽</p>
-            <button onclick="location.reload()" class="btn-primary px-16 py-6 rounded-3xl text-xl">NEW SESSION</button>
+        <div class="text-center">
+            <div id="res-icon" class="text-8xl mb-4">🏆</div>
+            <h2 id="res-title" class="text-6xl font-black italic tracking-tighter mb-2">VICTORY</h2>
+            <p id="res-desc" class="text-gray-400 font-bold mb-10 uppercase tracking-widest">You earned 1,500 ₽</p>
+            <button onclick="location.reload()" class="btn-action px-12 py-5 rounded-2xl text-lg">PLAY AGAIN</button>
         </div>
     </div>
 
     <script>
-        /**
-         * NEXUS ARCHITECT - DURAK P2P ENGINE
-         * High-performance, modular, and secure.
-         */
-
         const TG = window.Telegram?.WebApp;
         const SUITS = [
             { s: '♠', id: 'spades', red: false },
@@ -260,107 +247,41 @@
         const RANK_VAL = { '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14 };
 
         const Nexus = {
-            vault: JSON.parse(localStorage.getItem('metro_vault')) || { balance: 5000, turnover: 0 },
-            
-            init() {
-                if (TG) {
-                    TG.ready();
-                    TG.expand();
-                    TG.headerColor = '#050505';
-                }
-                this.syncUI();
-            },
-
-            syncUI() {
-                document.getElementById('ui-balance').textContent = this.vault.balance.toLocaleString() + ' ₽';
-                localStorage.setItem('metro_vault', JSON.stringify(this.vault));
-            },
-
-            haptic(type = 'light') {
+            vault: JSON.parse(localStorage.getItem('metro_vault')) || { balance: 5000, wins: 0 },
+            haptic(t = 'light') {
                 if (!TG) return;
-                if (['success', 'warning', 'error'].includes(type)) TG.HapticFeedback.notificationOccurred(type);
-                else TG.HapticFeedback.impactOccurred(type);
+                if (['success', 'warning', 'error'].includes(t)) TG.HapticFeedback.notificationOccurred(t);
+                else TG.HapticFeedback.impactOccurred(t);
             },
-
-            exit() {
-                window.location.href = 'metro_cash_app.html';
-            }
-        };
-
-        const Network = {
-            peer: null,
-            role: null, // 'host' or 'guest'
-            status: 'disconnected',
-
-            async connect() {
-                if (Engine.bet <= 0) return;
-                
-                const btn = document.getElementById('btn-connect');
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fa-solid fa-circle-notch animate-spin mr-2"></i> SEARCHING...';
-                
-                Nexus.haptic('medium');
-
-                // Simulated P2P Handshake (PearJS Logic)
-                // In a real PearJS app, this would use hyperswarm.join(topic)
-                setTimeout(() => {
-                    this.status = 'connected';
-                    this.role = Math.random() > 0.5 ? 'host' : 'guest';
-                    this.onConnected();
-                }, 2000);
-            },
-
-            onConnected() {
-                document.getElementById('net-status').innerHTML = `<span class="status-indicator bg-metro-emerald animate-pulse"></span> ONLINE | ${this.role.toUpperCase()}`;
-                document.getElementById('overlay-connect').style.display = 'none';
-                Engine.initGame();
-            },
-
-            send(type, data) {
-                console.log(`[P2P SEND] ${type}`, data);
-                // Simulated network latency
-                setTimeout(() => this.onMessage({ type, data }), 150);
-            },
-
-            onMessage(msg) {
-                switch(msg.type) {
-                    case 'SYNC_STATE': Engine.syncState(msg.data); break;
-                    case 'MOVE': Engine.onRemoteMove(msg.data); break;
-                    case 'ACTION': Engine.onRemoteAction(msg.data); break;
-                }
-            }
+            exit() { window.location.href = 'metro_cash_app.html'; }
         };
 
         const Engine = {
             deck: [],
-            playerHand: [],
-            opponentHand: [],
+            players: [
+                { id: 'me', name: 'You', hand: [], type: 'human' },
+                { id: 'p1', name: 'Alex_P2P', hand: [], type: 'bot' },
+                { id: 'p2', name: 'Satoshi', hand: [], type: 'bot' }
+            ],
             table: [],
             trump: null,
-            bet: 0,
-            turn: null, // 'me' or 'peer'
-            isAttacker: false,
-            gameState: 'waiting',
+            attackerIdx: 0,
+            defenderIdx: 1,
+            turnIdx: 0, // Whose turn it is to act
+            stake: 0,
+            gameState: 'init',
 
-            adjustBet(val) {
-                if (Nexus.vault.balance >= val) {
-                    this.bet += val;
-                    Nexus.vault.balance -= val;
-                    Nexus.haptic('light');
-                    document.getElementById('ui-bet').textContent = this.bet.toLocaleString();
-                    Nexus.syncUI();
-                }
-            },
-
-            initGame() {
+            init() {
+                const urlParams = new URLSearchParams(window.location.search);
+                this.stake = parseInt(urlParams.get('stake')) || 500;
+                document.getElementById('ui-stake').textContent = this.stake.toLocaleString() + ' ₽';
+                
+                this.buildDeck();
+                this.deal();
+                this.determineFirstTurn();
                 this.gameState = 'playing';
-                if (Network.role === 'host') {
-                    this.buildDeck();
-                    this.deal();
-                    this.determineFirstTurn();
-                    this.broadcastState();
-                }
                 this.render();
+                Nexus.haptic('medium');
             },
 
             buildDeck() {
@@ -374,72 +295,66 @@
             },
 
             deal() {
-                while (this.playerHand.length < 6 && this.deck.length > 0) this.playerHand.push(this.deck.pop());
-                while (this.opponentHand.length < 6 && this.deck.length > 0) this.opponentHand.push(this.deck.pop());
-            },
-
-            determineFirstTurn() {
-                const myMinTrump = Math.min(...this.playerHand.filter(c => c.s === this.trump.s).map(c => c.val), 100);
-                const peerMinTrump = Math.min(...this.opponentHand.filter(c => c.s === this.trump.s).map(c => c.val), 100);
-                
-                this.turn = myMinTrump <= peerMinTrump ? 'me' : 'peer';
-                this.isAttacker = (this.turn === 'me');
-            },
-
-            broadcastState() {
-                Network.send('SYNC_STATE', {
-                    deck: this.deck,
-                    playerHand: this.opponentHand, // Swapped for peer
-                    opponentHand: this.playerHand, // Swapped for peer
-                    trump: this.trump,
-                    turn: this.turn === 'me' ? 'peer' : 'me',
-                    isAttacker: !this.isAttacker,
-                    table: this.table
+                this.players.forEach(p => {
+                    while (p.hand.length < 6 && this.deck.length > 0) p.hand.push(this.deck.pop());
                 });
             },
 
-            syncState(data) {
-                this.deck = data.deck;
-                this.playerHand = data.playerHand;
-                this.opponentHand = data.opponentHand;
-                this.trump = data.trump;
-                this.turn = data.turn;
-                this.isAttacker = data.isAttacker;
-                this.table = data.table;
-                this.render();
+            determineFirstTurn() {
+                // Simplified: random for demo, or lowest trump
+                this.attackerIdx = 0;
+                this.defenderIdx = 1;
+                this.turnIdx = 0;
             },
 
             render() {
-                this.renderHand('player-hand', this.playerHand, true);
-                this.renderHand('opponent-hand', this.opponentHand, false);
+                this.renderPlayerHand();
+                this.renderOpponents();
                 this.renderTable();
                 this.renderDeck();
-                this.updateControls();
+                this.updateUI();
             },
 
-            renderHand(id, hand, isPlayer) {
-                const container = document.getElementById(id);
+            renderPlayerHand() {
+                const container = document.getElementById('player-hand');
                 container.innerHTML = '';
-                
-                if (isPlayer) hand.sort((a, b) => (a.s === this.trump.s ? a.val + 20 : a.val) - (b.s === this.trump.s ? b.val + 20 : b.val));
+                const myHand = this.players[0].hand;
+                myHand.sort((a, b) => (a.s === this.trump.s ? a.val + 20 : a.val) - (b.s === this.trump.s ? b.val + 20 : b.val));
 
-                hand.forEach((card, i) => {
-                    const el = this.createCardEl(card, !isPlayer);
-                    const offset = (i - (hand.length - 1) / 2) * (isPlayer ? 50 : 30);
-                    const rotation = isPlayer ? (i - (hand.length - 1) / 2) * 4 : 0;
+                myHand.forEach((card, i) => {
+                    const el = this.createCardEl(card, false);
+                    const offset = (i - (myHand.length - 1) / 2) * 45;
+                    const rotation = (i - (myHand.length - 1) / 2) * 3;
                     
                     el.style.left = `calc(50% + ${offset}px - (var(--card-w)/2))`;
-                    if (isPlayer) {
-                        el.style.bottom = '0px';
-                        el.style.transform = `rotate(${rotation}deg)`;
-                        if (this.canPlay(card)) {
-                            el.classList.add('playable');
-                            el.onclick = () => this.playCard(i);
-                        }
-                    } else {
-                        el.style.top = '0px';
+                    el.style.transform = `rotate(${rotation}deg)`;
+                    
+                    const canPlay = this.canPlay(card);
+                    const canTransfer = this.canTransfer(card);
+
+                    if (canPlay || canTransfer) {
+                        el.classList.add('playable');
+                        if (canTransfer) el.classList.add('transfer-glow');
+                        el.onclick = () => this.playCard(i, canTransfer);
                     }
                     container.appendChild(el);
+                });
+            },
+
+            renderOpponents() {
+                [1, 2].forEach(idx => {
+                    const p = this.players[idx];
+                    const container = document.getElementById(`hand-p${idx}`);
+                    const countEl = document.getElementById(`count-p${idx}`);
+                    container.innerHTML = '';
+                    countEl.textContent = p.hand.length;
+
+                    p.hand.forEach((_, i) => {
+                        const el = this.createCardEl(null, true);
+                        el.style.left = `${i * 8}px`;
+                        el.style.transform = `scale(0.5)`;
+                        container.appendChild(el);
+                    });
                 });
             },
 
@@ -449,13 +364,11 @@
                 this.table.forEach(pair => {
                     const wrap = document.createElement('div');
                     wrap.className = 'relative w-[var(--card-w)] h-[var(--card-h)]';
-                    
                     const atk = this.createCardEl(pair.atk, false);
                     wrap.appendChild(atk);
-
                     if (pair.def) {
                         const def = this.createCardEl(pair.def, false);
-                        def.style.transform = 'translate(15px, 15px) rotate(10deg)';
+                        def.style.transform = 'translate(12px, 12px) rotate(8deg)';
                         wrap.appendChild(def);
                     }
                     grid.appendChild(wrap);
@@ -466,17 +379,12 @@
                 const tSlot = document.getElementById('trump-slot');
                 const dStack = document.getElementById('deck-stack');
                 const count = document.getElementById('deck-count');
-                
                 tSlot.innerHTML = ''; dStack.innerHTML = '';
-                
                 if (this.deck.length > 0) {
                     const tc = this.createCardEl(this.trump, false);
-                    tc.style.transform = 'rotate(90deg) translate(0, 35px)';
+                    tc.style.transform = 'rotate(90deg) translate(0, 30px)';
                     tSlot.appendChild(tc);
-                    
-                    if (this.deck.length > 1) {
-                        dStack.appendChild(this.createCardEl(null, true));
-                    }
+                    if (this.deck.length > 1) dStack.appendChild(this.createCardEl(null, true));
                 }
                 count.textContent = this.deck.length;
             },
@@ -488,14 +396,14 @@
                 div.innerHTML = `
                     <div class="card-inner">
                         <div class="card-face ${red}">
-                            <div class="flex flex-col leading-none">
-                                <span class="text-sm">${card?.rank || ''}</span>
-                                <span class="text-xs">${card?.s || ''}</span>
+                            <div class="flex flex-col leading-none text-[10px]">
+                                <span>${card?.rank || ''}</span>
+                                <span>${card?.s || ''}</span>
                             </div>
-                            <div class="text-3xl opacity-10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">${card?.s || ''}</div>
-                            <div class="flex flex-col leading-none self-end rotate-180">
-                                <span class="text-sm">${card?.rank || ''}</span>
-                                <span class="text-xs">${card?.s || ''}</span>
+                            <div class="text-2xl opacity-10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">${card?.s || ''}</div>
+                            <div class="flex flex-col leading-none self-end rotate-180 text-[10px]">
+                                <span>${card?.rank || ''}</span>
+                                <span>${card?.s || ''}</span>
                             </div>
                         </div>
                         <div class="card-back"></div>
@@ -505,132 +413,199 @@
             },
 
             canPlay(card) {
-                if (this.turn !== 'me') return false;
-                if (this.isAttacker) {
+                if (this.turnIdx !== 0) return false;
+                if (this.attackerIdx === 0) {
                     if (this.table.length === 0) return true;
-                    if (this.table.length >= 6) return false;
                     const ranks = this.table.flatMap(p => [p.atk.rank, p.def?.rank]).filter(Boolean);
-                    return ranks.includes(card.rank);
-                } else {
-                    const last = this.table[this.table.length - 1];
-                    if (!last || last.def) return false;
+                    return ranks.includes(card.rank) && this.table.length < 6;
+                } else if (this.defenderIdx === 0) {
+                    const last = this.table.find(p => !p.def);
+                    if (!last) return false;
                     return (card.s === last.atk.s && card.val > last.atk.val) || (card.s === this.trump.s && last.atk.s !== this.trump.s);
                 }
+                return false;
             },
 
-            playCard(idx) {
-                const card = this.playerHand.splice(idx, 1)[0];
+            canTransfer(card) {
+                // Transfer rules: must be defender, no cards beaten yet, rank matches attack
+                if (this.defenderIdx !== 0 || this.turnIdx !== 0) return false;
+                if (this.table.length === 0 || this.table.some(p => p.def)) return false;
+                const nextPlayerIdx = (this.defenderIdx + 1) % this.players.length;
+                if (this.players[nextPlayerIdx].hand.length < this.table.length + 1) return false;
+                return this.table[0].atk.rank === card.rank;
+            },
+
+            playCard(idx, isTransfer = false) {
+                const card = this.players[0].hand.splice(idx, 1)[0];
                 Nexus.haptic('light');
-                
-                if (this.isAttacker) {
+
+                if (isTransfer) {
                     this.table.push({ atk: card, def: null });
+                    // Shift roles
+                    this.attackerIdx = this.defenderIdx;
+                    this.defenderIdx = (this.defenderIdx + 1) % this.players.length;
+                    this.turnIdx = this.defenderIdx; // Next player must defend
+                    this.render();
+                    setTimeout(() => this.botTurn(), 1000);
                 } else {
-                    this.table[this.table.length - 1].def = card;
+                    if (this.attackerIdx === 0) {
+                        this.table.push({ atk: card, def: null });
+                        this.turnIdx = this.defenderIdx;
+                    } else {
+                        const last = this.table.find(p => !p.def);
+                        last.def = card;
+                        this.turnIdx = this.attackerIdx;
+                    }
+                    this.render();
+                    if (this.turnIdx !== 0) setTimeout(() => this.botTurn(), 1000);
                 }
-
-                this.turn = 'peer';
-                this.render();
-                Network.send('MOVE', { card, table: this.table });
-            },
-
-            onRemoteMove(data) {
-                Nexus.haptic('medium');
-                this.opponentHand.pop();
-                this.table = data.table;
-                this.turn = 'me';
-                this.render();
             },
 
             handleAction() {
                 Nexus.haptic('medium');
-                const action = this.isAttacker ? 'BITO' : 'TAKE';
-                Network.send('ACTION', { action });
-                this.processAction(action, 'me');
-            },
-
-            onRemoteAction(data) {
-                this.processAction(data.action, 'peer');
-            },
-
-            processAction(action, who) {
-                if (action === 'BITO') {
-                    this.table = [];
-                    this.replenish();
-                    this.isAttacker = (who !== 'me');
-                    this.turn = this.isAttacker ? 'me' : 'peer';
+                if (this.attackerIdx === 0) {
+                    this.endRound('bito');
                 } else {
-                    const cards = this.table.flatMap(p => [p.atk, p.def]).filter(Boolean);
-                    if (who === 'me') this.playerHand.push(...cards);
-                    else this.opponentHand.push(...cards);
-                    this.table = [];
-                    this.replenish();
-                    this.isAttacker = (who === 'me'); // If I take, peer attacks again
-                    this.turn = this.isAttacker ? 'me' : 'peer';
+                    this.endRound('take');
                 }
+            },
+
+            endRound(type) {
+                const cards = this.table.flatMap(p => [p.atk, p.def]).filter(Boolean);
+                if (type === 'take') {
+                    this.players[this.defenderIdx].hand.push(...cards);
+                    this.attackerIdx = (this.defenderIdx + 1) % this.players.length;
+                    this.defenderIdx = (this.attackerIdx + 1) % this.players.length;
+                } else {
+                    this.attackerIdx = this.defenderIdx;
+                    this.defenderIdx = (this.attackerIdx + 1) % this.players.length;
+                }
+                this.table = [];
+                this.replenish();
+                this.turnIdx = this.attackerIdx;
                 this.render();
+                if (this.turnIdx !== 0) setTimeout(() => this.botTurn(), 1000);
             },
 
             replenish() {
-                while (this.playerHand.length < 6 && this.deck.length > 0) this.playerHand.push(this.deck.pop());
-                while (this.opponentHand.length < 6 && this.deck.length > 0) this.opponentHand.push(this.deck.pop());
-                this.checkEnd();
+                // Replenish in order: attacker, then others, then defender
+                const order = [];
+                for(let i=0; i<this.players.length; i++) order.push((this.attackerIdx + i) % this.players.length);
+                
+                order.forEach(idx => {
+                    const p = this.players[idx];
+                    while (p.hand.length < 6 && this.deck.length > 0) p.hand.push(this.deck.pop());
+                });
+                this.checkGameOver();
             },
 
-            updateControls() {
+            botTurn() {
+                if (this.gameState !== 'playing' || this.turnIdx === 0) return;
+                const bot = this.players[this.turnIdx];
+                
+                if (this.turnIdx === this.attackerIdx) {
+                    // Bot Attacking
+                    const playable = bot.hand.filter(c => this.table.length === 0 || this.table.flatMap(p => [p.atk.rank, p.def?.rank]).includes(c.rank));
+                    if (playable.length > 0 && this.table.length < 6) {
+                        const card = playable[0];
+                        bot.hand = bot.hand.filter(c => c !== card);
+                        this.table.push({ atk: card, def: null });
+                        this.turnIdx = this.defenderIdx;
+                    } else {
+                        this.endRound('bito');
+                        return;
+                    }
+                } else {
+                    // Bot Defending
+                    const last = this.table.find(p => !p.def);
+                    // Check for transfer first
+                    const canTransfer = this.table.length > 0 && !this.table.some(p => p.def) && bot.hand.some(c => c.rank === this.table[0].atk.rank);
+                    
+                    if (canTransfer && Math.random() > 0.5) {
+                        const card = bot.hand.find(c => c.rank === this.table[0].atk.rank);
+                        bot.hand = bot.hand.filter(c => c !== card);
+                        this.table.push({ atk: card, def: null });
+                        this.attackerIdx = this.defenderIdx;
+                        this.defenderIdx = (this.defenderIdx + 1) % this.players.length;
+                        this.turnIdx = this.defenderIdx;
+                    } else {
+                        const beatable = bot.hand.filter(c => (c.s === last.atk.s && c.val > last.atk.val) || (c.s === this.trump.s && last.atk.s !== this.trump.s));
+                        if (beatable.length > 0) {
+                            const card = beatable.sort((a,b) => a.val - b.val)[0];
+                            bot.hand = bot.hand.filter(c => c !== card);
+                            last.def = card;
+                            this.turnIdx = this.attackerIdx;
+                        } else {
+                            this.endRound('take');
+                            return;
+                        }
+                    }
+                }
+                this.render();
+                if (this.turnIdx !== 0) setTimeout(() => this.botTurn(), 1000);
+            },
+
+            updateUI() {
                 const bar = document.getElementById('action-bar');
                 const btn = document.getElementById('btn-action');
                 
-                if (this.turn === 'me' && this.gameState === 'playing') {
+                // Update Badges
+                this.players.forEach((p, i) => {
+                    const badge = document.getElementById(`badge-${i === 0 ? 'me' : 'p' + i}`);
+                    if (badge) badge.classList.toggle('active-turn-badge', this.turnIdx === i);
+                });
+
+                if (this.turnIdx === 0) {
                     bar.classList.remove('opacity-0', 'translate-y-10');
-                    btn.textContent = this.isAttacker ? 'БИТО' : 'ВЗЯТЬ';
-                    btn.disabled = this.isAttacker && this.table.length === 0;
-                    btn.classList.toggle('active-turn', !btn.disabled);
+                    if (this.attackerIdx === 0) {
+                        btn.textContent = 'БИТО';
+                        btn.disabled = this.table.length === 0;
+                    } else {
+                        btn.textContent = 'ВЗЯТЬ';
+                        btn.disabled = false;
+                    }
                 } else {
                     bar.classList.add('opacity-0', 'translate-y-10');
                 }
             },
 
-            checkEnd() {
+            checkGameOver() {
                 if (this.deck.length === 0) {
-                    if (this.playerHand.length === 0 && this.opponentHand.length === 0) this.endGame('draw');
-                    else if (this.playerHand.length === 0) this.endGame('win');
-                    else if (this.opponentHand.length === 0) this.endGame('lose');
+                    const activePlayers = this.players.filter(p => p.hand.length > 0);
+                    if (activePlayers.length <= 1) {
+                        this.gameState = 'over';
+                        const winner = activePlayers.length === 0 ? 'draw' : (activePlayers[0].id === 'me' ? 'lose' : 'win');
+                        this.showResult(winner);
+                    }
                 }
             },
 
-            endGame(res) {
-                this.gameState = 'over';
+            showResult(res) {
                 const overlay = document.getElementById('overlay-result');
                 const title = document.getElementById('res-title');
                 const desc = document.getElementById('res-desc');
                 const icon = document.getElementById('res-icon');
-
-                overlay.style.display = 'flex';
-                if (res === 'win') {
+                
+                overlay.classList.remove('hidden');
+                if (res === 'win' || (res === 'draw' && this.players[0].hand.length === 0)) {
                     Nexus.haptic('success');
-                    const win = this.bet * 2;
-                    Nexus.vault.balance += win;
                     title.textContent = 'VICTORY';
-                    title.className = 'text-7xl font-black italic text-metro-accent';
-                    desc.textContent = `You earned ${win.toLocaleString()} ₽`;
+                    title.className = 'text-6xl font-black italic text-metro-accent';
+                    desc.textContent = `You earned ${(this.stake * 1.5).toLocaleString()} ₽`;
                     icon.textContent = '🏆';
-                } else if (res === 'lose') {
+                    Nexus.vault.balance += this.stake * 1.5;
+                } else {
                     Nexus.haptic('error');
                     title.textContent = 'DEFEAT';
-                    title.className = 'text-7xl font-black italic text-metro-rose';
-                    desc.textContent = `You lost ${this.bet.toLocaleString()} ₽`;
+                    title.className = 'text-6xl font-black italic text-metro-rose';
+                    desc.textContent = `You lost ${this.stake.toLocaleString()} ₽`;
                     icon.textContent = '💀';
-                } else {
-                    Nexus.vault.balance += this.bet;
-                    title.textContent = 'DRAW';
-                    desc.textContent = 'Stake returned';
-                    icon.textContent = '🤝';
                 }
-                Nexus.syncUI();
+                localStorage.setItem('metro_vault', JSON.stringify(Nexus.vault));
             }
         };
 
-        window.onload = () => Nexus.init();
+        window.onload = () => Engine.init();
     </script>
 </body>
 </html>
