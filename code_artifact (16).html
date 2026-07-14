@@ -3,265 +3,317 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>METRO DURAK ELITE</title>
+    <title>METRO DURAK ELITE | P2P Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
                     colors: {
-                        casino: {
-                            felt: '#1a472a',
-                            gold: '#d4af37',
-                            goldLight: '#f9e498',
-                            dark: '#050505',
-                            accent: '#e63946'
+                        metro: { 
+                            black: '#050505', 
+                            dark: '#0f0f0f', 
+                            accent: '#fbbf24',
+                            gold: '#d97706',
+                            emerald: '#064e3b',
+                            card: 'var(--tg-theme-secondary-bg-color, #1c1c1e)'
                         }
-                    },
-                    fontFamily: { sans: ['Montserrat', 'sans-serif'] }
+                    }
                 }
             }
         }
     </script>
     <style>
-        :root { --card-w: 75px; --card-h: 110px; }
-        @media (max-width: 640px) { :root { --card-w: 60px; --card-h: 88px; } }
-
-        body { background-color: #050505; color: white; user-select: none; overflow: hidden; height: 100vh; font-family: 'Montserrat', sans-serif; }
-        
-        /* Игровое сукно */
-        .casino-table {
-            background: radial-gradient(circle at center, #2d5a3f 0%, #1a472a 70%, #0d2616 100%);
-            position: relative;
-            box-shadow: inset 0 0 150px rgba(0,0,0,0.8);
-            overflow: hidden;
+        :root {
+            --card-w: 72px;
+            --card-h: 104px;
+            --tg-accent: var(--tg-theme-button-color, #fbbf24);
         }
-        .casino-table::after {
+
+        @media (min-width: 640px) {
+            :root { --card-w: 85px; --card-h: 124px; }
+        }
+
+        body {
+            background-color: #050505;
+            color: white;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            overflow: hidden;
+            height: 100vh;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .casino-felt {
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(6, 78, 59, 0.4) 0%, transparent 80%),
+                radial-gradient(circle at 0% 0%, rgba(251, 191, 36, 0.03) 0%, transparent 40%),
+                #050505;
+            position: relative;
+        }
+
+        .casino-felt::before {
             content: ""; position: absolute; inset: 0;
             background-image: url("https://www.transparenttextures.com/patterns/felt.png");
-            opacity: 0.15; pointer-events: none;
+            opacity: 0.05; pointer-events: none;
         }
 
-        /* Карты */
-        .card-container {
-            width: var(--card-w); height: var(--card-h);
-            perspective: 1000px; transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        /* Card Component */
+        .card-wrapper {
+            width: var(--card-w);
+            height: var(--card-h);
+            perspective: 1000px;
             position: absolute;
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), left 0.5s cubic-bezier(0.23, 1, 0.32, 1), bottom 0.5s cubic-bezier(0.23, 1, 0.32, 1), top 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
+
         .card-inner {
-            width: 100%; height: 100%; position: relative;
-            transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%; height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         }
+
         .card-face {
-            position: absolute; width: 100%; height: 100%;
-            backface-visibility: hidden; border-radius: 8px;
+            position: absolute; inset: 0;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #1a1a1a;
+            padding: 6px;
             display: flex; flex-direction: column; justify-content: space-between;
-            padding: 5px; font-weight: 900; background: white; color: #1a1a1a;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(0,0,0,0.05);
+            font-weight: 800;
         }
+
         .card-back {
-            background: linear-gradient(135deg, #7f1d1d 0%, #450a0a 100%);
-            transform: rotateY(180deg); display: flex; align-items: center; justify-content: center;
-            border: 3px solid white;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            transform: rotateY(180deg);
+            border: 3px solid #ffffff;
+            display: flex; align-items: center; justify-content: center;
         }
+
         .card-back::after {
-            content: "M"; font-size: 2rem; color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-            width: 80%; height: 80%; display: flex; align-items: center; justify-content: center; border-radius: 4px;
+            content: "M"; font-size: 2rem; color: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            width: 70%; height: 70%; display: flex; align-items: center; justify-content: center; border-radius: 6px;
         }
 
-        .card-container.flipped .card-inner { transform: rotateY(180deg); }
-        .card-container.playable:hover { transform: translateY(-20px) scale(1.05); z-index: 100 !important; cursor: pointer; }
-        .card-container.playable:hover .card-face { box-shadow: 0 0 20px rgba(212, 175, 55, 0.6); border-color: #d4af37; }
+        .card-wrapper.flipped .card-inner { transform: rotateY(180deg); }
+        
+        .card-red { color: #e11d48; }
+        .suit-center { font-size: 2.2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.1; }
 
-        .suit-icon { font-size: 1.4rem; line-height: 1; }
-        .suit-center { font-size: 2.5rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.1; }
-        .card-red { color: #e63946; }
+        .playable:hover { transform: translateY(-20px) scale(1.05) !important; z-index: 100 !important; cursor: pointer; }
+        .playable:active { transform: translateY(-10px) scale(0.98) !important; }
 
-        /* Зоны */
-        #playerHand { bottom: 30px; height: var(--card-h); width: 100%; }
-        #aiHand { top: 80px; height: var(--card-h); width: 100%; }
-        #battleZone { top: 48%; left: 50%; transform: translate(-50%, -50%); width: 85%; height: 220px; }
-
-        /* Анимации */
-        @keyframes dealIn { from { transform: translate(500px, -500px) rotate(180deg); opacity: 0; } to { opacity: 1; } }
-        .anim-deal { animation: dealIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
-
-        /* Ставки и UI */
-        .chip { 
-            width: 60px; height: 60px; border-radius: 50%; border: 4px dashed rgba(255,255,255,0.4);
-            background: radial-gradient(circle at center, var(--tw-gradient-from), var(--tw-gradient-to));
-            display: flex; align-items: center; justify-content: center; font-weight: 900;
-            box-shadow: 0 6px 0 rgba(0,0,0,0.4), 0 10px 20px rgba(0,0,0,0.3);
-            transition: all 0.1s; cursor: pointer;
+        /* UI Elements */
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.08); }
+        
+        .chip {
+            width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; border: 4px dashed rgba(255,255,255,0.2); cursor: pointer;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.4), 0 12px 15px rgba(0,0,0,0.4);
+            transition: all 0.15s; font-size: 0.75rem;
         }
-        .chip:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,0.4); }
+        .chip:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(0,0,0,0.4); }
 
-        .gold-button {
-            background: linear-gradient(to bottom, #f9e498 0%, #d4af37 100%);
-            color: #453200; text-shadow: 0 1px 0 rgba(255,255,255,0.4);
-            box-shadow: 0 4px 0 #8a6d1d, 0 8px 15px rgba(0,0,0,0.4);
+        .action-btn {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            color: #050505; font-weight: 900; text-transform: uppercase;
+            letter-spacing: -0.02em; font-style: italic;
+            box-shadow: 0 10px 25px rgba(217, 119, 6, 0.3);
+            transition: all 0.2s;
         }
-        .gold-button:active { transform: translateY(3px); box-shadow: 0 1px 0 #8a6d1d; }
+        .action-btn:active { transform: scale(0.95); opacity: 0.9; }
+        .action-btn:disabled { opacity: 0.5; filter: grayscale(1); }
+
+        #battleZone {
+            position: absolute; top: 48%; left: 50%; transform: translate(-50%, -50%);
+            width: 90%; height: 240px; display: flex; justify-content: center; align-items: center; gap: 15px;
+        }
 
         .thinking-dots::after { content: ''; animation: dots 1.5s infinite; }
         @keyframes dots { 0% { content: ''; } 33% { content: '.'; } 66% { content: '..'; } 100% { content: '...'; } }
-
-        .glass { background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
     </style>
 </head>
-<body class="flex flex-col relative overflow-hidden">
+<body class="flex flex-col casino-felt">
 
-    <!-- HUD -->
-    <header class="fixed top-0 w-full z-50 glass px-4 py-3 flex justify-between items-center border-b border-white/10">
-        <div class="flex items-center gap-4">
-            <button onclick="Game.exit()" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/10 transition">
-                <i class="fa-solid fa-arrow-left"></i>
+    <!-- Header HUD -->
+    <header class="fixed top-0 w-full z-50 px-5 py-4 flex justify-between items-center bg-black/20 backdrop-blur-md border-b border-white/5">
+        <div class="flex items-center gap-3">
+            <button onclick="App.exit()" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 active:scale-90 transition">
+                <i class="fa-solid fa-chevron-left text-metro-accent"></i>
             </button>
-            <div class="hidden sm:block">
-                <div class="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Режим игры</div>
-                <div class="text-sm font-black text-casino-gold">ELITE DURAK</div>
+            <div>
+                <div class="text-[10px] text-gray-400 font-black uppercase tracking-widest leading-none mb-1">Elite Durak</div>
+                <div id="gameStatus" class="text-xs font-bold text-white flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-metro-accent animate-pulse"></span>
+                    ОЖИДАНИЕ
+                </div>
             </div>
         </div>
-
-        <div id="turnIndicator" class="bg-white/5 px-6 py-2 rounded-full border border-white/10 flex items-center gap-3">
-            <div id="turnDot" class="w-2 h-2 rounded-full bg-casino-gold animate-pulse"></div>
-            <span id="turnText" class="text-xs font-black uppercase tracking-widest">Ожидание</span>
-        </div>
-
         <div class="text-right">
-            <div class="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Баланс</div>
-            <div id="gameBalance" class="text-lg font-black text-white">5,000 ₽</div>
+            <span class="text-[10px] text-gray-400 font-black uppercase tracking-widest block">Баланс</span>
+            <div class="font-black text-white text-lg" id="userBalance">0 ₽</div>
         </div>
     </header>
 
-    <main class="flex-1 casino-table">
-        
+    <!-- Game Table -->
+    <main class="flex-1 relative">
         <!-- Deck & Trump -->
-        <div class="absolute right-6 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2">
+        <div class="absolute right-6 top-1/2 -translate-y-1/2 flex flex-col items-center gap-3 z-10">
             <div id="deckContainer" class="relative w-[var(--card-w)] h-[var(--card-h)]">
-                <!-- Козырь -->
-                <div id="trumpCard" class="absolute top-0 left-0"></div>
-                <!-- Стопка колоды -->
-                <div id="deckStack" class="absolute top-0 left-0 -translate-x-2"></div>
+                <div id="trumpCardSlot" class="absolute inset-0"></div>
+                <div id="deckStackSlot" class="absolute inset-0 -translate-x-2"></div>
             </div>
-            <div id="cardsLeft" class="bg-black/60 px-3 py-1 rounded-full text-[10px] font-black border border-white/20">36</div>
+            <div id="deckCount" class="bg-black/60 backdrop-blur px-3 py-1 rounded-full text-[10px] font-black border border-white/10">36</div>
         </div>
 
-        <!-- Battle Zone -->
-        <div id="battleZone" class="flex flex-wrap justify-center content-center gap-4"></div>
+        <!-- Battle Area -->
+        <div id="battleZone"></div>
 
-        <!-- Hands -->
-        <div id="aiHand" class="flex justify-center items-start opacity-80"></div>
-        <div id="playerHand" class="flex justify-center items-end"></div>
+        <!-- AI Hand (Top) -->
+        <div id="aiHand" class="absolute top-24 left-0 right-0 h-[var(--card-h)] flex justify-center pointer-events-none"></div>
 
-        <!-- Action Button -->
-        <div id="actionArea" class="absolute bottom-40 left-1/2 -translate-x-1/2 z-40 hidden">
-            <button id="actionBtn" onclick="Game.playerAction()" class="gold-button px-10 py-4 rounded-2xl font-black text-lg tracking-tighter transition-all">
+        <!-- Player Hand (Bottom) -->
+        <div id="playerHand" class="absolute bottom-32 left-0 right-0 h-[var(--card-h)] flex justify-center"></div>
+
+        <!-- Action Controls -->
+        <div id="controls" class="absolute bottom-8 left-0 right-0 px-6 flex justify-center gap-4 z-40 opacity-0 pointer-events-none transition-all duration-300 translate-y-10">
+            <button id="mainActionBtn" onclick="Game.handleAction()" class="action-btn w-full max-w-xs py-4 rounded-2xl text-lg shadow-2xl">
                 БИТО
             </button>
         </div>
-
     </main>
 
-    <!-- Bet Screen -->
-    <div id="betScreen" class="fixed inset-0 z-[100] flex items-center justify-center glass">
-        <div class="w-full max-w-md p-8 text-center">
-            <div class="mb-8">
-                <div class="text-casino-gold text-5xl mb-2"><i class="fa-solid fa-crown"></i></div>
-                <h1 class="text-3xl font-black italic tracking-tighter">METRO <span class="text-casino-gold">DURAK</span></h1>
-                <p class="text-gray-400 text-xs tracking-widest uppercase">Premium Club Edition</p>
-            </div>
-
-            <div class="bg-black/40 rounded-3xl p-6 border border-white/5 mb-8">
-                <div class="text-gray-400 text-[10px] uppercase font-black mb-2 tracking-widest">Ваша Ставка</div>
-                <div id="currentBet" class="text-5xl font-black text-white mb-6">0 <span class="text-casino-gold">₽</span></div>
-                
-                <div class="flex justify-between gap-4">
-                    <div onclick="Game.addBet(100)" class="chip from-blue-600 to-blue-800">100</div>
-                    <div onclick="Game.addBet(500)" class="chip from-purple-600 to-purple-800">500</div>
-                    <div onclick="Game.addBet(1000)" class="chip from-yellow-500 to-yellow-700 text-black">1K</div>
+    <!-- Betting Overlay -->
+    <div id="betOverlay" class="fixed inset-0 z-[100] glass flex items-center justify-center p-6">
+        <div class="w-full max-w-sm text-center space-y-8">
+            <div>
+                <div class="w-20 h-20 bg-metro-accent/10 rounded-3xl mx-auto flex items-center justify-center mb-4 border border-metro-accent/20">
+                    <i class="fa-solid fa-crown text-4xl text-metro-accent"></i>
                 </div>
+                <h2 class="text-4xl font-black italic tracking-tighter uppercase">Metro <span class="text-metro-accent">Durak</span></h2>
+                <p class="text-gray-400 text-xs font-bold uppercase tracking-[0.3em] mt-2">Elite P2P Table</p>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                <button onclick="Game.clearBet()" class="bg-white/10 hover:bg-white/20 py-4 rounded-2xl font-bold transition">СБРОС</button>
-                <button onclick="Game.startGame()" class="gold-button py-4 rounded-2xl font-black">В ИГРУ</button>
+            <div class="bg-black/40 rounded-[2.5rem] p-8 border border-white/5 shadow-2xl">
+                <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest block mb-2">Ваша Ставка</span>
+                <div class="text-5xl font-black text-white mb-8" id="displayBet">0 <span class="text-metro-accent text-3xl">₽</span></div>
+                
+                <div class="flex justify-around items-center mb-8">
+                    <div onclick="Game.addBet(100)" class="chip bg-gradient-to-br from-blue-500 to-blue-700">100</div>
+                    <div onclick="Game.addBet(500)" class="chip bg-gradient-to-br from-purple-500 to-purple-700">500</div>
+                    <div onclick="Game.addBet(1000)" class="chip bg-gradient-to-br from-amber-500 to-amber-700 text-black">1K</div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="Game.clearBet()" class="py-4 rounded-2xl bg-white/5 border border-white/10 font-black text-xs text-gray-400 uppercase tracking-widest active:bg-white/10 transition">Сброс</button>
+                    <button onclick="Game.start()" class="action-btn py-4 rounded-2xl font-black text-sm">В ИГРУ</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Win/Loss Overlay -->
-    <div id="resultScreen" class="fixed inset-0 z-[110] hidden glass items-center justify-center">
+    <!-- Result Overlay -->
+    <div id="resultOverlay" class="fixed inset-0 z-[110] hidden glass flex items-center justify-center p-6">
         <div class="text-center">
-            <div id="resultIcon" class="text-8xl mb-6"></div>
-            <h2 id="resultTitle" class="text-6xl font-black mb-2 tracking-tighter"></h2>
-            <p id="resultText" class="text-xl text-gray-400 mb-8"></p>
-            <button onclick="location.reload()" class="gold-button px-12 py-5 rounded-2xl font-black text-xl">ПРОДОЛЖИТЬ</button>
+            <div id="resultIcon" class="text-8xl mb-6 drop-shadow-glow">🏆</div>
+            <h2 id="resultTitle" class="text-6xl font-black italic tracking-tighter mb-2">WINNER</h2>
+            <p id="resultText" class="text-gray-400 font-bold mb-10 uppercase tracking-widest">Вы выиграли 2,000 ₽</p>
+            <button onclick="location.reload()" class="action-btn px-12 py-5 rounded-2xl text-xl">ИГРАТЬ СНОВА</button>
         </div>
     </div>
 
     <script>
-        const suits = [
+        /**
+         * NEXUS ARCHITECT - DURAK ELITE ENGINE
+         * Optimized for TWA & P2P Logic
+         */
+
+        const TG = window.Telegram?.WebApp;
+        const SUITS = [
             { s: '♠', name: 'spades', isRed: false },
             { s: '♣', name: 'clubs', isRed: false },
             { s: '♥', name: 'hearts', isRed: true },
             { s: '♦', name: 'diamonds', isRed: true }
         ];
-        const ranks = ['6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-        const rVals = {'6':6,'7':7,'8':8,'9':9,'10':10,'J':11,'Q':12,'K':13,'A':14};
+        const RANKS = ['6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+        const RANK_VALUES = { '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14 };
 
-        let db = JSON.parse(localStorage.getItem('metro_db')) || { balance: 10000 };
+        const App = {
+            db: JSON.parse(localStorage.getItem('metro_vault')) || { balance: 5000, turnover: 0 },
+            exit() {
+                localStorage.setItem('metro_vault', JSON.stringify(this.db));
+                window.location.href = 'metro_cash_app.html';
+            },
+            haptic(style = 'light') {
+                if (!TG) return;
+                if (['success', 'warning', 'error'].includes(style)) TG.HapticFeedback.notificationOccurred(style);
+                else TG.HapticFeedback.impactOccurred(style);
+            }
+        };
 
         const Game = {
-            deck: [], playerHand: [], aiHand: [], table: [], 
-            trump: null, bet: 0, turn: 'player', state: 'betting',
+            deck: [],
+            playerHand: [],
+            aiHand: [],
+            table: [], // Array of { atk: card, def: card | null }
+            trump: null,
+            bet: 0,
+            turn: 'player', // 'player' or 'ai'
+            state: 'betting', // 'betting', 'playing', 'over'
+            isAttacking: true,
 
             init() {
-                this.updateBalance();
+                if (TG) {
+                    TG.ready();
+                    TG.expand();
+                }
+                this.updateUI();
             },
 
-            updateBalance() {
-                document.getElementById('gameBalance').textContent = db.balance.toLocaleString() + ' ₽';
-            },
-
-            addBet(val) {
-                if(db.balance >= val) {
-                    this.bet += val;
-                    db.balance -= val;
-                    document.getElementById('currentBet').textContent = this.bet;
-                    this.updateBalance();
+            addBet(amount) {
+                if (App.db.balance >= amount) {
+                    App.haptic('light');
+                    this.bet += amount;
+                    App.db.balance -= amount;
+                    this.updateUI();
                 }
             },
 
             clearBet() {
-                db.balance += this.bet;
+                App.haptic('medium');
+                App.db.balance += this.bet;
                 this.bet = 0;
-                document.getElementById('currentBet').textContent = 0;
-                this.updateBalance();
+                this.updateUI();
             },
 
-            exit() {
-                localStorage.setItem('metro_db', JSON.stringify(db));
-                window.location.href = 'index.html';
-            },
-
-            startGame() {
-                if(this.bet <= 0) return;
-                document.getElementById('betScreen').style.display = 'none';
+            start() {
+                if (this.bet <= 0) return;
+                App.haptic('heavy');
                 this.state = 'playing';
+                document.getElementById('betOverlay').style.opacity = '0';
+                setTimeout(() => document.getElementById('betOverlay').style.display = 'none', 300);
+                
                 this.buildDeck();
                 this.dealInitial();
+                this.determineFirstTurn();
+                this.updateUI();
             },
 
             buildDeck() {
                 this.deck = [];
-                suits.forEach(s => {
-                    ranks.forEach(r => {
-                        this.deck.push({ ...s, rank: r, val: rVals[r] });
+                SUITS.forEach(suit => {
+                    RANKS.forEach(rank => {
+                        this.deck.push({ ...suit, rank, val: RANK_VALUES[rank] });
                     });
                 });
+                // Fisher-Yates Shuffle
                 for (let i = this.deck.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [this.deck[i], this.deck[j]] = [this.deck[j], this.deck[i]];
@@ -270,26 +322,129 @@
             },
 
             dealInitial() {
-                for(let i=0; i<6; i++) {
+                for (let i = 0; i < 6; i++) {
                     this.playerHand.push(this.deck.pop());
                     this.aiHand.push(this.deck.pop());
                 }
-                this.renderAll();
-                this.turn = Math.random() > 0.5 ? 'player' : 'ai';
-                if(this.turn === 'ai') setTimeout(() => this.aiAttack(), 1500);
             },
 
-            createCardEl(card, isHidden = false, index = -1, type = 'hand') {
-                const container = document.createElement('div');
-                container.className = `card-container anim-deal ${isHidden ? 'flipped' : ''} ${card && this.canPlay(card) && type==='hand' ? 'playable' : ''}`;
+            determineFirstTurn() {
+                // Simple logic: find lowest trump
+                const pMinTrump = Math.min(...this.playerHand.filter(c => c.s === this.trump.s).map(c => c.val), 100);
+                const aMinTrump = Math.min(...this.aiHand.filter(c => c.s === this.trump.s).map(c => c.val), 100);
                 
-                if(card && type === 'hand') {
-                    container.onclick = () => this.playCard(index);
+                this.turn = pMinTrump <= aMinTrump ? 'player' : 'ai';
+                this.isAttacking = (this.turn === 'player');
+                
+                if (this.turn === 'ai') {
+                    setTimeout(() => this.aiMove(), 1500);
+                }
+            },
+
+            updateUI() {
+                document.getElementById('userBalance').textContent = App.db.balance.toLocaleString() + ' ₽';
+                document.getElementById('displayBet').textContent = this.bet.toLocaleString();
+                
+                const statusEl = document.getElementById('gameStatus');
+                if (this.state === 'playing') {
+                    statusEl.innerHTML = this.turn === 'player' 
+                        ? `<span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> ВАШ ХОД`
+                        : `<span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span> БОТ ДУМАЕТ<span class="thinking-dots"></span>`;
                 }
 
-                const redClass = card?.isRed ? 'card-red' : '';
+                this.renderHands();
+                this.renderTable();
+                this.renderDeck();
+                this.updateControls();
+            },
+
+            renderHands() {
+                const pHand = document.getElementById('playerHand');
+                const aHand = document.getElementById('aiHand');
+                pHand.innerHTML = '';
+                aHand.innerHTML = '';
+
+                // Sort player hand for convenience
+                this.playerHand.sort((a, b) => {
+                    const valA = a.s === this.trump.s ? a.val + 20 : a.val;
+                    const valB = b.s === this.trump.s ? b.val + 20 : b.val;
+                    return valA - valB;
+                });
+
+                this.playerHand.forEach((card, i) => {
+                    const el = this.createCardElement(card, false);
+                    const offset = (i - (this.playerHand.length - 1) / 2) * (window.innerWidth < 640 ? 45 : 55);
+                    const rotation = (i - (this.playerHand.length - 1) / 2) * 3;
+                    
+                    el.style.left = `calc(50% + ${offset}px - (var(--card-w)/2))`;
+                    el.style.bottom = '0px';
+                    el.style.transform = `rotate(${rotation}deg)`;
+                    
+                    if (this.canPlay(card)) {
+                        el.classList.add('playable');
+                        el.onclick = () => this.playCard(i);
+                    }
+                    pHand.appendChild(el);
+                });
+
+                this.aiHand.forEach((card, i) => {
+                    const el = this.createCardElement(card, true);
+                    const offset = (i - (this.aiHand.length - 1) / 2) * 25;
+                    el.style.left = `calc(50% + ${offset}px - (var(--card-w)/2))`;
+                    el.style.top = '0px';
+                    aHand.appendChild(el);
+                });
+            },
+
+            renderTable() {
+                const zone = document.getElementById('battleZone');
+                zone.innerHTML = '';
                 
-                container.innerHTML = `
+                this.table.forEach((pair, i) => {
+                    const container = document.createElement('div');
+                    container.className = 'relative w-[var(--card-w)] h-[var(--card-h)]';
+                    
+                    const atk = this.createCardElement(pair.atk, false);
+                    atk.style.position = 'absolute';
+                    container.appendChild(atk);
+
+                    if (pair.def) {
+                        const def = this.createCardElement(pair.def, false);
+                        def.style.position = 'absolute';
+                        def.style.transform = 'translate(15px, 15px) rotate(8deg)';
+                        container.appendChild(def);
+                    }
+                    zone.appendChild(container);
+                });
+            },
+
+            renderDeck() {
+                const tSlot = document.getElementById('trumpCardSlot');
+                const dSlot = document.getElementById('deckStackSlot');
+                const count = document.getElementById('deckCount');
+                
+                tSlot.innerHTML = '';
+                dSlot.innerHTML = '';
+                
+                if (this.deck.length > 0) {
+                    const tc = this.createCardElement(this.trump, false);
+                    tc.style.transform = 'rotate(90deg) translate(0, 35px)';
+                    tSlot.appendChild(tc);
+                    
+                    if (this.deck.length > 1) {
+                        const ds = this.createCardElement(null, true);
+                        dSlot.appendChild(ds);
+                    }
+                }
+                count.textContent = this.deck.length;
+            },
+
+            createCardElement(card, isHidden) {
+                const wrapper = document.createElement('div');
+                wrapper.className = `card-wrapper ${isHidden ? 'flipped' : ''}`;
+                
+                const redClass = card?.isRed ? 'card-red' : '';
+                wrapper.innerHTML = `
                     <div class="card-inner">
                         <div class="card-face ${redClass}">
                             <div class="flex flex-col leading-none">
@@ -305,265 +460,246 @@
                         <div class="card-back"></div>
                     </div>
                 `;
-                return container;
-            },
-
-            renderAll() {
-                const pHand = document.getElementById('playerHand');
-                const aHand = document.getElementById('aiHand');
-                const bZone = document.getElementById('battleZone');
-                const tCard = document.getElementById('trumpCard');
-                const dStack = document.getElementById('deckStack');
-
-                pHand.innerHTML = '';
-                aHand.innerHTML = '';
-                bZone.innerHTML = '';
-
-                // Hand Rendering
-                this.playerHand.sort((a,b) => (a.s === this.trump.s ? a.val + 20 : a.val) - (b.s === this.trump.s ? b.val + 20 : b.val));
-                
-                this.playerHand.forEach((c, i) => {
-                    const el = this.createCardEl(c, false, i, 'hand');
-                    const offset = (i - (this.playerHand.length-1)/2) * (window.innerWidth < 600 ? 40 : 55);
-                    const rot = (i - (this.playerHand.length-1)/2) * 4;
-                    el.style.left = `calc(50% + ${offset}px - (var(--card-w)/2))`;
-                    el.style.transform = `rotate(${rot}deg)`;
-                    pHand.appendChild(el);
-                });
-
-                this.aiHand.forEach((c, i) => {
-                    const el = this.createCardEl(c, true, -1, 'ai');
-                    const offset = (i - (this.aiHand.length-1)/2) * 30;
-                    el.style.left = `calc(50% + ${offset}px - (var(--card-w)/2))`;
-                    aHand.appendChild(el);
-                });
-
-                // Battle Zone Rendering
-                this.table.forEach((pair, i) => {
-                    const group = document.createElement('div');
-                    group.className = 'relative w-[var(--card-w)] h-[var(--card-h)] mx-2';
-                    
-                    const atk = this.createCardEl(pair.atk, false, -1, 'table');
-                    atk.style.position = 'absolute';
-                    group.appendChild(atk);
-
-                    if(pair.def) {
-                        const def = this.createCardEl(pair.def, false, -1, 'table');
-                        def.style.position = 'absolute';
-                        def.style.transform = 'translate(15px, 15px) rotate(5deg)';
-                        group.appendChild(def);
-                    }
-                    bZone.appendChild(group);
-                });
-
-                // Trump & Deck
-                tCard.innerHTML = '';
-                if(this.deck.length > 0) {
-                    const tc = this.createCardEl(this.trump, false, -1, 'deck');
-                    tc.style.transform = 'rotate(90deg) translate(0, 30px)';
-                    tCard.appendChild(tc);
-                }
-
-                dStack.innerHTML = '';
-                if(this.deck.length > 1) {
-                    const ds = this.createCardEl(null, true, -1, 'deck');
-                    dStack.appendChild(ds);
-                }
-
-                document.getElementById('cardsLeft').textContent = this.deck.length;
-
-                // UI Status
-                const dot = document.getElementById('turnDot');
-                const txt = document.getElementById('turnText');
-                const actionBtn = document.getElementById('actionBtn');
-                const actionArea = document.getElementById('actionArea');
-
-                if(this.turn === 'player') {
-                    dot.className = "w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]";
-                    if(this.table.length > 0 && !this.table[this.table.length-1].def) {
-                        txt.textContent = "Защищайтесь";
-                        actionBtn.textContent = "ВЗЯТЬ";
-                        actionArea.classList.remove('hidden');
-                    } else {
-                        txt.textContent = "Ваш ход";
-                        actionBtn.textContent = "БИТО";
-                        actionArea.classList.toggle('hidden', this.table.length === 0);
-                    }
-                } else {
-                    dot.className = "w-2 h-2 rounded-full bg-red-500 shadow-[0_0_10px_#ef4444]";
-                    txt.className = "text-xs font-black uppercase tracking-widest thinking-dots";
-                    txt.textContent = "Бот думает";
-                    actionArea.classList.add('hidden');
-                }
+                return wrapper;
             },
 
             canPlay(card) {
-                if(this.turn === 'player') {
-                    // Атака
-                    if(this.table.length === 0) return true;
-                    // Подкидывание
-                    if(this.table.length > 0 && this.table[this.table.length-1].def) {
-                        const ranks = [];
-                        this.table.forEach(p => { ranks.push(p.atk.rank); if(p.def) ranks.push(p.def.rank); });
-                        return ranks.includes(card.rank);
-                    }
-                    // Защита
-                    if(this.table.length > 0 && !this.table[this.table.length-1].def) {
-                        const atk = this.table[this.table.length-1].atk;
-                        if(card.s === atk.s && card.val > atk.val) return true;
-                        if(card.s === this.trump.s && atk.s !== this.trump.s) return true;
-                        return false;
-                    }
+                if (this.turn !== 'player' || this.state !== 'playing') return false;
+
+                // Case 1: Player is Attacking
+                if (this.isAttacking) {
+                    if (this.table.length === 0) return true;
+                    if (this.table.length >= 6) return false;
+                    // Can only throw ranks already on table
+                    const ranksOnTable = this.table.flatMap(p => [p.atk.rank, p.def?.rank]).filter(Boolean);
+                    return ranksOnTable.includes(card.rank);
+                } 
+                // Case 2: Player is Defending
+                else {
+                    const lastPair = this.table[this.table.length - 1];
+                    if (!lastPair || lastPair.def) return false;
+                    
+                    const atk = lastPair.atk;
+                    // Same suit, higher value
+                    if (card.s === atk.s && card.val > atk.val) return true;
+                    // Trump beats non-trump
+                    if (card.s === this.trump.s && atk.s !== this.trump.s) return true;
+                    
+                    return false;
                 }
-                return false;
             },
 
             playCard(idx) {
-                if(this.turn !== 'player' || this.state !== 'playing') return;
-                const card = this.playerHand[idx];
-                if(!this.canPlay(card)) return;
+                const card = this.playerHand.splice(idx, 1)[0];
+                App.haptic('light');
 
-                this.playerHand.splice(idx, 1);
-                if(this.table.length > 0 && !this.table[this.table.length-1].def) {
-                    this.table[this.table.length-1].def = card;
-                    this.turn = 'ai';
-                    this.renderAll();
-                    setTimeout(() => this.aiDecision(), 1000);
-                } else {
+                if (this.isAttacking) {
                     this.table.push({ atk: card, def: null });
-                    this.turn = 'ai';
-                    this.renderAll();
-                    setTimeout(() => this.aiDefend(), 1000);
-                }
-            },
-
-            playerAction() {
-                if(this.turn !== 'player') return;
-                if(this.table.length > 0 && !this.table[this.table.length-1].def) {
-                    // Взять
-                    this.table.forEach(p => { this.playerHand.push(p.atk); if(p.def) this.playerHand.push(p.def); });
-                    this.table = [];
-                    this.replenish();
-                    this.turn = 'ai';
-                    this.renderAll();
-                    setTimeout(() => this.aiAttack(), 1500);
                 } else {
-                    // Бито
-                    this.table = [];
-                    this.replenish();
-                    this.turn = 'ai';
-                    this.renderAll();
-                    setTimeout(() => this.aiAttack(), 1500);
+                    this.table[this.table.length - 1].def = card;
+                }
+
+                this.updateUI();
+                
+                // After player move, AI needs to react
+                setTimeout(() => {
+                    if (this.isAttacking) this.aiDefend();
+                    else this.aiDecisionAfterDefend();
+                }, 1000);
+            },
+
+            handleAction() {
+                App.haptic('medium');
+                if (this.isAttacking) {
+                    // Player says "Bito" (Done attacking)
+                    this.endRound();
+                } else {
+                    // Player says "Take" (Cannot defend)
+                    this.takeCards('player');
                 }
             },
 
-            aiAttack() {
-                if(this.state !== 'playing' || this.aiHand.length === 0) return;
-                let bestIdx = -1;
-                let minVal = 100;
-                this.aiHand.forEach((c, i) => {
-                    let v = c.s === this.trump.s ? c.val + 20 : c.val;
-                    if(v < minVal) { minVal = v; bestIdx = i; }
-                });
+            updateControls() {
+                const ctrl = document.getElementById('controls');
+                const btn = document.getElementById('mainActionBtn');
+                
+                if (this.state !== 'playing' || this.turn !== 'player') {
+                    ctrl.classList.add('opacity-0', 'pointer-events-none', 'translate-y-10');
+                    return;
+                }
 
-                if(bestIdx !== -1) {
-                    this.table.push({ atk: this.aiHand.splice(bestIdx, 1)[0], def: null });
-                    this.turn = 'player';
-                    this.renderAll();
+                ctrl.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-10');
+                
+                if (this.isAttacking) {
+                    btn.textContent = 'БИТО';
+                    btn.disabled = this.table.length === 0;
+                } else {
+                    btn.textContent = 'ВЗЯТЬ';
+                    btn.disabled = false;
+                }
+            },
+
+            // AI LOGIC
+            aiMove() {
+                if (this.state !== 'playing') return;
+                
+                if (this.isAttacking) {
+                    // AI Attacks
+                    let cardIdx = -1;
+                    if (this.table.length === 0) {
+                        // First move: lowest non-trump
+                        cardIdx = this.findLowestCardIdx(this.aiHand, true);
+                    } else {
+                        // Throw more: same rank
+                        const ranksOnTable = this.table.flatMap(p => [p.atk.rank, p.def?.rank]).filter(Boolean);
+                        cardIdx = this.aiHand.findIndex(c => ranksOnTable.includes(c.rank) && c.s !== this.trump.s);
+                    }
+
+                    if (cardIdx !== -1 && this.table.length < 6) {
+                        this.table.push({ atk: this.aiHand.splice(cardIdx, 1)[0], def: null });
+                        this.turn = 'player'; // Player must defend
+                        this.updateUI();
+                    } else {
+                        this.endRound();
+                    }
+                } else {
+                    this.aiDefend();
                 }
             },
 
             aiDefend() {
-                if(this.state !== 'playing') return;
-                const atk = this.table[this.table.length-1].atk;
-                let bestIdx = -1;
+                const lastPair = this.table[this.table.length - 1];
+                if (!lastPair || lastPair.def) return;
+
+                const atk = lastPair.atk;
+                let bestDefIdx = -1;
                 let minVal = 100;
 
                 this.aiHand.forEach((c, i) => {
-                    let canBeat = (c.s === atk.s && c.val > atk.val) || (c.s === this.trump.s && atk.s !== this.trump.s);
-                    if(canBeat) {
-                        let v = c.s === this.trump.s ? c.val + 20 : c.val;
-                        if(v < minVal) { minVal = v; bestIdx = i; }
+                    const canBeat = (c.s === atk.s && c.val > atk.val) || (c.s === this.trump.s && atk.s !== this.trump.s);
+                    if (canBeat) {
+                        const score = c.s === this.trump.s ? c.val + 20 : c.val;
+                        if (score < minVal) {
+                            minVal = score;
+                            bestDefIdx = i;
+                        }
                     }
                 });
 
-                if(bestIdx !== -1) {
-                    this.table[this.table.length-1].def = this.aiHand.splice(bestIdx, 1)[0];
-                    this.turn = 'player';
-                    this.renderAll();
-                    setTimeout(() => this.aiDecision(), 1500);
+                if (bestDefIdx !== -1) {
+                    this.table[this.table.length - 1].def = this.aiHand.splice(bestDefIdx, 1)[0];
+                    this.updateUI();
+                    // AI defended, now AI might throw more if it was player's attack
+                    setTimeout(() => this.aiDecisionAfterDefend(), 1000);
                 } else {
-                    // AI берет
-                    this.table.forEach(p => { this.aiHand.push(p.atk); if(p.def) this.aiHand.push(p.def); });
-                    this.table = [];
-                    this.replenish();
-                    this.turn = 'player';
-                    this.renderAll();
+                    this.takeCards('ai');
                 }
             },
 
-            aiDecision() {
-                // Подкинуть или бито?
-                const onTable = [];
-                this.table.forEach(p => { onTable.push(p.atk.rank); if(p.def) onTable.push(p.def.rank); });
-                
-                let toThrow = this.aiHand.findIndex(c => onTable.includes(c.rank) && c.s !== this.trump.s);
-                
-                if(toThrow !== -1 && this.table.length < 6) {
-                    this.table.push({ atk: this.aiHand.splice(toThrow, 1)[0], def: null });
+            aiDecisionAfterDefend() {
+                if (this.isAttacking) {
+                    // AI is defending, player is attacking. Wait for player.
                     this.turn = 'player';
-                    this.renderAll();
+                    this.updateUI();
                 } else {
-                    this.table = [];
-                    this.replenish();
-                    this.turn = 'player';
-                    this.renderAll();
+                    // AI is attacking, player defended. AI can throw more.
+                    this.aiMove();
                 }
+            },
+
+            findLowestCardIdx(hand, avoidTrump = false) {
+                let minVal = 100;
+                let idx = -1;
+                hand.forEach((c, i) => {
+                    if (avoidTrump && c.s === this.trump.s) return;
+                    if (c.val < minVal) {
+                        minVal = c.val;
+                        idx = i;
+                    }
+                });
+                // If only trumps left
+                if (idx === -1 && avoidTrump) return this.findLowestCardIdx(hand, false);
+                return idx;
+            },
+
+            takeCards(who) {
+                App.haptic('warning');
+                const cardsToTake = this.table.flatMap(p => [p.atk, p.def]).filter(Boolean);
+                if (who === 'player') this.playerHand.push(...cardsToTake);
+                else this.aiHand.push(...cardsToTake);
+                
+                this.table = [];
+                this.replenish();
+                
+                // If you take, you lose your turn to attack
+                this.isAttacking = (who === 'ai');
+                this.turn = this.isAttacking ? 'player' : 'ai';
+                
+                this.updateUI();
+                if (this.turn === 'ai') setTimeout(() => this.aiMove(), 1500);
+            },
+
+            endRound() {
+                App.haptic('success');
+                this.table = [];
+                this.replenish();
+                
+                // Switch attacker
+                this.isAttacking = !this.isAttacking;
+                this.turn = this.isAttacking ? 'player' : 'ai';
+                
+                this.updateUI();
+                if (this.turn === 'ai') setTimeout(() => this.aiMove(), 1500);
             },
 
             replenish() {
-                while(this.playerHand.length < 6 && this.deck.length > 0) this.playerHand.push(this.deck.pop());
-                while(this.aiHand.length < 6 && this.deck.length > 0) this.aiHand.push(this.deck.pop());
+                while (this.playerHand.length < 6 && this.deck.length > 0) this.playerHand.push(this.deck.pop());
+                while (this.aiHand.length < 6 && this.deck.length > 0) this.aiHand.push(this.deck.pop());
                 this.checkGameOver();
             },
 
             checkGameOver() {
-                if(this.deck.length === 0) {
-                    if(this.playerHand.length === 0 && this.aiHand.length === 0) this.endGame('draw');
-                    else if(this.playerHand.length === 0) this.endGame('win');
-                    else if(this.aiHand.length === 0) this.endGame('lose');
+                if (this.deck.length === 0) {
+                    if (this.playerHand.length === 0 && this.aiHand.length === 0) this.endGame('draw');
+                    else if (this.playerHand.length === 0) this.endGame('win');
+                    else if (this.aiHand.length === 0) this.endGame('lose');
                 }
             },
 
-            endGame(res) {
+            endGame(result) {
                 this.state = 'over';
-                const screen = document.getElementById('resultScreen');
-                const icon = document.getElementById('resultIcon');
+                const overlay = document.getElementById('resultOverlay');
                 const title = document.getElementById('resultTitle');
                 const text = document.getElementById('resultText');
+                const icon = document.getElementById('resultIcon');
 
-                screen.style.display = 'flex';
+                overlay.style.display = 'flex';
                 
-                if(res === 'win') {
-                    const winAmt = this.bet * 2;
-                    db.balance += winAmt;
-                    icon.innerHTML = '🏆';
-                    title.textContent = "ПОБЕДА";
-                    title.className = "text-6xl font-black mb-2 text-casino-gold";
-                    text.textContent = `Ваш выигрыш: ${winAmt.toLocaleString()} ₽`;
-                } else if(res === 'lose') {
-                    icon.innerHTML = '💀';
-                    title.textContent = "ПРОИГРЫШ";
-                    title.className = "text-6xl font-black mb-2 text-red-600";
-                    text.textContent = `Вы потеряли ${this.bet.toLocaleString()} ₽`;
+                if (result === 'win') {
+                    App.haptic('success');
+                    const win = this.bet * 2;
+                    App.db.balance += win;
+                    App.db.turnover += this.bet;
+                    title.textContent = 'VICTORY';
+                    title.className = 'text-6xl font-black italic tracking-tighter mb-2 text-metro-accent';
+                    text.textContent = `Вы выиграли ${win.toLocaleString()} ₽`;
+                    icon.textContent = '🏆';
+                } else if (result === 'lose') {
+                    App.haptic('error');
+                    App.db.turnover += this.bet;
+                    title.textContent = 'DEFEAT';
+                    title.className = 'text-6xl font-black italic tracking-tighter mb-2 text-rose-500';
+                    text.textContent = `Вы проиграли ${this.bet.toLocaleString()} ₽`;
+                    icon.textContent = '💀';
                 } else {
-                    db.balance += this.bet;
-                    icon.innerHTML = '🤝';
-                    title.textContent = "НИЧЬЯ";
-                    title.className = "text-6xl font-black mb-2 text-white";
-                    text.textContent = "Ставка возвращена";
+                    App.haptic('warning');
+                    App.db.balance += this.bet;
+                    title.textContent = 'DRAW';
+                    text.textContent = 'Ставка возвращена';
+                    icon.textContent = '🤝';
                 }
-                localStorage.setItem('metro_db', JSON.stringify(db));
+                
+                localStorage.setItem('metro_vault', JSON.stringify(App.db));
             }
         };
 
