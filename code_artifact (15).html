@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Blackjack Elite - METRO CASH</title>
+    <title>Blackjack Elite | METRO CASH</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
@@ -15,214 +15,291 @@
                     colors: {
                         metro: { 
                             black: '#050505', 
-                            dark: '#0f0f0f', 
+                            dark: '#0a0a0a', 
                             accent: '#fbbf24',
                             gold: '#d97706',
-                            emerald: '#064e3b'
+                            emerald: '#10b981',
+                            rose: '#f43f5e',
+                            slate: '#1e293b'
                         }
+                    },
+                    boxShadow: {
+                        'premium': '0 25px 50px -12px rgba(0, 0, 0, 0.8)',
+                        'glow': '0 0 20px rgba(251, 191, 36, 0.3)',
+                        'accent-glow': '0 0 30px rgba(251, 191, 36, 0.4)'
                     }
                 }
             }
         }
     </script>
     <style>
+        :root {
+            --tg-bg: var(--tg-theme-bg-color, #050505);
+            --tg-text: var(--tg-theme-text-color, #ffffff);
+            --card-w: 78px;
+            --card-h: 112px;
+        }
+
         body { 
-            background-color: #050505; 
-            color: white; 
+            background-color: var(--tg-bg); 
+            color: var(--tg-text); 
             user-select: none; 
             -webkit-tap-highlight-color: transparent;
             overflow: hidden;
             height: 100vh;
+            font-family: 'Outfit', sans-serif;
         }
 
-        .casino-mesh {
+        .arena-surface {
             background: 
-                radial-gradient(circle at 50% 50%, rgba(6, 78, 59, 0.4) 0%, transparent 70%),
-                radial-gradient(circle at 0% 0%, rgba(251, 191, 36, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.08) 0%, transparent 70%),
+                radial-gradient(circle at 0% 0%, rgba(251, 191, 36, 0.03) 0%, transparent 40%),
                 #050505;
             position: relative;
         }
 
-        .casino-mesh::before {
+        .arena-surface::before {
             content: ""; position: absolute; inset: 0;
             background-image: url("https://www.transparenttextures.com/patterns/felt.png");
             opacity: 0.03; pointer-events: none;
         }
 
-        /* Premium Card Design */
-        .card { 
-            width: 72px; height: 104px; 
-            background: #ffffff; border-radius: 10px; 
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(0,0,0,0.05);
-            display: flex; flex-direction: column; justify-content: space-between; padding: 6px;
-            color: #1a1a1a; font-weight: 800; position: relative;
+        /* Premium Card Component */
+        .card-container {
+            width: var(--card-w);
+            height: var(--card-h);
+            perspective: 1000px;
+            position: relative;
+        }
+
+        .card-inner {
+            width: 100%; height: 100%;
+            position: relative;
             transform-style: preserve-3d;
             animation: dealCard 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
             opacity: 0;
-            transform: translate(200px, -200px) rotate(20deg) scale(0.5);
+            transform: translate(200px, -300px) rotate(45deg) scale(0.5);
         }
-        
+
         @keyframes dealCard {
             to { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
         }
 
-        .card-red { color: #e11d48; }
-        
+        .card-face {
+            position: absolute; inset: 0;
+            backface-visibility: hidden;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 8px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            color: #1a1a1a; font-weight: 800;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(0,0,0,0.05);
+        }
+
         .card-back {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border: 3px solid #ffffff;
-            position: relative;
+            transform: rotateY(180deg);
+            display: flex; align-items: center; justify-content: center;
             overflow: hidden;
         }
         .card-back::after {
-            content: "M"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 2rem; color: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            width: 70%; height: 70%; display: flex; align-items: center; justify-content: center; border-radius: 6px;
+            content: "M"; font-size: 2.5rem; color: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            width: 75%; height: 75%; display: flex; align-items: center; justify-content: center; border-radius: 8px;
         }
 
-        .suit-center { font-size: 2.2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.08; }
-        
-        /* Premium Chips */
+        .card-red { color: #e11d48; }
+        .suit-center { font-size: 2.5rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.08; }
+
+        /* Chips & Controls */
         .chip {
-            width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: 900; border: 4px dashed rgba(255,255,255,0.2); cursor: pointer;
-            box-shadow: 0 8px 0 rgba(0,0,0,0.4), 0 15px 20px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.3); 
+            width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; border: 4px dashed rgba(255,255,255,0.25); cursor: pointer;
+            box-shadow: 0 8px 0 rgba(0,0,0,0.4), 0 15px 25px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.3); 
             transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-            font-size: 0.8rem;
+            font-size: 0.85rem;
         }
-        .chip:active { transform: translateY(4px) scale(0.95); box-shadow: 0 2px 0 rgba(0,0,0,0.4); }
+        .chip:active { transform: translateY(4px) scale(0.92); box-shadow: 0 2px 0 rgba(0,0,0,0.4); }
         
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); }
+        .glass-panel { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); }
         
         .game-msg-anim {
-            animation: premiumPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            animation: premiumPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
         @keyframes premiumPop {
-            0% { transform: translate(-50%, -50%) scale(0.5) rotate(-5deg); opacity: 0; filter: blur(10px); }
+            0% { transform: translate(-50%, -50%) scale(0.4) rotate(-10deg); opacity: 0; filter: blur(15px); }
             100% { transform: translate(-50%, -50%) scale(1) rotate(0); opacity: 1; filter: blur(0); }
         }
 
         .score-badge {
-            background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
+
+        .shimmer {
+            position: relative; overflow: hidden;
+        }
+        .shimmer::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg); animation: shimmer-anim 3s infinite;
+        }
+        @keyframes shimmer-anim { 0% { transform: translateX(-100%) rotate(45deg); } 100% { transform: translateX(100%) rotate(45deg); } }
     </style>
 </head>
-<body class="flex flex-col casino-mesh">
+<body class="flex flex-col arena-surface">
 
-    <!-- Header -->
-    <header class="fixed top-0 w-full z-50 px-5 py-4 flex justify-between items-center bg-black/20 backdrop-blur-md border-b border-white/5">
-        <button onclick="Game.exit()" class="flex items-center gap-2 bg-white/5 hover:bg-white/10 px-4 py-2 rounded-2xl text-xs font-bold transition border border-white/5">
-            <i class="fa-solid fa-chevron-left text-metro-accent"></i> ЛОББИ
+    <!-- Header HUD -->
+    <header class="fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center bg-black/40 backdrop-blur-2xl border-b border-white/5">
+        <button onclick="Engine.exit()" class="flex items-center gap-3 bg-white/5 hover:bg-white/10 px-5 py-2.5 rounded-2xl text-[10px] font-black tracking-widest transition border border-white/10 uppercase">
+            <i class="fa-solid fa-chevron-left text-metro-accent"></i> Lobby
         </button>
-        <div class="flex flex-col items-end">
-            <span class="text-[10px] text-gray-400 font-black uppercase tracking-widest">Ваш Баланс</span>
-            <div class="font-black text-white text-lg" id="gameBalance">0 ₽</div>
+        <div class="text-right">
+            <span class="text-[9px] text-metro-muted font-black uppercase tracking-[0.2em] block mb-1">Vault Balance</span>
+            <div class="font-black text-white text-xl tracking-tighter" id="ui-balance">0 ₽</div>
         </div>
     </header>
 
-    <main class="flex-1 flex flex-col justify-between pt-24 pb-40 relative">
+    <main class="flex-1 flex flex-col justify-between pt-32 pb-44 relative">
         
-        <!-- Dealer Section -->
+        <!-- Dealer Zone -->
         <div class="flex flex-col items-center">
-            <div class="score-badge px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4 flex items-center gap-2">
-                Дилер <span id="dealerScore" class="text-white bg-white/10 px-2 py-0.5 rounded-md">?</span>
+            <div class="score-badge px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-metro-muted mb-6 flex items-center gap-3">
+                Dealer <span id="dealer-score" class="text-white bg-white/10 px-2.5 py-0.5 rounded-lg">?</span>
             </div>
-            <div id="dealerCards" class="flex justify-center -space-x-10 h-[104px] perspective-[1000px]"></div>
+            <div id="dealer-cards" class="flex justify-center -space-x-12 h-[var(--card-h)]"></div>
         </div>
 
-        <!-- Center Message -->
-        <div id="gameMessage" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-5xl md:text-7xl font-black text-center drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] opacity-0 pointer-events-none z-30 w-full italic tracking-tighter">
-            WINNER
+        <!-- Result Overlay -->
+        <div id="game-message" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-6xl md:text-8xl font-black text-center drop-shadow-[0_15px_40px_rgba(0,0,0,0.9)] opacity-0 pointer-events-none z-30 w-full italic tracking-tighter uppercase">
+            Winner
         </div>
 
-        <!-- Player Section -->
+        <!-- Player Zone -->
         <div class="flex flex-col items-center">
-            <div id="betDisplay" class="mb-8 transition-all duration-300">
-                <div class="bg-metro-accent/10 border border-metro-accent/30 px-6 py-2 rounded-2xl shadow-[0_0_30px_rgba(251,191,36,0.1)]">
-                    <span class="text-[10px] font-black text-metro-accent uppercase tracking-widest block text-center mb-0.5">Текущая Ставка</span>
-                    <span class="text-xl font-black text-white block text-center" id="currentBet">0 ₽</span>
+            <div id="bet-display" class="mb-10 transition-all duration-500">
+                <div class="bg-metro-accent/5 border border-metro-accent/20 px-8 py-3 rounded-[2rem] shadow-glow relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-b from-metro-accent/5 to-transparent"></div>
+                    <span class="text-[9px] font-black text-metro-accent uppercase tracking-[0.3em] block text-center mb-1 relative z-10">Current Stake</span>
+                    <span class="text-2xl font-black text-white block text-center tracking-tighter relative z-10" id="ui-bet">0 ₽</span>
                 </div>
             </div>
             
-            <div id="playerCards" class="flex justify-center -space-x-10 h-[104px] mb-6 perspective-[1000px]"></div>
+            <div id="player-cards" class="flex justify-center -space-x-12 h-[var(--card-h)] mb-8"></div>
             
-            <div class="score-badge px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-2">
-                Игрок <span id="playerScore" class="text-metro-accent bg-metro-accent/10 px-2 py-0.5 rounded-md">0</span>
+            <div class="score-badge px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-metro-muted flex items-center gap-3">
+                Player <span id="player-score" class="text-metro-accent bg-metro-accent/10 px-2.5 py-0.5 rounded-lg">0</span>
             </div>
         </div>
     </main>
 
-    <!-- Controls Panel -->
-    <div class="fixed bottom-0 w-full p-6 pb-10 glass rounded-t-[2.5rem] z-40 border-t border-white/10">
+    <!-- Control Interface -->
+    <div class="fixed bottom-0 w-full p-8 pb-12 glass-panel rounded-t-[3.5rem] z-40 border-t border-white/10 shadow-premium">
         
         <!-- Betting Phase -->
-        <div id="bettingPhase" class="flex flex-col gap-6">
-            <div class="flex justify-around items-center">
-                <div onclick="Game.addBet(100)" class="chip bg-gradient-to-br from-blue-500 to-blue-700">100</div>
-                <div onclick="Game.addBet(500)" class="chip bg-gradient-to-br from-purple-500 to-purple-700">500</div>
-                <div onclick="Game.addBet(1000)" class="chip bg-gradient-to-br from-amber-500 to-amber-700 text-black">1K</div>
-                <div onclick="Game.addBet(5000)" class="chip bg-gradient-to-br from-rose-500 to-rose-700">5K</div>
+        <div id="phase-betting" class="flex flex-col gap-8">
+            <div class="flex justify-around items-center gap-2">
+                <div onclick="Engine.addBet(100)" class="chip bg-gradient-to-br from-slate-700 to-slate-900 border-slate-500/30">100</div>
+                <div onclick="Engine.addBet(500)" class="chip bg-gradient-to-br from-blue-600 to-blue-800 border-blue-400/30">500</div>
+                <div onclick="Engine.addBet(1000)" class="chip bg-gradient-to-br from-metro-gold to-metro-accent text-metro-black border-white/20">1K</div>
+                <div onclick="Engine.addBet(5000)" class="chip bg-gradient-to-br from-rose-600 to-rose-800 border-rose-400/30">5K</div>
             </div>
-            <div class="flex gap-3">
-                <button onclick="Game.clearBet()" class="flex-1 py-4 rounded-2xl bg-white/5 border border-white/10 font-black text-xs text-gray-400 uppercase tracking-widest active:bg-white/10 transition">Сброс</button>
-                <button onclick="Game.deal()" class="flex-[2] py-4 rounded-2xl bg-gradient-to-r from-metro-accent to-metro-gold text-metro-black font-black text-lg shadow-glow active:scale-95 transition-all uppercase italic tracking-tighter">Раздать</button>
+            <div class="flex gap-4">
+                <button onclick="Engine.clearBet()" class="flex-1 py-5 rounded-2xl bg-white/5 border border-white/10 font-black text-[10px] text-metro-muted uppercase tracking-widest active:bg-white/10 transition">Reset</button>
+                <button onclick="Engine.deal()" class="flex-[2.5] py-5 rounded-2xl bg-gradient-to-r from-metro-accent to-metro-gold text-metro-black font-black text-xl shadow-accent-glow active:scale-95 transition-all uppercase italic tracking-tighter shimmer">
+                    Deal Cards
+                </button>
             </div>
         </div>
 
-        <!-- Playing Phase -->
-        <div id="playingPhase" class="hidden flex gap-4">
-            <button onclick="Game.hit()" class="flex-1 py-5 rounded-2xl bg-emerald-600 border border-emerald-400/50 text-white font-black text-lg flex flex-col items-center justify-center shadow-lg active:scale-95 transition">
-                <i class="fa-solid fa-plus mb-1"></i> ЕЩЕ
+        <!-- Action Phase -->
+        <div id="phase-playing" class="hidden flex gap-5">
+            <button onclick="Engine.hit()" class="flex-1 py-6 rounded-[2rem] bg-metro-emerald border border-emerald-400/30 text-white font-black text-xl flex flex-col items-center justify-center shadow-lg active:scale-95 transition shimmer">
+                <i class="fa-solid fa-plus mb-1 text-sm opacity-60"></i> HIT
             </button>
-            <button onclick="Game.stand()" class="flex-1 py-5 rounded-2xl bg-rose-600 border border-rose-400/50 text-white font-black text-lg flex flex-col items-center justify-center shadow-lg active:scale-95 transition">
-                <i class="fa-solid fa-hand mb-1"></i> ХВАТИТ
+            <button onclick="Engine.stand()" class="flex-1 py-6 rounded-[2rem] bg-metro-rose border border-rose-400/30 text-white font-black text-xl flex flex-col items-center justify-center shadow-lg active:scale-95 transition">
+                <i class="fa-solid fa-hand mb-1 text-sm opacity-60"></i> STAND
             </button>
         </div>
 
-        <!-- Game Over Phase -->
-        <div id="gameOverPhase" class="hidden">
-            <button onclick="Game.reset()" class="w-full py-5 rounded-2xl bg-white text-metro-black font-black text-xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-3 uppercase italic">
-                <i class="fa-solid fa-rotate-right"></i> Новая игра
+        <!-- Result Phase -->
+        <div id="phase-result" class="hidden">
+            <button onclick="Engine.reset()" class="w-full py-6 rounded-[2rem] bg-white text-metro-black font-black text-xl shadow-2xl active:scale-95 transition-all flex items-center justify-center gap-4 uppercase italic tracking-tighter shimmer">
+                <i class="fa-solid fa-rotate-right text-lg"></i> New Session
             </button>
         </div>
     </div>
 
     <script>
-        const suits = ['♠', '♥', '♦', '♣'];
-        const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+        /**
+         * NEXUS ARCHITECT - BLACKJACK ELITE ENGINE v3.0
+         * Refactored for Metro Cash Ecosystem
+         */
+
         const TG = window.Telegram?.WebApp;
+        const SUITS = ['♠', '♥', '♦', '♣'];
+        const VALUES = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
         
-        let db = JSON.parse(localStorage.getItem('metro_vault')) || { balance: 5000, turnover: 0, gamesPlayed: 0 };
+        const Engine = {
+            vault: JSON.parse(localStorage.getItem('metro_vault')) || { balance: 5000, turnover: 0, gamesPlayed: 0, wins: 0 },
+            deck: [],
+            playerHand: [],
+            dealerHand: [],
+            bet: 0,
+            state: 'betting', // betting, playing, dealerTurn, gameOver
 
-        const Game = {
-            deck: [], playerHand: [], dealerHand: [],
-            bet: 0, state: 'betting',
-            
-            init() { 
-                if(TG) TG.ready();
-                this.updateUI(); 
+            init() {
+                if (TG) {
+                    TG.ready();
+                    TG.expand();
+                    TG.headerColor = '#050505';
+                }
+                this.syncUI();
             },
 
-            haptic(style) {
-                if(!TG) return;
-                if(['success', 'warning', 'error'].includes(style)) TG.HapticFeedback.notificationOccurred(style);
-                else TG.HapticFeedback.impactOccurred(style);
+            haptic(type = 'light') {
+                if (!TG) return;
+                if (['success', 'warning', 'error'].includes(type)) TG.HapticFeedback.notificationOccurred(type);
+                else TG.HapticFeedback.impactOccurred(type);
             },
 
-            exit() {
-                this.saveToDB();
-                window.location.href = 'metro_cash_app.html';
-            },
+            syncUI() {
+                document.getElementById('ui-balance').textContent = this.vault.balance.toLocaleString() + ' ₽';
+                document.getElementById('ui-bet').textContent = this.bet.toLocaleString() + ' ₽';
+                
+                document.getElementById('phase-betting').classList.toggle('hidden', this.state !== 'betting');
+                document.getElementById('phase-playing').classList.toggle('hidden', this.state !== 'playing');
+                document.getElementById('phase-result').classList.toggle('hidden', this.state !== 'gameOver');
 
-            saveToDB() {
-                localStorage.setItem('metro_vault', JSON.stringify(db));
+                this.renderCards('player-cards', this.playerHand);
+                document.getElementById('player-score').textContent = this.calculateScore(this.playerHand);
+
+                if (this.dealerHand.length > 0) {
+                    if (this.state === 'playing') {
+                        this.renderCards('dealer-cards', [this.dealerHand[0], { hidden: true }]);
+                        document.getElementById('dealer-score').textContent = '?';
+                    } else {
+                        this.renderCards('dealer-cards', this.dealerHand);
+                        document.getElementById('dealer-score').textContent = this.calculateScore(this.dealerHand);
+                    }
+                } else {
+                    document.getElementById('dealer-cards').innerHTML = '';
+                    document.getElementById('dealer-score').textContent = '?';
+                }
+
+                localStorage.setItem('metro_vault', JSON.stringify(this.vault));
             },
 
             buildDeck() {
                 this.deck = [];
-                for(let s of suits) for(let v of values) this.deck.push({ suit: s, value: v, isRed: s==='♥' || s==='♦' });
+                for (let s of SUITS) {
+                    for (let v of VALUES) {
+                        this.deck.push({ suit: s, value: v, isRed: s === '♥' || s === '♦' });
+                    }
+                }
+                // Fisher-Yates Shuffle
                 for (let i = this.deck.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [this.deck[i], this.deck[j]] = [this.deck[j], this.deck[i]];
@@ -230,167 +307,176 @@
             },
 
             addBet(amount) {
-                if(db.balance >= amount) {
+                if (this.vault.balance >= amount) {
                     this.haptic('light');
                     this.bet += amount;
-                    db.balance -= amount;
-                    this.updateUI();
+                    this.vault.balance -= amount;
+                    this.syncUI();
                     
-                    const betEl = document.getElementById('betDisplay');
-                    betEl.classList.add('scale-110');
-                    setTimeout(() => betEl.classList.remove('scale-110'), 150);
+                    const el = document.getElementById('bet-display');
+                    el.classList.add('scale-110');
+                    setTimeout(() => el.classList.remove('scale-110'), 150);
                 }
             },
 
             clearBet() {
+                if (this.bet === 0) return;
                 this.haptic('medium');
-                db.balance += this.bet;
+                this.vault.balance += this.bet;
                 this.bet = 0;
-                this.updateUI();
+                this.syncUI();
             },
 
             deal() {
-                if(this.bet === 0) return;
+                if (this.bet === 0) return;
                 this.haptic('heavy');
                 this.buildDeck();
-                db.turnover += this.bet;
-                db.gamesPlayed++;
+                this.vault.turnover += this.bet;
+                this.vault.gamesPlayed++;
                 
                 this.playerHand = [this.deck.pop(), this.deck.pop()];
                 this.dealerHand = [this.deck.pop(), this.deck.pop()];
                 this.state = 'playing';
-                this.updateUI();
+                this.syncUI();
                 
-                if(this.getScore(this.playerHand) === 21) {
+                if (this.calculateScore(this.playerHand) === 21) {
                     setTimeout(() => this.endGame('blackjack'), 1000);
                 }
             },
 
             hit() {
-                if(this.state !== 'playing') return;
+                if (this.state !== 'playing') return;
                 this.haptic('medium');
                 this.playerHand.push(this.deck.pop());
-                this.updateUI();
-                if(this.getScore(this.playerHand) > 21) {
+                this.syncUI();
+                
+                if (this.calculateScore(this.playerHand) > 21) {
                     setTimeout(() => this.endGame('bust'), 500);
                 }
             },
 
             stand() {
-                if(this.state !== 'playing') return;
+                if (this.state !== 'playing') return;
                 this.haptic('heavy');
                 this.state = 'dealerTurn';
-                this.updateUI();
+                this.syncUI();
                 
-                const dealerPlay = () => {
-                    if(this.getScore(this.dealerHand) < 17) {
+                const dealerAI = () => {
+                    if (this.calculateScore(this.dealerHand) < 17) {
                         this.haptic('light');
                         this.dealerHand.push(this.deck.pop());
-                        this.updateUI();
-                        setTimeout(dealerPlay, 800);
+                        this.syncUI();
+                        setTimeout(dealerAI, 800);
                     } else {
                         this.evaluateWinner();
                     }
                 };
-                setTimeout(dealerPlay, 800);
+                setTimeout(dealerAI, 800);
             },
 
-            getScore(hand) {
-                let score = 0, aces = 0;
-                for(let card of hand) {
-                    if(['J','Q','K'].includes(card.value)) score += 10;
-                    else if(card.value === 'A') { aces++; score += 11; }
+            calculateScore(hand) {
+                let score = 0;
+                let aces = 0;
+                for (let card of hand) {
+                    if (card.hidden) continue;
+                    if (['J', 'Q', 'K'].includes(card.value)) score += 10;
+                    else if (card.value === 'A') { aces++; score += 11; }
                     else score += parseInt(card.value);
                 }
-                while(score > 21 && aces > 0) { score -= 10; aces--; }
+                while (score > 21 && aces > 0) {
+                    score -= 10;
+                    aces--;
+                }
                 return score;
             },
 
             evaluateWinner() {
-                const pScore = this.getScore(this.playerHand);
-                const dScore = this.getScore(this.dealerHand);
-                if(dScore > 21 || pScore > dScore) this.endGame('win');
-                else if(pScore < dScore) this.endGame('lose');
+                const pScore = this.calculateScore(this.playerHand);
+                const dScore = this.calculateScore(this.dealerHand);
+                
+                if (dScore > 21 || pScore > dScore) this.endGame('win');
+                else if (pScore < dScore) this.endGame('lose');
                 else this.endGame('push');
             },
 
             endGame(result) {
                 this.state = 'gameOver';
-                let msg = "", msgColor = "";
+                let msg = "", color = "";
                 
-                if(result === 'blackjack') {
+                if (result === 'blackjack') {
                     this.haptic('success');
-                    msg = "BLACKJACK"; msgColor = "text-metro-accent";
-                    db.balance += this.bet * 2.5;
-                } else if(result === 'win') {
+                    msg = "Blackjack"; color = "text-metro-accent";
+                    this.vault.balance += this.bet * 2.5;
+                    this.vault.wins++;
+                } else if (result === 'win') {
                     this.haptic('success');
-                    msg = "YOU WIN"; msgColor = "text-emerald-400";
-                    db.balance += this.bet * 2;
-                } else if(result === 'lose' || result === 'bust') {
+                    msg = "You Win"; color = "text-metro-emerald";
+                    this.vault.balance += this.bet * 2;
+                    this.vault.wins++;
+                } else if (result === 'lose' || result === 'bust') {
                     this.haptic('error');
-                    msg = result === 'bust' ? "BUSTED" : "DEALER WINS"; msgColor = "text-rose-500";
+                    msg = result === 'bust' ? "Busted" : "Dealer Wins"; color = "text-metro-rose";
                 } else {
                     this.haptic('warning');
-                    msg = "PUSH"; msgColor = "text-gray-400";
-                    db.balance += this.bet;
+                    msg = "Push"; color = "text-gray-400";
+                    this.vault.balance += this.bet;
                 }
 
-                const msgEl = document.getElementById('gameMessage');
-                msgEl.className = `absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-5xl md:text-7xl font-black text-center drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] z-30 game-msg-anim ${msgColor}`;
+                const msgEl = document.getElementById('game-message');
+                msgEl.className = `absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-6xl md:text-8xl font-black text-center drop-shadow-[0_15px_40px_rgba(0,0,0,0.9)] z-30 game-msg-anim ${color}`;
                 msgEl.textContent = msg;
                 
-                this.saveToDB();
-                this.updateUI();
+                this.syncUI();
             },
 
             reset() {
                 this.haptic('light');
-                this.playerHand = []; this.dealerHand = []; this.bet = 0;
+                this.playerHand = [];
+                this.dealerHand = [];
+                this.bet = 0;
                 this.state = 'betting';
-                document.getElementById('gameMessage').classList.remove('game-msg-anim');
-                document.getElementById('gameMessage').style.opacity = '0';
-                this.updateUI();
+                const msgEl = document.getElementById('game-message');
+                msgEl.classList.remove('game-msg-anim');
+                msgEl.style.opacity = '0';
+                this.syncUI();
             },
 
-            renderCard(card, index, hidden = false) {
-                const delay = index * 0.15;
-                if(hidden) return `<div class="card card-back" style="animation-delay: ${delay}s"></div>`;
-                const colorClass = card.isRed ? 'card-red' : '';
-                return `
-                    <div class="card ${colorClass}" style="animation-delay: ${delay}s; z-index: ${index}">
-                        <div class="text-xs leading-none">${card.value}<br><span class="text-[10px]">${card.suit}</span></div>
-                        <div class="suit-center">${card.suit}</div>
-                        <div class="text-xs leading-none self-end transform rotate-180">${card.value}<br><span class="text-[10px]">${card.suit}</span></div>
-                    </div>`;
-            },
-
-            updateUI() {
-                document.getElementById('gameBalance').textContent = db.balance.toLocaleString() + ' ₽';
-                document.getElementById('currentBet').textContent = this.bet.toLocaleString() + ' ₽';
-                
-                document.getElementById('bettingPhase').classList.toggle('hidden', this.state !== 'betting');
-                document.getElementById('playingPhase').classList.toggle('hidden', this.state !== 'playing');
-                document.getElementById('gameOverPhase').classList.toggle('hidden', this.state !== 'gameOver');
-
-                document.getElementById('playerCards').innerHTML = this.playerHand.map((c, i) => this.renderCard(c, i)).join('');
-                document.getElementById('playerScore').textContent = this.getScore(this.playerHand) || '0';
-
-                if(this.dealerHand.length > 0) {
-                    if(this.state === 'playing') {
-                        document.getElementById('dealerCards').innerHTML = this.renderCard(this.dealerHand[0], 0) + this.renderCard(null, 1, true);
-                        document.getElementById('dealerScore').textContent = '?';
-                    } else {
-                        document.getElementById('dealerCards').innerHTML = this.dealerHand.map((c, i) => this.renderCard(c, i)).join('');
-                        document.getElementById('dealerScore').textContent = this.getScore(this.dealerHand);
+            renderCards(containerId, hand) {
+                const container = document.getElementById(containerId);
+                container.innerHTML = hand.map((card, i) => {
+                    const delay = i * 0.15;
+                    if (card.hidden) {
+                        return `<div class="card-container" style="z-index: ${i}">
+                                    <div class="card-inner card-back" style="animation-delay: ${delay}s"></div>
+                                </div>`;
                     }
-                } else {
-                    document.getElementById('dealerCards').innerHTML = '';
-                    document.getElementById('dealerScore').textContent = '?';
-                }
+                    const redClass = card.isRed ? 'card-red' : '';
+                    return `
+                        <div class="card-container" style="z-index: ${i}">
+                            <div class="card-inner" style="animation-delay: ${delay}s">
+                                <div class="card-face ${redClass}">
+                                    <div class="flex flex-col leading-none">
+                                        <span class="text-sm">${card.value}</span>
+                                        <span class="text-[10px]">${card.suit}</span>
+                                    </div>
+                                    <div class="suit-center">${card.suit}</div>
+                                    <div class="flex flex-col leading-none self-end rotate-180">
+                                        <span class="text-sm">${card.value}</span>
+                                        <span class="text-[10px]">${card.suit}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                }).join('');
+            },
+
+            exit() {
+                this.haptic('medium');
+                window.location.href = 'metro_cash_app.html';
             }
         };
 
-        window.onload = () => Game.init();
+        window.onload = () => Engine.init();
     </script>
 </body>
 </html>
