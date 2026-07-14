@@ -29,12 +29,14 @@
                     boxShadow: {
                         'premium': '0 25px 50px -12px rgba(0, 0, 0, 0.8)',
                         'glow': '0 0 20px rgba(251, 191, 36, 0.15)',
-                        'accent-glow': '0 0 30px rgba(251, 191, 36, 0.3)',
+                        'accent-glow': '0 0 30px rgba(251, 191, 36, 0.4)',
+                        'inner-light': 'inset 0 1px 1px rgba(255, 255, 255, 0.05)'
                     },
                     animation: {
                         'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                         'fade-in': 'fadeIn 0.3s ease-out forwards',
                         'shimmer': 'shimmer 2.5s infinite linear',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                     },
                     keyframes: {
                         slideUp: { '0%': { transform: 'translateY(20px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
@@ -49,7 +51,8 @@
         :root {
             --tg-bg: var(--tg-theme-bg-color, #050505);
             --tg-accent: var(--tg-theme-button-color, #fbbf24);
-            --safe-top: env(safe-area-inset-top);
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
         
         body { 
@@ -60,11 +63,13 @@
             overflow: hidden;
             height: 100vh;
             font-family: 'Outfit', sans-serif;
+            background-image: radial-gradient(circle at 50% -20%, #1e293b 0%, #050505 80%);
         }
 
         .glass { 
             background: rgba(255, 255, 255, 0.03); 
             backdrop-filter: blur(25px); 
+            -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.08); 
         }
 
@@ -72,6 +77,7 @@
         .tab-content.active { display: block; animation: fadeIn 0.4s ease-out; }
         
         .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
         .active-nav { 
             color: #fbbf24; 
@@ -86,15 +92,16 @@
             transform: rotate(45deg); animation: shimmer 3s infinite;
         }
 
-        .p2p-card { transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1); }
-        .p2p-card:active { transform: scale(0.96); background: rgba(255,255,255,0.06); }
+        .p2p-card { transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1); border: 1px solid rgba(255,255,255,0.05); }
+        .p2p-card:active { transform: scale(0.97); background: rgba(255,255,255,0.08); border-color: rgba(251, 191, 36, 0.3); }
 
         .vip-progress-glow {
             box-shadow: 0 0 15px rgba(251, 191, 36, 0.3), inset 0 0 5px rgba(255, 255, 255, 0.2);
         }
 
         .feed-mask {
-            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
         }
 
         input[type="number"]::-webkit-inner-spin-button,
@@ -102,12 +109,18 @@
             -webkit-appearance: none;
             margin: 0;
         }
+
+        .noise-bg {
+            position: fixed; inset: 0; z-index: -1; opacity: 0.02; pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
     </style>
 </head>
 <body class="flex flex-col">
+    <div class="noise-bg"></div>
 
     <!-- Header HUD -->
-    <header class="pt-[calc(var(--safe-top)+1.5rem)] px-6 pb-5 flex justify-between items-center z-50 bg-black/60 backdrop-blur-2xl border-b border-white/5">
+    <header class="pt-[calc(var(--safe-top)+1.25rem)] px-6 pb-5 flex justify-between items-center z-50 bg-black/40 backdrop-blur-3xl border-b border-white/5">
         <div class="flex items-center gap-4">
             <div class="relative">
                 <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-metro-accent to-metro-gold flex items-center justify-center shadow-accent-glow transform -rotate-3">
@@ -124,7 +137,7 @@
             </div>
         </div>
         
-        <div onclick="NexusApp.switchTab('profile')" class="flex items-center gap-3 bg-white/5 border border-white/10 pl-4 pr-2 py-1.5 rounded-2xl cursor-pointer active:scale-95 transition-all">
+        <div onclick="NexusApp.switchTab('profile')" class="flex items-center gap-3 bg-white/5 border border-white/10 pl-4 pr-2 py-1.5 rounded-2xl cursor-pointer active:scale-95 transition-all shadow-inner-light">
             <div class="text-right">
                 <span class="block text-[7px] text-metro-muted font-black uppercase leading-none mb-1">Vault</span>
                 <span class="text-sm font-black text-white tracking-tight" id="ui-balance">0 ₽</span>
@@ -134,7 +147,7 @@
     </header>
 
     <!-- Main Viewport -->
-    <main class="flex-1 overflow-y-auto hide-scrollbar px-6 pb-36 pt-6">
+    <main class="flex-1 overflow-y-auto hide-scrollbar px-6 pb-40 pt-6">
         
         <!-- TAB: HOME -->
         <div id="tab-home" class="tab-content active space-y-8">
@@ -156,21 +169,21 @@
 
             <!-- Quick Stats Grid -->
             <div class="grid grid-cols-3 gap-4">
-                <div class="glass rounded-[2rem] p-5 text-center border-b-2 border-metro-accent/20">
+                <div class="glass rounded-[2rem] p-5 text-center border-b-2 border-metro-accent/20 shadow-inner-light">
                     <div class="w-9 h-9 rounded-xl bg-metro-accent/10 flex items-center justify-center mx-auto mb-3">
                         <i class="fa-solid fa-trophy text-metro-accent text-sm"></i>
                     </div>
                     <div class="text-lg font-black" id="ui-stat-wins">0</div>
                     <div class="text-[7px] text-metro-muted font-black uppercase tracking-widest mt-1">Wins</div>
                 </div>
-                <div class="glass rounded-[2rem] p-5 text-center border-b-2 border-metro-emerald/20">
+                <div class="glass rounded-[2rem] p-5 text-center border-b-2 border-metro-emerald/20 shadow-inner-light">
                     <div class="w-9 h-9 rounded-xl bg-metro-emerald/10 flex items-center justify-center mx-auto mb-3">
                         <i class="fa-solid fa-shield-check text-metro-emerald text-sm"></i>
                     </div>
                     <div class="text-lg font-black">P2P</div>
                     <div class="text-[7px] text-metro-muted font-black uppercase tracking-widest mt-1">Verified</div>
                 </div>
-                <div class="glass rounded-[2rem] p-5 text-center border-b-2 border-blue-500/20">
+                <div class="glass rounded-[2rem] p-5 text-center border-b-2 border-blue-500/20 shadow-inner-light">
                     <div class="w-9 h-9 rounded-xl bg-blue-500/10 flex items-center justify-center mx-auto mb-3">
                         <i class="fa-solid fa-chart-line text-blue-500 text-sm"></i>
                     </div>
@@ -180,7 +193,7 @@
             </div>
 
             <!-- Network Feed -->
-            <section class="feed-mask">
+            <section class="feed-mask pb-4">
                 <div class="flex justify-between items-center mb-5">
                     <h3 class="text-[9px] font-black text-metro-muted uppercase tracking-[0.3em]">System Logs</h3>
                     <div class="flex items-center gap-2">
@@ -232,11 +245,11 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mt-8">
-                    <div class="bg-black/40 rounded-2xl p-4 border border-white/5">
+                    <div class="bg-black/40 rounded-2xl p-4 border border-white/5 shadow-inner-light">
                         <span class="block text-[8px] text-metro-muted font-black uppercase mb-1 tracking-widest">Turnover</span>
                         <span class="text-lg font-black text-metro-accent" id="p-turnover">0 ₽</span>
                     </div>
-                    <div class="bg-black/40 rounded-2xl p-4 border border-white/5">
+                    <div class="bg-black/40 rounded-2xl p-4 border border-white/5 shadow-inner-light">
                         <span class="block text-[8px] text-metro-muted font-black uppercase mb-1 tracking-widest">Commission</span>
                         <span class="text-lg font-black text-white" id="p-comm">10%</span>
                     </div>
@@ -244,7 +257,7 @@
             </div>
 
             <!-- VIP Progress -->
-            <div class="glass p-6 rounded-[2.5rem] space-y-4 shadow-lg">
+            <div class="glass p-6 rounded-[2.5rem] space-y-4 shadow-lg border border-white/5">
                 <div class="flex justify-between items-end">
                     <div>
                         <span class="text-[8px] font-black text-metro-muted uppercase tracking-widest">VIP Status</span>
@@ -260,7 +273,7 @@
             <!-- Actions -->
             <div class="grid grid-cols-2 gap-4">
                 <button onclick="TxManager.open('deposit')" class="shimmer-btn bg-white text-metro-black py-5 rounded-2xl font-black text-xs shadow-2xl active:scale-95 transition-all uppercase italic tracking-tighter">Deposit</button>
-                <button onclick="TxManager.open('withdraw')" class="glass text-white py-5 rounded-2xl font-black text-xs active:scale-95 transition-all uppercase italic tracking-tighter">Withdraw</button>
+                <button onclick="TxManager.open('withdraw')" class="glass text-white py-5 rounded-2xl font-black text-xs active:scale-95 transition-all uppercase italic tracking-tighter border border-white/10">Withdraw</button>
             </div>
         </div>
     </main>
@@ -282,18 +295,18 @@
     </nav>
 
     <!-- Matchmaking Overlay -->
-    <div id="overlay-matchmaking" class="fixed inset-0 z-[200] hidden glass flex flex-col items-center justify-center p-10 text-center">
+    <div id="overlay-matchmaking" class="fixed inset-0 z-[200] hidden bg-black/90 backdrop-blur-2xl flex flex-col items-center justify-center p-10 text-center">
         <div class="relative mb-10">
-            <div class="w-28 h-28 rounded-full border-4 border-metro-accent/10 flex items-center justify-center">
-                <div class="w-20 h-20 rounded-full border-4 border-metro-accent border-t-transparent animate-spin"></div>
+            <div class="w-32 h-32 rounded-full border-4 border-metro-accent/10 flex items-center justify-center">
+                <div class="w-24 h-24 rounded-full border-4 border-metro-accent border-t-transparent animate-spin"></div>
             </div>
-            <i class="fa-solid fa-tower-broadcast absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl text-metro-accent animate-pulse"></i>
+            <i class="fa-solid fa-tower-broadcast absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl text-metro-accent animate-pulse"></i>
         </div>
         <h3 class="text-3xl font-black italic tracking-tighter mb-3 uppercase">P2P <span class="text-metro-accent">Handshake</span></h3>
         <p id="matchmaking-status" class="text-[9px] text-metro-muted font-black uppercase tracking-[0.3em]">Establishing secure connection...</p>
         
-        <div class="mt-10 w-full max-w-xs bg-white/5 rounded-3xl p-5 border border-white/10">
-            <div class="flex justify-between items-center mb-3">
+        <div class="mt-10 w-full max-w-xs glass rounded-3xl p-6 border border-white/10 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
                 <span class="text-[8px] font-black text-metro-muted uppercase">Latency</span>
                 <span class="text-[10px] font-bold text-metro-emerald">12ms</span>
             </div>
@@ -303,13 +316,13 @@
             </div>
         </div>
 
-        <button onclick="LobbyManager.cancelMatchmaking()" class="mt-10 text-metro-rose font-black text-[9px] uppercase tracking-widest border-b border-metro-rose/30 pb-1">Cancel Search</button>
+        <button onclick="LobbyManager.cancelMatchmaking()" class="mt-12 text-metro-rose font-black text-[9px] uppercase tracking-widest border-b border-metro-rose/30 pb-1 active:opacity-50 transition-opacity">Cancel Search</button>
     </div>
 
     <!-- Modal: Create Lobby -->
     <div id="modal-create" class="fixed inset-0 z-[100] hidden">
-        <div class="absolute inset-0 bg-black/90 backdrop-blur-xl" onclick="LobbyManager.toggleCreateModal(false)"></div>
-        <div class="absolute bottom-0 left-0 right-0 glass rounded-t-[3.5rem] p-10 animate-slide-up border-t border-white/10">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="LobbyManager.toggleCreateModal(false)"></div>
+        <div class="absolute bottom-0 left-0 right-0 glass rounded-t-[3.5rem] p-10 animate-slide-up border-t border-white/10 shadow-premium">
             <div class="w-16 h-1 bg-white/10 rounded-full mx-auto mb-10"></div>
             <h3 class="text-3xl font-black italic mb-2 tracking-tighter uppercase">Host <span class="text-metro-accent">Table</span></h3>
             <p class="text-[9px] text-metro-muted font-black uppercase tracking-[0.3em] mb-8">Broadcast your game to the network</p>
@@ -346,8 +359,8 @@
 
     <!-- Modal: Transaction -->
     <div id="modal-tx" class="fixed inset-0 z-[100] hidden">
-        <div class="absolute inset-0 bg-black/95 backdrop-blur-2xl" onclick="TxManager.close()"></div>
-        <div class="absolute bottom-0 left-0 right-0 glass rounded-t-[3.5rem] p-10 animate-slide-up border-t border-white/10">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-xl" onclick="TxManager.close()"></div>
+        <div class="absolute bottom-0 left-0 right-0 glass rounded-t-[3.5rem] p-10 animate-slide-up border-t border-white/10 shadow-premium">
             <div class="w-16 h-1 bg-white/10 rounded-full mx-auto mb-10"></div>
             <h3 id="tx-title" class="text-3xl font-black italic mb-2 tracking-tighter uppercase">Deposit</h3>
             <p id="tx-desc" class="text-[9px] text-metro-muted font-black uppercase tracking-[0.3em] mb-8">Secure Financial Gateway</p>
@@ -358,7 +371,7 @@
                     <span class="absolute right-6 top-1/2 -translate-y-1/2 text-metro-muted font-black text-xs">RUB</span>
                 </div>
                 
-                <div id="tx-address-box" class="bg-white/5 p-5 rounded-2xl border border-white/10 flex justify-between items-center">
+                <div id="tx-address-box" class="bg-white/5 p-5 rounded-2xl border border-white/10 flex justify-between items-center shadow-inner-light">
                     <div class="overflow-hidden">
                         <span class="block text-[8px] text-metro-muted font-black uppercase mb-1.5 tracking-widest">Payment Address</span>
                         <code class="text-[10px] font-mono text-metro-accent break-all" id="tx-address">TQx7vR9...8821</code>
@@ -378,7 +391,7 @@
     </div>
 
     <!-- Global Alert -->
-    <div id="ui-alert" class="fixed top-12 left-6 right-6 z-[300] pointer-events-none transform -translate-y-48 transition-all duration-500">
+    <div id="ui-alert" class="fixed top-[calc(var(--safe-top)+5rem)] left-6 right-6 z-[300] pointer-events-none transform -translate-y-48 transition-all duration-500">
         <div class="glass p-5 rounded-2xl shadow-premium flex items-center gap-4 border-l-4 border-metro-accent" id="alert-content">
             <div class="w-10 h-10 rounded-xl bg-metro-accent/20 flex items-center justify-center">
                 <i class="fa-solid fa-circle-check text-metro-accent text-xl"></i>
@@ -392,8 +405,8 @@
 
     <script>
         /**
-         * NEXUS ARCHITECT - METRO CASH CORE v4.1
-         * Refactored for real data integrity and P2P stability.
+         * NEXUS ARCHITECT - METRO CASH CORE v4.2
+         * Visual bug fixes and UI polish.
          */
 
         const CONFIG = {
@@ -432,13 +445,11 @@
                         this.state.user.name = tgUser.first_name;
                         if (tgUser.photo_url) this.state.user.avatar = tgUser.photo_url;
                         
-                        // Sync with Admin Panel expectations
                         localStorage.setItem('metro_user_id_' + tgUser.id, tgUser.id);
                         localStorage.setItem('metro_user_name_' + tgUser.id, tgUser.first_name);
                     }
                 }
                 
-                // Real-time balance sync from other game windows
                 window.addEventListener('storage', (e) => {
                     if (e.key === 'metro_vault') {
                         this.state.vault = JSON.parse(e.newValue);
@@ -471,7 +482,6 @@
                 document.getElementById('ui-avatar').src = user.avatar;
                 document.getElementById('ui-stat-wins').textContent = vault.wins;
                 
-                // Profile Tab
                 document.getElementById('p-avatar').src = user.avatar;
                 document.getElementById('p-name').textContent = user.name;
                 document.getElementById('p-id').textContent = `ID: ${user.id}`;
@@ -541,7 +551,7 @@
                 }
 
                 feed.innerHTML = history.slice(-5).reverse().map(item => `
-                    <div class="glass p-4 rounded-2xl flex items-center gap-4 animate-fade-in border-l-2 ${item.win ? 'border-metro-emerald' : 'border-metro-rose'}">
+                    <div class="glass p-4 rounded-2xl flex items-center gap-4 animate-fade-in border-l-2 ${item.win ? 'border-metro-emerald' : 'border-metro-rose'} shadow-inner-light">
                         <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-[8px] font-black ${item.win ? 'text-metro-emerald' : 'text-metro-rose'}">
                             ${item.win ? 'WIN' : 'LOSS'}
                         </div>
@@ -559,7 +569,6 @@
             currentFilter: 'ALL',
 
             refresh() {
-                // Simulated dynamic lobbies based on real game logic
                 this.lobbies = [
                     { id: 'BJ_1', type: 'BLACKJACK', host: 'Nexus_Bot', stake: 100, players: '4/5', page: 'code_artifact (15).html' },
                     { id: 'DR_7', type: 'DURAK', host: 'Elite_Player', stake: 500, players: '1/2', page: 'code_artifact (16).html' },
@@ -598,7 +607,7 @@
                                 <p class="text-[9px] text-metro-accent font-black uppercase mt-0.5 tracking-widest">${l.stake} ₽</p>
                             </div>
                         </div>
-                        <button onclick="LobbyManager.startMatchmaking('JOINING', ${l.stake}, '${l.page}')" class="shimmer-btn bg-white text-metro-black px-6 py-3 rounded-xl text-[9px] font-black uppercase italic shadow-xl">Join</button>
+                        <button onclick="LobbyManager.startMatchmaking('JOINING', ${l.stake}, '${l.page}')" class="shimmer-btn bg-white text-metro-black px-6 py-3 rounded-xl text-[9px] font-black uppercase italic shadow-xl active:scale-90 transition-transform">Join</button>
                     </div>
                 `).join('');
             },
@@ -664,7 +673,6 @@
             launch(mode, stake, page) {
                 NexusApp.haptic('success');
                 const target = page || (NexusApp.state.selectedGame === 'BLACKJACK' ? 'code_artifact (15).html' : 'code_artifact (16).html');
-                // We don't subtract balance here, the game engine will do it upon start to ensure integrity
                 window.location.href = `${target}?stake=${stake}&role=${mode === 'HOSTING' ? 'host' : 'guest'}`;
             }
         };

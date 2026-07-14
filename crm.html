@@ -3,113 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>METRO CASH - Admin CRM</title>
+    <title>METRO CASH | Finance Command Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    colors: {
+                        metro: { 
+                            black: '#050505', 
+                            dark: '#0a0a0a', 
+                            accent: '#fbbf24',
+                            gold: '#d97706',
+                            emerald: '#10b981',
+                            rose: '#f43f5e',
+                            slate: '#1e293b',
+                            muted: '#52525b'
+                        }
+                    },
+                    boxShadow: {
+                        'premium': '0 25px 50px -12px rgba(0, 0, 0, 0.8)',
+                        'glow': '0 0 20px rgba(251, 191, 36, 0.2)',
+                        'accent-glow': '0 0 30px rgba(251, 191, 36, 0.4)'
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { background-color: #f3f4f6; font-family: system-ui, -apple-system, sans-serif; }
-        .sidebar { min-height: 100vh; }
-        .req-card { transition: all 0.3s ease; }
-        .req-card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        body { 
+            background-color: #050505; 
+            color: #ffffff; 
+            font-family: 'Outfit', sans-serif;
+            overflow: hidden;
+        }
+        .glass-panel { 
+            background: rgba(255, 255, 255, 0.02); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+        }
+        .sidebar-link.active {
+            background: linear-gradient(to right, rgba(251, 191, 36, 0.1), transparent);
+            border-right: 3px solid #fbbf24;
+            color: #fbbf24;
+        }
+        .req-card {
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .req-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(5px);
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
     </style>
 </head>
-<body class="flex">
+<body class="flex h-screen">
 
-    <aside class="sidebar w-64 bg-gray-900 text-white p-5 flex flex-col shadow-2xl relative z-10">
-        <div class="flex items-center gap-2 mb-10 text-yellow-500">
-            <div class="w-8 h-8 rounded bg-yellow-500 text-black flex items-center justify-center shadow-[0_0_15px_rgba(234,179,8,0.5)]">
-                <i class="fa-solid fa-gem"></i>
+    <!-- Sidebar -->
+    <aside class="w-72 bg-metro-dark border-r border-white/5 flex flex-col z-20">
+        <div class="p-8">
+            <div class="flex items-center gap-3 mb-12">
+                <div class="w-10 h-10 rounded-xl bg-metro-accent flex items-center justify-center shadow-accent-glow transform -rotate-6">
+                    <i class="fa-solid fa-vault text-metro-black text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-black tracking-tighter italic uppercase leading-none">Metro<span class="text-metro-accent">Cash</span></h1>
+                    <span class="text-[8px] font-black text-metro-muted uppercase tracking-[0.3em]">Finance Node</span>
+                </div>
             </div>
-            <h1 class="text-xl font-black tracking-widest">CRM ADMIN</h1>
+            
+            <nav class="space-y-2">
+                <a href="#" class="sidebar-link active flex items-center gap-4 px-4 py-4 rounded-xl text-xs font-black uppercase tracking-widest transition-all">
+                    <i class="fa-solid fa-money-bill-transfer text-lg"></i> Transactions
+                </a>
+                <a href="metro_cash_admin_panel (2).html" class="sidebar-link flex items-center gap-4 px-4 py-4 rounded-xl text-xs font-black uppercase tracking-widest text-metro-muted hover:text-white transition-all">
+                    <i class="fa-solid fa-users-gear text-lg"></i> User Base
+                </a>
+                <a href="#" class="sidebar-link flex items-center gap-4 px-4 py-4 rounded-xl text-xs font-black uppercase tracking-widest text-metro-muted hover:text-white transition-all">
+                    <i class="fa-solid fa-chart-line text-lg"></i> Analytics
+                </a>
+            </nav>
         </div>
         
-        <nav class="space-y-2 flex-1">
-            <a href="#" class="block px-4 py-3 bg-white/10 rounded-lg text-sm font-bold border-l-4 border-yellow-500 text-white">
-                <i class="fa-solid fa-money-bill-transfer w-6"></i> Финансы
-            </a>
-            <a href="#" class="block px-4 py-3 hover:bg-white/5 rounded-lg text-sm font-bold text-gray-400 transition">
-                <i class="fa-solid fa-users w-6"></i> Игроки (Скоро)
-            </a>
-            <a href="#" class="block px-4 py-3 hover:bg-white/5 rounded-lg text-sm font-bold text-gray-400 transition">
-                <i class="fa-solid fa-chart-line w-6"></i> Статистика (Скоро)
-            </a>
-        </nav>
-        
-        <div class="text-xs text-gray-500 text-center bg-black/30 p-2 rounded-lg">Синхронизация: Telegram DB</div>
+        <div class="mt-auto p-8">
+            <div class="glass-panel p-4 rounded-2xl border border-white/5">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-2 h-2 rounded-full bg-metro-emerald animate-pulse"></div>
+                    <span class="text-[9px] font-black uppercase tracking-widest text-metro-emerald">System Live</span>
+                </div>
+                <p class="text-[10px] text-metro-muted leading-relaxed">Nexus P2P Protocol v4.1 Active</p>
+            </div>
+        </div>
     </aside>
 
-    <main class="flex-1 p-8 bg-gray-50 h-screen overflow-y-auto">
-        <header class="flex justify-between items-center mb-8 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-            <h2 class="text-2xl font-bold text-gray-800">Управление финансами</h2>
-            <div class="flex items-center gap-4">
-                <div id="syncStatus" class="flex items-center gap-2 text-sm font-bold text-green-600 bg-green-50 border border-green-200 px-4 py-2 rounded-full">
-                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    Связь с ботом активна
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col bg-[radial-gradient(circle_at_top_right,_#0a0a0a_0%,_#050505_100%)]">
+        <header class="h-24 border-b border-white/5 flex items-center justify-between px-10 bg-black/20 backdrop-blur-xl">
+            <div>
+                <h2 class="text-2xl font-black italic tracking-tighter uppercase">Financial <span class="text-metro-accent">Command</span></h2>
+                <p class="text-[9px] text-metro-muted font-black uppercase tracking-[0.3em] mt-1">Real-time Transaction Processing</p>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="text-right">
+                    <span class="text-[8px] text-metro-muted font-black uppercase tracking-widest block mb-1">Network Status</span>
+                    <div class="flex items-center gap-2 text-xs font-bold text-white">
+                        <i class="fa-solid fa-server text-metro-emerald"></i>
+                        TG_BOT_GATEWAY: OK
+                    </div>
                 </div>
+                <div class="h-10 w-[1px] bg-white/10"></div>
+                <button onclick="location.reload()" class="w-12 h-12 rounded-2xl glass-panel flex items-center justify-center hover:bg-white/5 transition-all active:scale-90">
+                    <i class="fa-solid fa-rotate text-metro-accent"></i>
+                </button>
             </div>
         </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            <!-- Заявки -->
-            <div class="lg:col-span-2 space-y-4">
-                <div class="flex justify-between items-end mb-4">
-                    <h3 class="font-bold text-xl text-gray-800">Необработанные транзакции</h3>
-                    <span class="text-xs font-bold bg-gray-200 text-gray-600 px-2 py-1 rounded">Обновляется раз в 5 сек</span>
-                </div>
-                <div id="requestsList" class="space-y-4">
-                    <!-- Заглушка -->
-                    <div class="bg-white p-8 rounded-2xl border border-dashed border-gray-300 text-center flex flex-col items-center justify-center">
-                        <i class="fa-solid fa-inbox text-4xl text-gray-300 mb-3"></i>
-                        <p class="text-gray-500 font-bold">Ожидание новых заявок...</p>
-                        <p class="text-xs text-gray-400 mt-1">Они появятся здесь автоматически</p>
+        <div class="flex-1 overflow-y-auto p-10 space-y-10">
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-10">
+                
+                <!-- Requests List -->
+                <div class="xl:col-span-2 space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-black text-white uppercase tracking-[0.4em]">Pending Queue</h3>
+                        <span class="bg-metro-accent/10 text-metro-accent text-[9px] font-black px-3 py-1 rounded-full border border-metro-accent/20">AUTO-SYNC ON</span>
                     </div>
-                </div>
-            </div>
-
-            <div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 sticky top-8">
-                    <h3 class="font-bold text-lg text-gray-800 mb-5 flex items-center gap-2">
-                        <i class="fa-solid fa-gear text-yellow-500"></i> Настройки системы
-                    </h3>
-                    <div class="space-y-5">
-                        <div>
-                            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wide">Крипто-кошелек для депозитов</label>
-                            <input type="text" id="walletInput" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:bg-white transition" placeholder="TQx...USDT">
+                    
+                    <div id="requestsList" class="space-y-4">
+                        <!-- Dynamic Content -->
+                        <div class="glass-panel p-20 rounded-[3rem] text-center border-dashed border-white/10">
+                            <i class="fa-solid fa-cloud-arrow-down text-5xl text-white/5 mb-6"></i>
+                            <p class="text-metro-muted font-black uppercase tracking-widest text-xs">Listening for incoming requests...</p>
                         </div>
-                        <button onclick="Admin.saveSettings()" class="w-full bg-gray-900 text-white py-3 rounded-xl text-sm font-bold hover:bg-gray-800 transition transform hover:scale-[1.02] shadow-lg">
-                            <i class="fa-solid fa-cloud-arrow-up mr-2"></i> Сохранить настройки
-                        </button>
                     </div>
                 </div>
-            </div>
 
+                <!-- Settings Sidebar -->
+                <div class="space-y-6">
+                    <h3 class="text-xs font-black text-white uppercase tracking-[0.4em]">Gateway Config</h3>
+                    <div class="glass-panel p-8 rounded-[2.5rem] border border-white/10 shadow-premium sticky top-0">
+                        <div class="space-y-8">
+                            <div>
+                                <label class="block text-[9px] font-black text-metro-muted uppercase tracking-widest mb-4 ml-1">Deposit USDT Address (TRC20)</label>
+                                <div class="relative">
+                                    <input type="text" id="walletInput" class="w-full bg-black/40 border border-white/10 rounded-2xl px-5 py-4 text-xs font-mono text-metro-accent focus:outline-none focus:border-metro-accent transition-all" placeholder="TQx...">
+                                    <i class="fa-solid fa-wallet absolute right-5 top-1/2 -translate-y-1/2 text-white/10"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="p-5 rounded-2xl bg-white/5 border border-white/5">
+                                <div class="flex justify-between items-center mb-4">
+                                    <span class="text-[9px] font-black text-metro-muted uppercase tracking-widest">Auto-Approve</span>
+                                    <div class="w-10 h-5 bg-metro-muted/20 rounded-full relative cursor-pointer">
+                                        <div class="absolute left-1 top-1 w-3 h-3 bg-metro-muted rounded-full"></div>
+                                    </div>
+                                </div>
+                                <p class="text-[8px] text-metro-muted leading-relaxed uppercase font-bold">Enable instant processing for verified VIP nodes.</p>
+                            </div>
+
+                            <button onclick="Admin.saveSettings()" class="w-full bg-white text-metro-black py-5 rounded-2xl font-black text-xs uppercase italic tracking-tighter shadow-2xl hover:scale-[1.02] active:scale-95 transition-all">
+                                Update Gateway Settings
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </main>
 
-    <!-- Custom Modal -->
-    <div id="msgModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center backdrop-blur-sm">
-        <div class="bg-white p-6 rounded-2xl w-full max-w-sm text-center shadow-2xl">
-            <h3 id="msgTitle" class="text-lg font-bold text-gray-900 mb-2">Внимание</h3>
-            <p id="msgText" class="text-sm text-gray-600 mb-6">Текст сообщения</p>
-            <button onclick="document.getElementById('msgModal').classList.add('hidden')" class="w-full bg-gray-900 hover:bg-gray-800 text-white font-bold py-3 rounded-xl transition">Понятно</button>
+    <!-- Modal -->
+    <div id="msgModal" class="fixed inset-0 bg-black/90 z-[100] hidden flex items-center justify-center backdrop-blur-xl">
+        <div class="glass-panel p-10 rounded-[3rem] w-full max-w-sm text-center border border-white/10 shadow-premium">
+            <div class="w-20 h-20 bg-metro-accent/10 rounded-3xl flex items-center justify-center mx-auto mb-6 border border-metro-accent/20">
+                <i class="fa-solid fa-circle-info text-3xl text-metro-accent"></i>
+            </div>
+            <h3 id="msgTitle" class="text-2xl font-black italic tracking-tighter uppercase mb-2">System Alert</h3>
+            <p id="msgText" class="text-[10px] text-metro-muted font-black uppercase tracking-widest mb-8 leading-relaxed">Message content goes here.</p>
+            <button onclick="document.getElementById('msgModal').classList.add('hidden')" class="w-full bg-white text-metro-black py-5 rounded-2xl font-black text-xs uppercase italic tracking-tighter">Acknowledge</button>
         </div>
     </div>
 
     <script>
-        const BOT_TOKEN = '8575086263:AAG74PmRjUT8ExtDkC_kOxfYfmss2BG0C_A';
-        const CHAT_ID = '-5458983067';
-        
-        let pendingRequests = [
-            // Фейковая заявка для демонстрации UI
-            { reqId: 'demo_123', type: 'DEPOSIT', userId: 'usr1', userName: 'Иван', amount: 1500, time: new Date().toISOString() },
-            { reqId: 'demo_456', type: 'WITHDRAW', userId: 'usr2', userName: 'Алексей', amount: 500, time: new Date().toISOString() }
-        ];
-
         const Admin = {
+            pendingRequests: [
+                { reqId: 'TX_9921', type: 'DEPOSIT', userId: '882100', userName: 'Alex_Nexus', amount: 15000, time: new Date().toISOString() },
+                { reqId: 'TX_9922', type: 'WITHDRAW', userId: '445512', userName: 'CryptoWhale', amount: 5400, time: new Date().toISOString() }
+            ],
+
             init() {
                 this.renderRequests();
-                // setInterval(() => this.fetchUpdates(), 5000); // Включить для реальной работы
             },
 
             showMessage(title, text) {
@@ -120,69 +207,70 @@
 
             renderRequests() {
                 const container = document.getElementById('requestsList');
-                if (pendingRequests.length === 0) {
+                if (this.pendingRequests.length === 0) {
                     container.innerHTML = `
-                        <div class="bg-white p-8 rounded-2xl border border-dashed border-gray-300 text-center flex flex-col items-center justify-center">
-                            <i class="fa-solid fa-check-circle text-4xl text-green-300 mb-3"></i>
-                            <p class="text-gray-500 font-bold">Все заявки обработаны</p>
+                        <div class="glass-panel p-20 rounded-[3rem] text-center border-dashed border-white/10">
+                            <i class="fa-solid fa-check-double text-5xl text-metro-emerald/20 mb-6"></i>
+                            <p class="text-metro-muted font-black uppercase tracking-widest text-xs">All transactions cleared</p>
                         </div>`;
                     return;
                 }
 
-                container.innerHTML = pendingRequests.map(req => {
+                container.innerHTML = this.pendingRequests.map(req => {
                     const isDep = req.type === 'DEPOSIT';
-                    const typeColor = isDep ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700';
-                    const typeText = isDep ? 'ПОПОЛНЕНИЕ' : 'ВЫВОД';
-                    
                     return `
-                    <div class="req-card bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4" id="req-${req.reqId}">
-                        <div>
-                            <div class="flex items-center gap-2 mb-2">
-                                <span class="${typeColor} text-[10px] font-black px-2 py-1 rounded uppercase tracking-wider">${typeText}</span>
-                                <span class="text-xs text-gray-400 font-mono"><i class="fa-regular fa-clock"></i> ${new Date(req.time).toLocaleTimeString()}</span>
+                    <div class="req-card glass-panel p-6 rounded-[2rem] flex flex-col lg:flex-row justify-between items-center gap-6 border-l-4 ${isDep ? 'border-metro-emerald' : 'border-metro-rose'}" id="req-${req.reqId}">
+                        <div class="flex items-center gap-6 flex-1">
+                            <div class="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center text-xl">
+                                <i class="fa-solid ${isDep ? 'fa-arrow-down-long text-metro-emerald' : 'fa-arrow-up-long text-metro-rose'}"></i>
                             </div>
-                            <h4 class="font-bold text-gray-800 text-lg">${req.userName} <span class="text-xs font-normal text-gray-400 ml-1">ID: ${req.userId}</span></h4>
-                            <p class="text-sm text-gray-600 mt-1">Сумма: <span class="font-black text-gray-900 text-lg">${req.amount} ₽</span></p>
+                            <div>
+                                <div class="flex items-center gap-3 mb-1">
+                                    <span class="text-[8px] font-black uppercase tracking-widest ${isDep ? 'text-metro-emerald' : 'text-metro-rose'}">${req.type}</span>
+                                    <span class="text-[8px] text-metro-muted font-mono">${new Date(req.time).toLocaleTimeString()}</span>
+                                </div>
+                                <h4 class="font-black text-white text-lg italic tracking-tight uppercase">${req.userName} <span class="text-[10px] font-mono text-metro-muted ml-2">#${req.userId}</span></h4>
+                            </div>
                         </div>
-                        <div class="flex w-full sm:w-auto gap-2">
-                            <button onclick="Admin.reject('${req.reqId}')" class="flex-1 sm:flex-none bg-red-50 text-red-600 border border-red-100 px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-red-500 hover:text-white transition">Отклонить</button>
-                            <button onclick="Admin.approve('${req.reqId}', '${req.userId}', ${req.amount}, ${isDep})" class="flex-1 sm:flex-none bg-gray-900 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-yellow-500 hover:text-black transition shadow-md">Подтвердить</button>
+                        
+                        <div class="text-center lg:text-right px-10">
+                            <span class="block text-[8px] text-metro-muted font-black uppercase tracking-widest mb-1">Amount</span>
+                            <span class="text-2xl font-black text-white italic tracking-tighter">${req.amount.toLocaleString()} <span class="text-metro-accent text-sm">₽</span></span>
+                        </div>
+
+                        <div class="flex gap-3 w-full lg:w-auto">
+                            <button onclick="Admin.reject('${req.reqId}')" class="flex-1 lg:px-6 py-4 rounded-xl bg-white/5 text-metro-rose text-[10px] font-black uppercase tracking-widest hover:bg-metro-rose hover:text-white transition-all">Reject</button>
+                            <button onclick="Admin.approve('${req.reqId}')" class="flex-1 lg:px-8 py-4 rounded-xl bg-metro-accent text-metro-black text-[10px] font-black uppercase tracking-widest shadow-glow hover:scale-105 transition-all">Approve</button>
                         </div>
                     </div>
                 `}).join('');
             },
 
-            async approve(reqId, userId, amount, isDeposit) {
-                // В реальном приложении тут логика обновления баланса юзера в TG
+            approve(reqId) {
                 const el = document.getElementById(`req-${reqId}`);
-                el.innerHTML = `
-                    <div class="w-full flex items-center justify-center p-4 text-green-600 font-bold bg-green-50 rounded-xl border border-green-100">
-                        <i class="fa-solid fa-check-circle mr-2 text-xl"></i> Успешно проведено (${amount} ₽)
-                    </div>`;
-                setTimeout(() => {
-                    pendingRequests = pendingRequests.filter(r => r.reqId !== reqId);
-                    this.renderRequests();
-                }, 2000);
-            },
-
-            async reject(reqId) {
-                const el = document.getElementById(`req-${reqId}`);
-                el.innerHTML = `
-                    <div class="w-full flex items-center justify-center p-4 text-red-500 font-bold bg-red-50 rounded-xl border border-red-100">
-                        <i class="fa-solid fa-xmark-circle mr-2 text-xl"></i> Заявка отклонена
-                    </div>`;
-                setTimeout(() => {
-                    pendingRequests = pendingRequests.filter(r => r.reqId !== reqId);
-                    this.renderRequests();
-                }, 2000);
-            },
-
-            async saveSettings() {
-                const wallet = document.getElementById('walletInput').value;
-                if(!wallet) return this.showMessage("Ошибка", "Поле реквизитов не может быть пустым.");
+                el.style.opacity = '0.5';
+                el.style.pointerEvents = 'none';
+                el.innerHTML = `<div class="w-full py-4 text-center text-metro-emerald font-black uppercase tracking-[0.5em] text-xs animate-pulse">Processing Transaction...</div>`;
                 
-                // Симуляция отправки
-                this.showMessage("Сохранено", "Настройки успешно сохранены. Игроки увидят новые реквизиты.");
+                setTimeout(() => {
+                    this.pendingRequests = this.pendingRequests.filter(r => r.reqId !== reqId);
+                    this.renderRequests();
+                }, 1500);
+            },
+
+            reject(reqId) {
+                const el = document.getElementById(`req-${reqId}`);
+                el.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    this.pendingRequests = this.pendingRequests.filter(r => r.reqId !== reqId);
+                    this.renderRequests();
+                }, 300);
+            },
+
+            saveSettings() {
+                const wallet = document.getElementById('walletInput').value;
+                if(!wallet) return this.showMessage("Error", "Gateway address cannot be empty.");
+                this.showMessage("Success", "P2P Gateway updated. All nodes synchronized.");
             }
         };
 

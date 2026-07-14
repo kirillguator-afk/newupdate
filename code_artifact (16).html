@@ -37,8 +37,8 @@
         :root {
             --tg-bg: var(--tg-theme-bg-color, #050505);
             --tg-text: var(--tg-theme-text-color, #ffffff);
-            --card-w: 72px;
-            --card-h: 104px;
+            --card-w: 74px;
+            --card-h: 108px;
         }
 
         body {
@@ -54,18 +54,24 @@
 
         .arena-surface {
             background: 
-                radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.1) 0%, transparent 80%),
-                radial-gradient(circle at 0% 100%, rgba(251, 191, 36, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.08) 0%, transparent 70%),
+                radial-gradient(circle at 0% 0%, rgba(251, 191, 36, 0.03) 0%, transparent 40%),
                 #050505;
             position: relative;
             height: 100%;
+        }
+
+        .arena-surface::before {
+            content: ""; position: absolute; inset: 0;
+            background-image: url("https://www.transparenttextures.com/patterns/felt.png");
+            opacity: 0.02; pointer-events: none;
         }
 
         .card-node {
             width: var(--card-w);
             height: var(--card-h);
             position: absolute;
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             perspective: 1000px;
             z-index: 10;
         }
@@ -80,38 +86,39 @@
         .card-face {
             position: absolute; inset: 0;
             backface-visibility: hidden;
-            border-radius: 10px;
+            border-radius: 12px;
             background: #ffffff;
             color: #1a1a1a;
-            padding: 6px;
+            padding: 8px;
             display: flex; flex-direction: column; justify-content: space-between;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(0,0,0,0.05);
             font-weight: 800;
         }
 
         .card-back {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             transform: rotateY(180deg);
-            border: 2px solid #ffffff;
+            border: 3px solid #ffffff;
             display: flex; align-items: center; justify-content: center;
-            border-radius: 10px;
+            border-radius: 12px;
+            overflow: hidden;
         }
 
         .card-back::after {
-            content: "M"; font-size: 2rem; color: rgba(255,255,255,0.05);
+            content: "M"; font-size: 2.5rem; color: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.05);
-            width: 70%; height: 70%; display: flex; align-items: center; justify-content: center; border-radius: 6px;
+            width: 75%; height: 75%; display: flex; align-items: center; justify-content: center; border-radius: 8px;
         }
 
         .is-flipped .card-inner { transform: rotateY(180deg); }
         .card-red { color: #e11d48; }
         
         .playable { cursor: pointer; }
-        .playable:hover { transform: translateY(-20px) scale(1.05) !important; z-index: 100 !important; }
+        .playable:active { transform: translateY(-30px) scale(1.1) !important; z-index: 100 !important; }
 
         .glass-panel {
             background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
@@ -120,37 +127,48 @@
             color: #050505;
             font-weight: 900;
             text-transform: uppercase;
-            box-shadow: 0 10px 25px rgba(217, 119, 6, 0.3);
-            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(217, 119, 6, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .btn-action:disabled { opacity: 0.3; filter: grayscale(1); }
+        .btn-action:active { transform: scale(0.95); }
+        .btn-action:disabled { opacity: 0.3; filter: grayscale(1); transform: scale(1); }
 
         #battle-grid {
-            position: absolute; top: 48%; left: 50%; transform: translate(-50%, -50%);
-            width: 90%; height: 240px; display: flex; justify-content: center; align-items: center; gap: 10px;
-            flex-wrap: wrap;
+            position: absolute; top: 46%; left: 50%; transform: translate(-50%, -50%);
+            width: 95%; max-width: 400px; min-height: 260px; 
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+            justify-items: center; align-items: center;
         }
 
         .trump-indicator {
-            position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
-            display: flex; flex-direction: column; align-items: center; gap: 10px;
+            position: absolute; right: 15px; top: 46%; transform: translateY(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 12px;
+            z-index: 5;
         }
 
-        @keyframes deal-anim {
-            from { transform: translate(200px, -200px) rotate(45deg); opacity: 0; }
-            to { opacity: 1; }
+        .turn-badge {
+            padding: 6px 16px; border-radius: 20px; font-size: 10px; font-weight: 900;
+            text-transform: uppercase; tracking-widest: 0.2em;
+            transition: all 0.5s ease;
         }
+        .turn-active { background: #fbbf24; color: #000; box-shadow: 0 0 15px rgba(251, 191, 36, 0.4); }
+        .turn-inactive { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.3); }
 
         .shimmer {
             position: relative; overflow: hidden;
         }
         .shimmer::after {
             content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
             transform: rotate(45deg); animation: shimmer-anim 3s infinite;
         }
         @keyframes shimmer-anim { 0% { transform: translateX(-100%) rotate(45deg); } 100% { transform: translateX(100%) rotate(45deg); } }
+
+        .suit-bg {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 2.5rem; opacity: 0.08; pointer-events: none;
+        }
     </style>
 </head>
 <body class="arena-surface">
@@ -158,14 +176,13 @@
     <!-- HUD -->
     <header class="fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center bg-black/40 backdrop-blur-2xl border-b border-white/5">
         <div class="flex items-center gap-4">
-            <button onclick="Engine.exit()" class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 active:scale-90 transition">
-                <i class="fa-solid fa-chevron-left text-metro-accent"></i>
+            <button onclick="Engine.exit()" class="flex items-center gap-3 bg-white/5 hover:bg-white/10 px-4 py-2 rounded-xl text-[10px] font-black tracking-widest transition border border-white/10 uppercase">
+                <i class="fa-solid fa-chevron-left text-metro-accent"></i> Lobby
             </button>
             <div>
-                <div class="text-[8px] text-metro-muted font-black uppercase tracking-[0.3em] leading-none mb-1">P2P Session</div>
-                <div id="net-status" class="text-[10px] font-black text-white flex items-center">
+                <div id="net-status" class="text-[9px] font-black text-white flex items-center tracking-widest uppercase">
                     <span class="w-1.5 h-1.5 rounded-full bg-metro-emerald mr-2 animate-pulse"></span>
-                    LIVE NODE
+                    Nexus Node
                 </div>
             </div>
         </div>
@@ -177,27 +194,33 @@
 
     <!-- Game Arena -->
     <main class="relative h-full w-full pt-24 pb-40">
-        <!-- Opponent -->
-        <div id="opponent-hand" class="absolute top-28 left-0 right-0 h-[var(--card-h)] flex justify-center pointer-events-none"></div>
+        <!-- Opponent Info -->
+        <div class="absolute top-24 left-0 right-0 flex flex-col items-center gap-2 z-10">
+            <div id="turn-peer" class="turn-badge turn-inactive">Opponent's Turn</div>
+            <div id="opponent-hand" class="relative h-[var(--card-h)] w-full flex justify-center pointer-events-none mt-2"></div>
+        </div>
 
         <!-- Deck & Trump -->
-        <div class="trump-indicator z-20">
+        <div class="trump-indicator">
             <div id="deck-area" class="relative w-[var(--card-w)] h-[var(--card-h)]">
                 <div id="trump-slot" class="absolute inset-0"></div>
                 <div id="deck-stack" class="absolute inset-0 -translate-x-1 -translate-y-1"></div>
             </div>
-            <div id="deck-count" class="bg-black/60 backdrop-blur-lg px-4 py-1.5 rounded-full text-[10px] font-black border border-white/10 text-metro-accent">0</div>
+            <div id="deck-count" class="bg-black/80 backdrop-blur-xl px-4 py-1.5 rounded-full text-[10px] font-black border border-white/10 text-metro-accent shadow-lg">0</div>
         </div>
 
         <!-- Battle Zone -->
         <div id="battle-grid"></div>
 
-        <!-- Player -->
-        <div id="player-hand" class="absolute bottom-36 left-0 right-0 h-[var(--card-h)] flex justify-center"></div>
+        <!-- Player Info -->
+        <div class="absolute bottom-32 left-0 right-0 flex flex-col items-center gap-4">
+            <div id="turn-me" class="turn-badge turn-inactive">Your Turn</div>
+            <div id="player-hand" class="relative h-[var(--card-h)] w-full flex justify-center"></div>
+        </div>
 
         <!-- Action Bar -->
-        <div id="action-bar" class="absolute bottom-10 left-0 right-0 px-8 flex justify-center gap-4 z-40 opacity-0 pointer-events-none transition-all duration-500">
-            <button id="btn-action" onclick="Engine.handleAction()" class="btn-action w-full max-w-xs py-5 rounded-2xl text-sm italic tracking-tighter shimmer">
+        <div id="action-bar" class="fixed bottom-10 left-0 right-0 px-8 flex justify-center gap-4 z-40 opacity-0 pointer-events-none transition-all duration-500">
+            <button id="btn-action" onclick="Engine.handleAction()" class="btn-action w-full max-w-xs py-5 rounded-2xl text-sm italic tracking-tighter shimmer font-black">
                 БИТО
             </button>
         </div>
@@ -254,7 +277,7 @@
             table: [],
             trump: null,
             bet: 0,
-            turn: 'me', // 'me' or 'peer'
+            turn: 'me', 
             isAttacker: true,
             gameState: 'lobby',
 
@@ -262,9 +285,9 @@
                 if (TG) {
                     TG.ready();
                     TG.expand();
+                    TG.headerColor = '#050505';
                 }
                 
-                // Read stake from URL if provided
                 const params = new URLSearchParams(window.location.search);
                 const stakeParam = parseInt(params.get('stake'));
                 if (stakeParam) {
@@ -288,6 +311,7 @@
 
             startFromLobby() {
                 if (this.bet > this.vault.balance) {
+                    this.haptic('error');
                     alert("Недостаточно средств!");
                     return;
                 }
@@ -335,7 +359,7 @@
                 this.turn = myMinTrump <= peerMinTrump ? 'me' : 'peer';
                 this.isAttacker = (this.turn === 'me');
                 
-                if (this.turn === 'peer') setTimeout(() => this.opponentMove(), 1000);
+                if (this.turn === 'peer') setTimeout(() => this.opponentMove(), 1200);
             },
 
             render() {
@@ -344,6 +368,10 @@
                 this.renderTable();
                 this.renderDeck();
                 this.updateControls();
+                
+                // Update Turn Badges
+                document.getElementById('turn-me').className = `turn-badge ${this.turn === 'me' ? 'turn-active' : 'turn-inactive'}`;
+                document.getElementById('turn-peer').className = `turn-badge ${this.turn === 'peer' ? 'turn-active' : 'turn-inactive'}`;
             },
 
             renderHand(id, hand, isPlayer) {
@@ -354,15 +382,21 @@
                     hand.sort((a, b) => (a.s === this.trump.s ? a.val + 20 : a.val) - (b.s === this.trump.s ? b.val + 20 : b.val));
                 }
 
+                const totalWidth = Math.min(window.innerWidth - 40, hand.length * 45 + 30);
+                const startX = (window.innerWidth - totalWidth) / 2;
+
                 hand.forEach((card, i) => {
                     const el = this.createCardEl(card, !isPlayer);
-                    const offset = (i - (hand.length - 1) / 2) * (isPlayer ? 40 : 20);
-                    const rotation = isPlayer ? (i - (hand.length - 1) / 2) * 4 : 0;
+                    const offset = (i - (hand.length - 1) / 2) * (isPlayer ? 42 : 24);
+                    const rotation = isPlayer ? (i - (hand.length - 1) / 2) * 5 : 0;
+                    const translateY = isPlayer ? Math.abs(i - (hand.length - 1) / 2) * 4 : 0;
                     
                     el.style.left = `calc(50% + ${offset}px - (var(--card-w)/2))`;
+                    el.style.zIndex = 10 + i;
+
                     if (isPlayer) {
-                        el.style.bottom = '10px';
-                        el.style.transform = `rotate(${rotation}deg)`;
+                        el.style.bottom = '0px';
+                        el.style.transform = `rotate(${rotation}deg) translateY(${translateY}px)`;
                         if (this.canPlay(card)) {
                             el.classList.add('playable');
                             el.onclick = () => this.playCard(i);
@@ -382,12 +416,16 @@
                     wrap.className = 'relative w-[var(--card-w)] h-[var(--card-h)]';
                     
                     const atk = this.createCardEl(pair.atk, false);
+                    atk.style.position = 'absolute';
+                    atk.style.top = '0'; atk.style.left = '0';
                     wrap.appendChild(atk);
 
                     if (pair.def) {
                         const def = this.createCardEl(pair.def, false);
-                        def.style.transform = 'translate(15px, 15px) rotate(10deg)';
-                        def.style.zIndex = '20';
+                        def.style.position = 'absolute';
+                        def.style.top = '12px'; def.style.left = '12px';
+                        def.style.transform = 'rotate(8deg)';
+                        def.style.zIndex = '25';
                         wrap.appendChild(def);
                     }
                     grid.appendChild(wrap);
@@ -403,7 +441,7 @@
                 
                 if (this.deck.length > 0) {
                     const tc = this.createCardEl(this.trump, false);
-                    tc.style.transform = 'rotate(90deg) translate(0, 35px)';
+                    tc.style.transform = 'rotate(90deg) translate(0, 38px)';
                     tSlot.appendChild(tc);
                     
                     if (this.deck.length > 1) {
@@ -411,9 +449,9 @@
                         dStack.appendChild(back);
                     }
                 } else if (this.trump) {
-                    // Only trump remains
                     const tc = this.createCardEl(this.trump, false);
-                    tc.style.transform = 'rotate(90deg) translate(0, 35px) opacity(0.5)';
+                    tc.style.transform = 'rotate(90deg) translate(0, 38px)';
+                    tc.style.opacity = '0.4';
                     tSlot.appendChild(tc);
                 }
                 count.textContent = this.deck.length;
@@ -427,12 +465,12 @@
                     <div class="card-inner">
                         <div class="card-face ${red}">
                             <div class="flex flex-col leading-none">
-                                <span class="text-xs">${card?.rank || ''}</span>
+                                <span class="text-sm">${card?.rank || ''}</span>
                                 <span class="text-[10px]">${card?.s || ''}</span>
                             </div>
-                            <div class="text-3xl opacity-10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">${card?.s || ''}</div>
+                            <div class="suit-bg">${card?.s || ''}</div>
                             <div class="flex flex-col leading-none self-end rotate-180">
-                                <span class="text-xs">${card?.rank || ''}</span>
+                                <span class="text-sm">${card?.rank || ''}</span>
                                 <span class="text-[10px]">${card?.s || ''}</span>
                             </div>
                         </div>
@@ -453,7 +491,6 @@
                     const lastPair = this.table[this.table.length - 1];
                     if (!lastPair || lastPair.def) return false;
                     const atk = lastPair.atk;
-                    // Defense logic
                     if (card.s === atk.s) return card.val > atk.val;
                     if (card.s === this.trump.s) return true;
                     return false;
@@ -480,7 +517,6 @@
                 if (this.gameState !== 'playing' || this.turn !== 'peer') return;
 
                 if (this.isAttacker) {
-                    // Opponent is defending
                     const lastPair = this.table[this.table.length - 1];
                     const atk = lastPair.atk;
                     const defCardIdx = this.opponentHand.findIndex(c => 
@@ -493,12 +529,10 @@
                         this.turn = 'me';
                         this.haptic('medium');
                     } else {
-                        // Opponent takes cards
-                        setTimeout(() => this.processAction('TAKE', 'peer'), 500);
+                        setTimeout(() => this.processAction('TAKE', 'peer'), 800);
                         return;
                     }
                 } else {
-                    // Opponent is attacking
                     let atkCardIdx = -1;
                     if (this.table.length === 0) {
                         atkCardIdx = Math.floor(Math.random() * this.opponentHand.length);
@@ -513,8 +547,7 @@
                         this.turn = 'me';
                         this.haptic('medium');
                     } else {
-                        // Opponent says "Bito"
-                        setTimeout(() => this.processAction('BITO', 'peer'), 500);
+                        setTimeout(() => this.processAction('BITO', 'peer'), 800);
                         return;
                     }
                 }
@@ -544,14 +577,13 @@
                 }
                 
                 this.render();
-                if (this.turn === 'peer') setTimeout(() => this.opponentMove(), 1000);
+                if (this.turn === 'peer') setTimeout(() => this.opponentMove(), 1200);
             },
 
             replenish() {
                 while (this.playerHand.length < 6 && this.deck.length > 0) this.playerHand.push(this.deck.pop());
                 while (this.opponentHand.length < 6 && this.deck.length > 0) this.opponentHand.push(this.deck.pop());
                 
-                // If deck is empty, check for trump
                 if (this.deck.length === 0 && this.trump) {
                     if (this.playerHand.length < 6) this.playerHand.push(this.trump);
                     else if (this.opponentHand.length < 6) this.opponentHand.push(this.trump);
@@ -625,6 +657,7 @@
             },
 
             exit() {
+                this.haptic('medium');
                 window.location.href = 'metro_cash_app.html';
             }
         };
