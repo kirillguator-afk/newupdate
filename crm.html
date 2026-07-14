@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>METRO CASH - Admin CRM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #f3f4f6; font-family: system-ui, -apple-system, sans-serif; }
+        .sidebar { min-height: 100vh; }
+        .req-card { transition: all 0.3s ease; }
+        .req-card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body class="flex">
+
+    <aside class="sidebar w-64 bg-gray-900 text-white p-5 flex flex-col shadow-2xl relative z-10">
+        <div class="flex items-center gap-2 mb-10 text-yellow-500">
+            <div class="w-8 h-8 rounded bg-yellow-500 text-black flex items-center justify-center shadow-[0_0_15px_rgba(234,179,8,0.5)]">
+                <i class="fa-solid fa-gem"></i>
+            </div>
+            <h1 class="text-xl font-black tracking-widest">CRM ADMIN</h1>
+        </div>
+        
+        <nav class="space-y-2 flex-1">
+            <a href="#" class="block px-4 py-3 bg-white/10 rounded-lg text-sm font-bold border-l-4 border-yellow-500 text-white">
+                <i class="fa-solid fa-money-bill-transfer w-6"></i> Финансы
+            </a>
+            <a href="#" class="block px-4 py-3 hover:bg-white/5 rounded-lg text-sm font-bold text-gray-400 transition">
+                <i class="fa-solid fa-users w-6"></i> Игроки (Скоро)
+            </a>
+            <a href="#" class="block px-4 py-3 hover:bg-white/5 rounded-lg text-sm font-bold text-gray-400 transition">
+                <i class="fa-solid fa-chart-line w-6"></i> Статистика (Скоро)
+            </a>
+        </nav>
+        
+        <div class="text-xs text-gray-500 text-center bg-black/30 p-2 rounded-lg">Синхронизация: Telegram DB</div>
+    </aside>
+
+    <main class="flex-1 p-8 bg-gray-50 h-screen overflow-y-auto">
+        <header class="flex justify-between items-center mb-8 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+            <h2 class="text-2xl font-bold text-gray-800">Управление финансами</h2>
+            <div class="flex items-center gap-4">
+                <div id="syncStatus" class="flex items-center gap-2 text-sm font-bold text-green-600 bg-green-50 border border-green-200 px-4 py-2 rounded-full">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    Связь с ботом активна
+                </div>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Заявки -->
+            <div class="lg:col-span-2 space-y-4">
+                <div class="flex justify-between items-end mb-4">
+                    <h3 class="font-bold text-xl text-gray-800">Необработанные транзакции</h3>
+                    <span class="text-xs font-bold bg-gray-200 text-gray-600 px-2 py-1 rounded">Обновляется раз в 5 сек</span>
+                </div>
+                <div id="requestsList" class="space-y-4">
+                    <!-- Заглушка -->
+                    <div class="bg-white p-8 rounded-2xl border border-dashed border-gray-300 text-center flex flex-col items-center justify-center">
+                        <i class="fa-solid fa-inbox text-4xl text-gray-300 mb-3"></i>
+                        <p class="text-gray-500 font-bold">Ожидание новых заявок...</p>
+                        <p class="text-xs text-gray-400 mt-1">Они появятся здесь автоматически</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 sticky top-8">
+                    <h3 class="font-bold text-lg text-gray-800 mb-5 flex items-center gap-2">
+                        <i class="fa-solid fa-gear text-yellow-500"></i> Настройки системы
+                    </h3>
+                    <div class="space-y-5">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-wide">Крипто-кошелек для депозитов</label>
+                            <input type="text" id="walletInput" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:bg-white transition" placeholder="TQx...USDT">
+                        </div>
+                        <button onclick="Admin.saveSettings()" class="w-full bg-gray-900 text-white py-3 rounded-xl text-sm font-bold hover:bg-gray-800 transition transform hover:scale-[1.02] shadow-lg">
+                            <i class="fa-solid fa-cloud-arrow-up mr-2"></i> Сохранить настройки
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Custom Modal -->
+    <div id="msgModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-white p-6 rounded-2xl w-full max-w-sm text-center shadow-2xl">
+            <h3 id="msgTitle" class="text-lg font-bold text-gray-900 mb-2">Внимание</h3>
+            <p id="msgText" class="text-sm text-gray-600 mb-6">Текст сообщения</p>
+            <button onclick="document.getElementById('msgModal').classList.add('hidden')" class="w-full bg-gray-900 hover:bg-gray-800 text-white font-bold py-3 rounded-xl transition">Понятно</button>
+        </div>
+    </div>
+
+    <script>
+        const BOT_TOKEN = '8575086263:AAG74PmRjUT8ExtDkC_kOxfYfmss2BG0C_A';
+        const CHAT_ID = '-5458983067';
+        
+        let pendingRequests = [
+            // Фейковая заявка для демонстрации UI
+            { reqId: 'demo_123', type: 'DEPOSIT', userId: 'usr1', userName: 'Иван', amount: 1500, time: new Date().toISOString() },
+            { reqId: 'demo_456', type: 'WITHDRAW', userId: 'usr2', userName: 'Алексей', amount: 500, time: new Date().toISOString() }
+        ];
+
+        const Admin = {
+            init() {
+                this.renderRequests();
+                // setInterval(() => this.fetchUpdates(), 5000); // Включить для реальной работы
+            },
+
+            showMessage(title, text) {
+                document.getElementById('msgTitle').textContent = title;
+                document.getElementById('msgText').textContent = text;
+                document.getElementById('msgModal').classList.remove('hidden');
+            },
+
+            renderRequests() {
+                const container = document.getElementById('requestsList');
+                if (pendingRequests.length === 0) {
+                    container.innerHTML = `
+                        <div class="bg-white p-8 rounded-2xl border border-dashed border-gray-300 text-center flex flex-col items-center justify-center">
+                            <i class="fa-solid fa-check-circle text-4xl text-green-300 mb-3"></i>
+                            <p class="text-gray-500 font-bold">Все заявки обработаны</p>
+                        </div>`;
+                    return;
+                }
+
+                container.innerHTML = pendingRequests.map(req => {
+                    const isDep = req.type === 'DEPOSIT';
+                    const typeColor = isDep ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700';
+                    const typeText = isDep ? 'ПОПОЛНЕНИЕ' : 'ВЫВОД';
+                    
+                    return `
+                    <div class="req-card bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4" id="req-${req.reqId}">
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="${typeColor} text-[10px] font-black px-2 py-1 rounded uppercase tracking-wider">${typeText}</span>
+                                <span class="text-xs text-gray-400 font-mono"><i class="fa-regular fa-clock"></i> ${new Date(req.time).toLocaleTimeString()}</span>
+                            </div>
+                            <h4 class="font-bold text-gray-800 text-lg">${req.userName} <span class="text-xs font-normal text-gray-400 ml-1">ID: ${req.userId}</span></h4>
+                            <p class="text-sm text-gray-600 mt-1">Сумма: <span class="font-black text-gray-900 text-lg">${req.amount} ₽</span></p>
+                        </div>
+                        <div class="flex w-full sm:w-auto gap-2">
+                            <button onclick="Admin.reject('${req.reqId}')" class="flex-1 sm:flex-none bg-red-50 text-red-600 border border-red-100 px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-red-500 hover:text-white transition">Отклонить</button>
+                            <button onclick="Admin.approve('${req.reqId}', '${req.userId}', ${req.amount}, ${isDep})" class="flex-1 sm:flex-none bg-gray-900 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-yellow-500 hover:text-black transition shadow-md">Подтвердить</button>
+                        </div>
+                    </div>
+                `}).join('');
+            },
+
+            async approve(reqId, userId, amount, isDeposit) {
+                // В реальном приложении тут логика обновления баланса юзера в TG
+                const el = document.getElementById(`req-${reqId}`);
+                el.innerHTML = `
+                    <div class="w-full flex items-center justify-center p-4 text-green-600 font-bold bg-green-50 rounded-xl border border-green-100">
+                        <i class="fa-solid fa-check-circle mr-2 text-xl"></i> Успешно проведено (${amount} ₽)
+                    </div>`;
+                setTimeout(() => {
+                    pendingRequests = pendingRequests.filter(r => r.reqId !== reqId);
+                    this.renderRequests();
+                }, 2000);
+            },
+
+            async reject(reqId) {
+                const el = document.getElementById(`req-${reqId}`);
+                el.innerHTML = `
+                    <div class="w-full flex items-center justify-center p-4 text-red-500 font-bold bg-red-50 rounded-xl border border-red-100">
+                        <i class="fa-solid fa-xmark-circle mr-2 text-xl"></i> Заявка отклонена
+                    </div>`;
+                setTimeout(() => {
+                    pendingRequests = pendingRequests.filter(r => r.reqId !== reqId);
+                    this.renderRequests();
+                }, 2000);
+            },
+
+            async saveSettings() {
+                const wallet = document.getElementById('walletInput').value;
+                if(!wallet) return this.showMessage("Ошибка", "Поле реквизитов не может быть пустым.");
+                
+                // Симуляция отправки
+                this.showMessage("Сохранено", "Настройки успешно сохранены. Игроки увидят новые реквизиты.");
+            }
+        };
+
+        window.onload = () => Admin.init();
+    </script>
+</body>
+</html>
