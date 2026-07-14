@@ -2,8 +2,8 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>METRO CASH | Nexus Admin Terminal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Nexus Admin | METRO CASH Ecosystem</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -22,378 +22,550 @@
                             rose: '#f43f5e',
                             slate: '#1e293b'
                         }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
                     }
                 }
             }
         }
     </script>
     <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
         body {
             background-color: #050505;
             color: #f8fafc;
             overflow: hidden;
             height: 100vh;
+            font-family: 'Outfit', sans-serif;
         }
 
         .glass-panel {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
         }
 
         .sidebar-item {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         .sidebar-item.active {
-            background: linear-gradient(90deg, rgba(251, 191, 36, 0.1) 0%, transparent 100%);
+            background: linear-gradient(90deg, rgba(251, 191, 36, 0.15) 0%, transparent 100%);
             border-right: 3px solid #fbbf24;
             color: #fbbf24;
+            padding-left: 1.5rem;
         }
 
         .stats-card {
-            background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: transform 0.3s ease;
+            background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
         }
-        .stats-card:hover { transform: translateY(-2px); border-color: rgba(251, 191, 36, 0.2); }
+        .stats-card:hover { 
+            transform: translateY(-5px); 
+            border-color: rgba(251, 191, 36, 0.3);
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
+        }
 
-        ::-webkit-scrollbar { width: 4px; }
+        .custom-table tr {
+            transition: all 0.2s ease;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+        .custom-table tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(251, 191, 36, 0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(251, 191, 36, 0.3); }
 
-        @keyframes pulse-glow {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
+        .shimmer {
+            position: relative; overflow: hidden;
         }
-        .live-indicator { animation: pulse-glow 2s infinite; }
+        .shimmer::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+            transform: rotate(45deg); animation: shimmer-anim 4s infinite;
+        }
+        @keyframes shimmer-anim { 0% { transform: translateX(-100%) rotate(45deg); } 100% { transform: translateX(100%) rotate(45deg); } }
+
+        @media (max-width: 1024px) {
+            .mobile-nav-active aside { transform: translateX(0); }
+            aside { transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
+        }
     </style>
 </head>
 <body class="flex h-screen">
 
     <!-- Sidebar -->
-    <aside class="w-72 bg-metro-black border-r border-white/5 flex flex-col hidden lg:flex shrink-0 z-50">
+    <aside class="fixed lg:relative w-72 h-full bg-metro-black border-r border-white/5 flex flex-col shrink-0 z-[100] lg:translate-x-0">
         <div class="p-8">
-            <div class="flex items-center gap-3 mb-10">
-                <div class="w-10 h-10 rounded-xl bg-metro-accent flex items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.3)]">
-                    <i class="fa-solid fa-terminal text-metro-black font-bold"></i>
+            <div class="flex items-center gap-4 mb-12">
+                <div class="w-12 h-12 rounded-2xl bg-metro-accent flex items-center justify-center shadow-[0_0_30px_rgba(251,191,36,0.3)] transform -rotate-6">
+                    <i class="fa-solid fa-microchip text-metro-black text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-lg font-black tracking-tighter uppercase italic">Nexus<span class="text-metro-accent">Admin</span></h1>
-                    <p class="text-[8px] text-white/40 font-bold uppercase tracking-[0.3em]">Terminal v4.1.0</p>
+                    <h1 class="text-xl font-black tracking-tighter uppercase italic leading-none">Nexus<span class="text-metro-accent">Core</span></h1>
+                    <p class="text-[8px] text-white/40 font-black uppercase tracking-[0.4em] mt-1">Admin Terminal v4.5</p>
                 </div>
             </div>
 
             <nav class="space-y-2">
-                <a href="#" class="sidebar-item active flex items-center gap-4 px-4 py-3.5 rounded-xl font-bold text-sm">
-                    <i class="fa-solid fa-chart-simple w-5"></i> Dashboard
-                </a>
-                <a href="#" class="sidebar-item text-white/40 hover:text-white hover:bg-white/5 flex items-center gap-4 px-4 py-3.5 rounded-xl font-bold text-sm">
-                    <i class="fa-solid fa-users-viewfinder w-5"></i> User Registry
-                </a>
-                <a href="#" class="sidebar-item text-white/40 hover:text-white hover:bg-white/5 flex items-center gap-4 px-4 py-3.5 rounded-xl font-bold text-sm">
-                    <i class="fa-solid fa-receipt w-5"></i> Transactions
-                </a>
-                <a href="#" class="sidebar-item text-white/40 hover:text-white hover:bg-white/5 flex items-center gap-4 px-4 py-3.5 rounded-xl font-bold text-sm">
-                    <i class="fa-solid fa-shield-halved w-5"></i> Security Logs
-                </a>
+                <button onclick="AdminUI.switchSection('dashboard')" class="sidebar-item active w-full flex items-center gap-4 px-4 py-4 rounded-xl font-bold text-xs uppercase tracking-widest" id="nav-dashboard">
+                    <i class="fa-solid fa-layer-group text-lg"></i> Dashboard
+                </button>
+                <button onclick="AdminUI.switchSection('users')" class="sidebar-item text-white/40 hover:text-white w-full flex items-center gap-4 px-4 py-4 rounded-xl font-bold text-xs uppercase tracking-widest" id="nav-users">
+                    <i class="fa-solid fa-user-astronaut text-lg"></i> User Registry
+                </button>
+                <button onclick="AdminUI.switchSection('lobby')" class="sidebar-item text-white/40 hover:text-white w-full flex items-center gap-4 px-4 py-4 rounded-xl font-bold text-xs uppercase tracking-widest" id="nav-lobby">
+                    <i class="fa-solid fa-sliders text-lg"></i> Lobby Config
+                </button>
+                <button onclick="AdminUI.switchSection('logs')" class="sidebar-item text-white/40 hover:text-white w-full flex items-center gap-4 px-4 py-4 rounded-xl font-bold text-xs uppercase tracking-widest" id="nav-logs">
+                    <i class="fa-solid fa-terminal text-lg"></i> System Logs
+                </button>
             </nav>
         </div>
 
         <div class="mt-auto p-8 border-t border-white/5">
-            <div class="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-metro-slate to-metro-black border border-white/10 flex items-center justify-center">
-                    <i class="fa-solid fa-user-tie text-metro-accent"></i>
+            <div class="glass-panel p-5 rounded-2xl border border-white/10 flex items-center gap-4">
+                <div class="relative">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-metro-slate to-metro-black border border-white/10 flex items-center justify-center">
+                        <i class="fa-solid fa-shield-halved text-metro-accent"></i>
+                    </div>
+                    <div class="absolute -top-1 -right-1 w-3 h-3 bg-metro-emerald rounded-full border-2 border-metro-black animate-pulse"></div>
                 </div>
                 <div class="overflow-hidden">
-                    <p class="text-xs font-black truncate">Root Architect</p>
-                    <p class="text-[9px] text-metro-emerald font-bold uppercase tracking-widest flex items-center gap-1">
-                        <span class="w-1 h-1 bg-metro-emerald rounded-full live-indicator"></span> Online
-                    </p>
+                    <p class="text-[10px] font-black truncate uppercase tracking-tighter">CTO Architect</p>
+                    <p class="text-[8px] text-metro-emerald font-black uppercase tracking-widest">Node Verified</p>
                 </div>
             </div>
         </div>
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 flex flex-col min-w-0 bg-[#080808]">
+    <main class="flex-1 flex flex-col min-w-0 bg-[#080808] relative">
         <!-- Header -->
-        <header class="h-20 border-b border-white/5 flex items-center justify-between px-8 bg-metro-black/50 backdrop-blur-xl shrink-0">
-            <div class="flex items-center gap-4">
-                <button class="lg:hidden w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10">
-                    <i class="fa-solid fa-bars-staggered"></i>
+        <header class="h-24 border-b border-white/5 flex items-center justify-between px-10 bg-metro-black/40 backdrop-blur-3xl shrink-0 z-50">
+            <div class="flex items-center gap-6">
+                <button onclick="document.body.classList.toggle('mobile-nav-active')" class="lg:hidden w-12 h-12 rounded-2xl glass-panel flex items-center justify-center border border-white/10 active:scale-90 transition-all">
+                    <i class="fa-solid fa-bars-staggered text-metro-accent"></i>
                 </button>
-                <h2 class="text-sm font-black uppercase tracking-[0.2em] text-white/60">System Overview</h2>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="hidden sm:flex items-center gap-2 px-4 py-2 bg-metro-emerald/10 border border-metro-emerald/20 rounded-full">
-                    <span class="w-1.5 h-1.5 bg-metro-emerald rounded-full animate-pulse"></span>
-                    <span class="text-[10px] font-black text-metro-emerald uppercase tracking-widest">Nexus Node Active</span>
+                <div>
+                    <h2 id="section-title" class="text-2xl font-black italic tracking-tighter uppercase">System <span class="text-metro-accent">Overview</span></h2>
+                    <p id="section-desc" class="text-[9px] text-white/30 font-black uppercase tracking-[0.3em] mt-1">Real-time synchronization active</p>
                 </div>
-                <button onclick="refreshData()" class="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition-all active:scale-90">
-                    <i class="fa-solid fa-arrows-rotate text-sm" id="refresh-icon"></i>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <div class="hidden md:flex flex-col items-end">
+                    <span class="text-[8px] font-black text-white/20 uppercase tracking-widest mb-1">Network Latency</span>
+                    <div class="flex items-center gap-2 text-[10px] font-bold text-metro-emerald">
+                        <i class="fa-solid fa-bolt-lightning animate-pulse"></i> 14ms
+                    </div>
+                </div>
+                <div class="h-10 w-[1px] bg-white/5"></div>
+                <button onclick="AdminUI.refresh()" class="w-12 h-12 rounded-2xl glass-panel hover:bg-white/5 border border-white/10 flex items-center justify-center transition-all active:rotate-180 duration-500">
+                    <i class="fa-solid fa-rotate-right text-metro-accent" id="refresh-icon"></i>
                 </button>
             </div>
         </header>
 
-        <!-- Scrollable Area -->
-        <div class="flex-1 overflow-y-auto p-8 space-y-8">
+        <!-- Content Area -->
+        <div class="flex-1 overflow-y-auto p-10 space-y-10" id="main-scroll-area">
             
-            <!-- Stats Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-                <div class="stats-card p-6 rounded-[2rem]">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500">
-                            <i class="fa-solid fa-users"></i>
+            <!-- SECTION: DASHBOARD -->
+            <div id="section-dashboard" class="admin-section space-y-10">
+                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+                    <div class="stats-card p-8 rounded-[2.5rem] relative overflow-hidden group">
+                        <div class="absolute -right-4 -top-4 w-24 h-24 bg-blue-500/5 rounded-full blur-2xl group-hover:bg-blue-500/10 transition-all"></div>
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 text-xl">
+                                <i class="fa-solid fa-users-rays"></i>
+                            </div>
+                            <span class="text-[10px] font-black text-metro-emerald bg-metro-emerald/10 px-3 py-1 rounded-full">+12.4%</span>
                         </div>
-                        <span class="text-[10px] font-black text-metro-emerald">+12%</span>
+                        <p class="text-[10px] font-black text-white/40 uppercase tracking-widest mb-2">Total Players</p>
+                        <h3 class="text-4xl font-black italic tracking-tighter" id="stat-users">0</h3>
                     </div>
-                    <p class="text-[10px] font-black text-white/40 uppercase tracking-widest mb-1">Total Players</p>
-                    <h3 class="text-3xl font-black italic tracking-tighter" id="stat-users">0</h3>
+
+                    <div class="stats-card p-8 rounded-[2.5rem] relative overflow-hidden group">
+                        <div class="absolute -right-4 -top-4 w-24 h-24 bg-metro-accent/5 rounded-full blur-2xl group-hover:bg-metro-accent/10 transition-all"></div>
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-12 h-12 rounded-2xl bg-metro-accent/10 flex items-center justify-center text-metro-accent text-xl">
+                                <i class="fa-solid fa-vault"></i>
+                            </div>
+                            <span class="text-[10px] font-black text-metro-accent animate-pulse">LIVE</span>
+                        </div>
+                        <p class="text-[10px] font-black text-white/40 uppercase tracking-widest mb-2">System Liquidity</p>
+                        <h3 class="text-4xl font-black italic tracking-tighter" id="stat-balance">0 ₽</h3>
+                    </div>
+
+                    <div class="stats-card p-8 rounded-[2.5rem] relative overflow-hidden group">
+                        <div class="absolute -right-4 -top-4 w-24 h-24 bg-metro-rose/5 rounded-full blur-2xl group-hover:bg-metro-rose/10 transition-all"></div>
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-12 h-12 rounded-2xl bg-metro-rose/10 flex items-center justify-center text-metro-rose text-xl">
+                                <i class="fa-solid fa-chart-pie"></i>
+                            </div>
+                            <span class="text-[10px] font-black text-white/20">AVG</span>
+                        </div>
+                        <p class="text-[10px] font-black text-white/40 uppercase tracking-widest mb-2">Net Revenue</p>
+                        <h3 class="text-4xl font-black italic tracking-tighter text-metro-accent">14,500 ₽</h3>
+                    </div>
+
+                    <div class="stats-card p-8 rounded-[2.5rem] relative overflow-hidden group">
+                        <div class="absolute -right-4 -top-4 w-24 h-24 bg-metro-emerald/5 rounded-full blur-2xl group-hover:bg-metro-emerald/10 transition-all"></div>
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-12 h-12 rounded-2xl bg-metro-emerald/10 flex items-center justify-center text-metro-emerald text-xl">
+                                <i class="fa-solid fa-satellite-dish"></i>
+                            </div>
+                            <span class="text-[10px] font-black text-metro-emerald">STABLE</span>
+                        </div>
+                        <p class="text-[10px] font-black text-white/40 uppercase tracking-widest mb-2">Active Nodes</p>
+                        <h3 class="text-4xl font-black italic tracking-tighter" id="stat-nodes">3</h3>
+                    </div>
                 </div>
 
-                <div class="stats-card p-6 rounded-[2rem]">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-metro-accent/10 flex items-center justify-center text-metro-accent">
-                            <i class="fa-solid fa-vault"></i>
+                <!-- Recent Activity Table -->
+                <div class="glass-panel rounded-[3rem] overflow-hidden shadow-2xl border border-white/5">
+                    <div class="px-10 py-8 border-b border-white/5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 bg-white/[0.01]">
+                        <div>
+                            <h3 class="text-xl font-black italic tracking-tighter uppercase">User <span class="text-metro-accent">Registry</span></h3>
+                            <p class="text-[9px] text-white/30 font-black uppercase tracking-widest mt-1">Direct access to Nexus database</p>
                         </div>
-                        <span class="text-[10px] font-black text-metro-accent">LIVE</span>
+                        <div class="relative w-full sm:w-80">
+                            <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-white/20 text-sm"></i>
+                            <input type="text" id="user-search" oninput="AdminUI.filterUsers()" placeholder="Search by ID or Alias..." class="w-full bg-black/40 border border-white/10 rounded-2xl py-4 pl-12 pr-6 text-xs font-bold focus:outline-none focus:border-metro-accent transition-all shadow-inner">
+                        </div>
                     </div>
-                    <p class="text-[10px] font-black text-white/40 uppercase tracking-widest mb-1">System Liquidity</p>
-                    <h3 class="text-3xl font-black italic tracking-tighter" id="stat-total-balance">0 ₽</h3>
-                </div>
 
-                <div class="stats-card p-6 rounded-[2rem]">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-metro-rose/10 flex items-center justify-center text-metro-rose">
-                            <i class="fa-solid fa-hand-holding-dollar"></i>
-                        </div>
-                        <span class="text-[10px] font-black text-white/40">AVG</span>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left custom-table">
+                            <thead>
+                                <tr class="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] border-b border-white/5 bg-white/[0.02]">
+                                    <th class="px-10 py-6">Identity</th>
+                                    <th class="px-10 py-6">Alias</th>
+                                    <th class="px-10 py-6">Vault Balance</th>
+                                    <th class="px-10 py-6 text-right">Operations</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body" class="divide-y divide-white/5">
+                                <!-- Dynamic Content -->
+                            </tbody>
+                        </table>
                     </div>
-                    <p class="text-[10px] font-black text-white/40 uppercase tracking-widest mb-1">Net Revenue</p>
-                    <h3 class="text-3xl font-black italic tracking-tighter text-metro-accent">14,500 ₽</h3>
-                </div>
-
-                <div class="stats-card p-6 rounded-[2rem]">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-metro-emerald/10 flex items-center justify-center text-metro-emerald">
-                            <i class="fa-solid fa-server"></i>
-                        </div>
-                        <span class="text-[10px] font-black text-metro-emerald">STABLE</span>
-                    </div>
-                    <p class="text-[10px] font-black text-white/40 uppercase tracking-widest mb-1">Active P2P Nodes</p>
-                    <h3 class="text-3xl font-black italic tracking-tighter" id="stat-nodes">3</h3>
                 </div>
             </div>
 
-            <!-- Main Table Section -->
-            <div class="glass-panel rounded-[2.5rem] overflow-hidden shadow-2xl">
-                <div class="px-8 py-6 border-b border-white/5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white/[0.01]">
-                    <div>
-                        <h3 class="text-xl font-black italic tracking-tighter uppercase">User <span class="text-metro-accent">Database</span></h3>
-                        <p class="text-[9px] text-white/40 font-black uppercase tracking-widest mt-1">Real-time synchronization with Telegram API</p>
+            <!-- SECTION: LOBBY CONFIG -->
+            <div id="section-lobby" class="admin-section hidden space-y-10">
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-10">
+                    <div class="glass-panel p-10 rounded-[3rem] space-y-8">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-metro-accent/10 flex items-center justify-center text-metro-accent text-xl">
+                                <i class="fa-solid fa-gears"></i>
+                            </div>
+                            <h3 class="text-xl font-black italic uppercase tracking-tighter">Global <span class="text-metro-accent">Parameters</span></h3>
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-[9px] font-black text-white/40 uppercase tracking-widest mb-3 ml-1">System Commission (%)</label>
+                                <input type="number" id="cfg-commission" value="10" class="w-full bg-black/40 border border-white/10 rounded-2xl px-6 py-4 text-xl font-black text-metro-accent focus:outline-none focus:border-metro-accent transition-all">
+                            </div>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-[9px] font-black text-white/40 uppercase tracking-widest mb-3 ml-1">Min Stake (RUB)</label>
+                                    <input type="number" id="cfg-min-stake" value="50" class="w-full bg-black/40 border border-white/10 rounded-2xl px-6 py-4 text-lg font-black text-white focus:outline-none focus:border-metro-accent transition-all">
+                                </div>
+                                <div>
+                                    <label class="block text-[9px] font-black text-white/40 uppercase tracking-widest mb-3 ml-1">Max Stake (RUB)</label>
+                                    <input type="number" id="cfg-max-stake" value="50000" class="w-full bg-black/40 border border-white/10 rounded-2xl px-6 py-4 text-lg font-black text-white focus:outline-none focus:border-metro-accent transition-all">
+                                </div>
+                            </div>
+                            <button onclick="AdminUI.saveConfig()" class="shimmer w-full bg-metro-accent text-metro-black py-5 rounded-2xl font-black text-xs uppercase italic tracking-tighter shadow-accent-glow hover:scale-[1.02] active:scale-95 transition-all">
+                                Update Global Protocol
+                            </button>
+                        </div>
                     </div>
-                    <div class="relative w-full sm:w-64">
-                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-white/20 text-xs"></i>
-                        <input type="text" placeholder="Search by ID or Name..." class="w-full bg-white/5 border border-white/10 rounded-xl py-2.5 pl-10 pr-4 text-xs font-bold focus:outline-none focus:border-metro-accent transition-all">
-                    </div>
-                </div>
 
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left">
-                        <thead>
-                            <tr class="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] border-b border-white/5 bg-white/[0.02]">
-                                <th class="px-8 py-5">Telegram Identity</th>
-                                <th class="px-8 py-5">Player Alias</th>
-                                <th class="px-8 py-5">Vault Balance</th>
-                                <th class="px-8 py-5 text-right">Operations</th>
-                            </tr>
-                        </thead>
-                        <tbody id="users-table-body" class="divide-y divide-white/5">
-                            <!-- Dynamic Rows -->
-                            <tr><td colspan="4" class="px-8 py-20 text-center text-white/20 font-black uppercase tracking-widest text-xs">Initializing Data Stream...</td></tr>
-                        </tbody>
-                    </table>
+                    <div class="glass-panel p-10 rounded-[3rem] space-y-8">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 text-xl">
+                                <i class="fa-solid fa-gamepad"></i>
+                            </div>
+                            <h3 class="text-xl font-black italic uppercase tracking-tighter">Game <span class="text-blue-500">Availability</span></h3>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-6 rounded-2xl bg-white/5 border border-white/5">
+                                <div class="flex items-center gap-4">
+                                    <i class="fa-solid fa-suit-spades text-metro-accent text-xl"></i>
+                                    <span class="font-black text-sm uppercase tracking-widest">Blackjack Elite</span>
+                                </div>
+                                <div class="w-12 h-6 bg-metro-emerald/20 rounded-full relative cursor-pointer border border-metro-emerald/30">
+                                    <div class="absolute right-1 top-1 w-4 h-4 bg-metro-emerald rounded-full"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-6 rounded-2xl bg-white/5 border border-white/5">
+                                <div class="flex items-center gap-4">
+                                    <i class="fa-solid fa-cards text-blue-500 text-xl"></i>
+                                    <span class="font-black text-sm uppercase tracking-widest">Durak P2P</span>
+                                </div>
+                                <div class="w-12 h-6 bg-metro-emerald/20 rounded-full relative cursor-pointer border border-metro-emerald/30">
+                                    <div class="absolute right-1 top-1 w-4 h-4 bg-metro-emerald rounded-full"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-6 rounded-2xl bg-white/5 border border-white/5 opacity-40">
+                                <div class="flex items-center gap-4">
+                                    <i class="fa-solid fa-dice text-metro-rose text-xl"></i>
+                                    <span class="font-black text-sm uppercase tracking-widest">Nexus Poker (Coming Soon)</span>
+                                </div>
+                                <div class="w-12 h-6 bg-white/10 rounded-full relative cursor-not-allowed">
+                                    <div class="absolute left-1 top-1 w-4 h-4 bg-white/20 rounded-full"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Edit Modal -->
-    <div id="edit-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-6">
-        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" onclick="closeEditModal()"></div>
-        <div class="glass-panel rounded-[3rem] p-10 w-full max-w-md relative animate-in fade-in zoom-in duration-300">
-            <div class="flex items-center gap-4 mb-8">
-                <div class="w-12 h-12 rounded-2xl bg-metro-accent/10 flex items-center justify-center text-metro-accent text-xl">
+    <!-- Modal: Edit Balance -->
+    <div id="modal-edit" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-6">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-xl" onclick="AdminUI.closeModal()"></div>
+        <div class="glass-panel rounded-[3.5rem] p-12 w-full max-w-md relative animate-in fade-in zoom-in duration-300 border border-white/10 shadow-premium">
+            <div class="flex items-center gap-5 mb-10">
+                <div class="w-14 h-14 rounded-2xl bg-metro-accent/10 flex items-center justify-center text-metro-accent text-2xl">
                     <i class="fa-solid fa-pen-nib"></i>
                 </div>
                 <div>
-                    <h3 class="text-2xl font-black italic tracking-tighter uppercase">Modify <span class="text-metro-accent">Balance</span></h3>
-                    <p class="text-[9px] text-white/40 font-black uppercase tracking-widest" id="modal-user-name">User Name</p>
+                    <h3 class="text-2xl font-black italic tracking-tighter uppercase">Modify <span class="text-metro-accent">Vault</span></h3>
+                    <p class="text-[9px] text-white/40 font-black uppercase tracking-widest" id="modal-user-name">User Alias</p>
                 </div>
             </div>
 
             <input type="hidden" id="modal-user-id">
-            <div class="space-y-6">
+            <div class="space-y-8">
                 <div>
-                    <label class="block text-[9px] font-black text-white/40 uppercase tracking-widest mb-3 ml-1">New Credit Value (RUB)</label>
+                    <label class="block text-[9px] font-black text-white/40 uppercase tracking-widest mb-4 ml-1">New Credit Value (RUB)</label>
                     <div class="relative">
-                        <input type="number" id="modal-balance-input" class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-5 text-2xl font-black focus:outline-none focus:border-metro-accent transition-all text-white shadow-inner">
-                        <i class="fa-solid fa-coins absolute right-6 top-1/2 -translate-y-1/2 text-metro-accent"></i>
+                        <input type="number" id="modal-balance-input" class="w-full bg-black/50 border border-white/10 rounded-2xl px-8 py-6 text-3xl font-black focus:outline-none focus:border-metro-accent transition-all text-white shadow-inner">
+                        <i class="fa-solid fa-coins absolute right-8 top-1/2 -translate-y-1/2 text-metro-accent text-xl"></i>
                     </div>
                 </div>
 
-                <div class="flex gap-4 pt-4">
-                    <button onclick="closeEditModal()" class="flex-1 py-5 rounded-2xl bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition">Cancel</button>
-                    <button onclick="saveNewBalance()" class="flex-[2] py-5 rounded-2xl bg-metro-accent text-metro-black text-[10px] font-black uppercase tracking-widest shadow-[0_0_30px_rgba(251,191,36,0.2)] hover:scale-[1.02] active:scale-95 transition-all">Apply Changes</button>
+                <div class="flex gap-4">
+                    <button onclick="AdminUI.closeModal()" class="flex-1 py-5 rounded-2xl bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition">Cancel</button>
+                    <button onclick="AdminUI.saveBalance()" class="shimmer flex-[2] py-5 rounded-2xl bg-metro-accent text-metro-black text-[10px] font-black uppercase tracking-widest shadow-accent-glow hover:scale-[1.02] active:scale-95 transition-all">Apply Changes</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Toast Notifications -->
-    <div id="toast-container" class="fixed bottom-8 right-8 flex flex-col gap-3 z-[200]"></div>
+    <div id="toast-container" class="fixed bottom-10 right-10 flex flex-col gap-4 z-[300]"></div>
 
     <script>
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            const isSuccess = type === 'success';
-            
-            toast.className = `glass-panel px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-4 border-l-4 ${isSuccess ? 'border-metro-emerald' : 'border-metro-rose'} animate-in slide-in-from-right duration-300`;
-            toast.innerHTML = `
-                <div class="w-8 h-8 rounded-lg ${isSuccess ? 'bg-metro-emerald/10 text-metro-emerald' : 'bg-metro-rose/10 text-metro-rose'} flex items-center justify-center">
-                    <i class="fa-solid ${isSuccess ? 'fa-check' : 'fa-exclamation'}"></i>
-                </div>
-                <span class="text-xs font-black uppercase tracking-tight">${message}</span>
-            `;
-            
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.classList.add('animate-out', 'fade-out', 'slide-out-to-right');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
+        /**
+         * NEXUS ARCHITECT - ADMIN CORE v4.5
+         * Optimized for massive updates and adaptive UI.
+         */
 
-        function loadUsersData() {
-            let users = {};
-            let totalVolume = 0;
-            
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key.startsWith('metro_user_id_')) {
-                    const id = localStorage.getItem(key);
-                    if (!users[id]) users[id] = { id: id };
-                }
-                if (key.startsWith('metro_user_name_')) {
-                    const id = key.replace('metro_user_name_', '');
-                    if (!users[id]) users[id] = { id: id };
-                    users[id].name = localStorage.getItem(key);
-                }
-                if (key.startsWith('metro_balance_')) {
-                    const id = key.replace('metro_balance_', '');
-                    if (!users[id]) users[id] = { id: id };
-                    users[id].balance = parseFloat(localStorage.getItem(key)) || 0;
-                }
-            }
+        const AdminUI = {
+            users: [],
+            currentSection: 'dashboard',
 
-            const tbody = document.getElementById('users-table-body');
-            tbody.innerHTML = '';
-            let userCount = 0;
-            
-            for (let id in users) {
-                if(!users[id].name) continue;
-                userCount++;
-                let bal = users[id].balance || 0;
-                totalVolume += bal;
+            init() {
+                this.loadData();
+                this.refresh();
+                setInterval(() => this.loadData(), 5000);
+            },
+
+            switchSection(id) {
+                this.currentSection = id;
+                document.querySelectorAll('.admin-section').forEach(s => s.classList.add('hidden'));
+                document.getElementById(`section-${id}`).classList.remove('hidden');
                 
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-white/[0.02] transition-colors group";
-                tr.innerHTML = `
-                    <td class="px-8 py-5 whitespace-nowrap">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-[10px] font-mono text-white/40 group-hover:text-metro-accent transition-colors">ID</div>
-                            <span class="text-xs font-mono text-white/60">${id}</span>
-                        </div>
-                    </td>
-                    <td class="px-8 py-5 whitespace-nowrap">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-metro-accent to-metro-gold flex items-center justify-center text-metro-black text-[10px] font-black">
-                                ${users[id].name.charAt(0)}
+                document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active', 'text-white'));
+                document.getElementById(`nav-${id}`).classList.add('active');
+                
+                const titles = {
+                    dashboard: { t: 'System <span class="text-metro-accent">Overview</span>', d: 'Real-time synchronization active' },
+                    users: { t: 'User <span class="text-metro-accent">Registry</span>', d: 'Manage network participants' },
+                    lobby: { t: 'Lobby <span class="text-metro-accent">Protocol</span>', d: 'Configure game parameters' },
+                    logs: { t: 'Security <span class="text-metro-accent">Logs</span>', d: 'Audit system activity' }
+                };
+                
+                document.getElementById('section-title').innerHTML = titles[id].t;
+                document.getElementById('section-desc').textContent = titles[id].d;
+                
+                if (window.innerWidth < 1024) document.body.classList.remove('mobile-nav-active');
+            },
+
+            loadData() {
+                const usersMap = {};
+                let totalBalance = 0;
+                
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key.startsWith('metro_user_id_')) {
+                        const id = localStorage.getItem(key);
+                        if (!usersMap[id]) usersMap[id] = { id };
+                    }
+                    if (key.startsWith('metro_user_name_')) {
+                        const id = key.replace('metro_user_name_', '');
+                        if (!usersMap[id]) usersMap[id] = { id };
+                        usersMap[id].name = localStorage.getItem(key);
+                    }
+                    if (key.startsWith('metro_balance_')) {
+                        const id = key.replace('metro_balance_', '');
+                        if (!usersMap[id]) usersMap[id] = { id };
+                        usersMap[id].balance = parseFloat(localStorage.getItem(key)) || 0;
+                    }
+                }
+
+                this.users = Object.values(usersMap).filter(u => u.name);
+                this.users.forEach(u => totalBalance += (u.balance || 0));
+
+                document.getElementById('stat-users').textContent = this.users.length;
+                document.getElementById('stat-balance').textContent = `${Math.floor(totalBalance).toLocaleString()} ₽`;
+                document.getElementById('stat-nodes').textContent = Math.floor(Math.random() * 3) + 4;
+                
+                this.renderUsers();
+            },
+
+            renderUsers(filter = '') {
+                const tbody = document.getElementById('users-table-body');
+                const filtered = this.users.filter(u => 
+                    u.id.includes(filter) || u.name.toLowerCase().includes(filter.toLowerCase())
+                );
+
+                if (filtered.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="px-10 py-24 text-center text-white/10 font-black uppercase tracking-[0.3em] text-xs">No matching nodes found</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = filtered.map((u, i) => `
+                    <tr class="animate-in fade-in slide-in-from-bottom-2 duration-300" style="animation-delay: ${i * 50}px">
+                        <td class="px-10 py-6 whitespace-nowrap">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-[10px] font-mono text-white/30">ID</div>
+                                <span class="text-xs font-mono text-white/60">${u.id}</span>
                             </div>
-                            <span class="text-sm font-black italic uppercase tracking-tight">${users[id].name}</span>
-                        </div>
-                    </td>
-                    <td class="px-8 py-5 whitespace-nowrap">
-                        <span class="text-sm font-black text-metro-emerald tracking-tighter">${bal.toLocaleString()} ₽</span>
-                    </td>
-                    <td class="px-8 py-5 whitespace-nowrap text-right">
-                        <button onclick="openEditModal('${id}', '${users[id].name}', ${bal})" class="px-4 py-2 rounded-xl bg-white/5 hover:bg-metro-accent hover:text-metro-black border border-white/10 text-[9px] font-black uppercase tracking-widest transition-all">
-                            Edit Balance
-                        </button>
-                    </td>
+                        </td>
+                        <td class="px-10 py-6 whitespace-nowrap">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-metro-accent to-metro-gold flex items-center justify-center text-metro-black text-[10px] font-black shadow-lg">
+                                    ${u.name.charAt(0)}
+                                </div>
+                                <span class="text-sm font-black italic uppercase tracking-tight">${u.name}</span>
+                            </div>
+                        </td>
+                        <td class="px-10 py-6 whitespace-nowrap">
+                            <span class="text-sm font-black text-metro-emerald tracking-tighter">${(u.balance || 0).toLocaleString()} ₽</span>
+                        </td>
+                        <td class="px-10 py-6 whitespace-nowrap text-right">
+                            <button onclick="AdminUI.openModal('${u.id}', '${u.name}', ${u.balance || 0})" class="px-6 py-3 rounded-xl bg-white/5 hover:bg-metro-accent hover:text-metro-black border border-white/10 text-[9px] font-black uppercase tracking-widest transition-all">
+                                Edit Vault
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            },
+
+            filterUsers() {
+                const val = document.getElementById('user-search').value;
+                this.renderUsers(val);
+            },
+
+            openModal(id, name, bal) {
+                document.getElementById('modal-user-id').value = id;
+                document.getElementById('modal-user-name').textContent = `Modifying: ${name}`;
+                document.getElementById('modal-balance-input').value = bal;
+                document.getElementById('modal-edit').classList.remove('hidden');
+            },
+
+            closeModal() {
+                document.getElementById('modal-edit').classList.add('hidden');
+            },
+
+            saveBalance() {
+                const id = document.getElementById('modal-user-id').value;
+                const bal = parseFloat(document.getElementById('modal-balance-input').value);
+                
+                if (isNaN(bal) || bal < 0) return this.toast('Invalid balance value', 'error');
+
+                localStorage.setItem('metro_balance_' + id, bal);
+                
+                // Sync with vault object if exists
+                const vaultStr = localStorage.getItem('metro_vault');
+                if (vaultStr) {
+                    const vault = JSON.parse(vaultStr);
+                    if (id === '666999') { // Default ID from app
+                        vault.balance = bal;
+                        localStorage.setItem('metro_vault', JSON.stringify(vault));
+                    }
+                }
+
+                this.closeModal();
+                this.loadData();
+                this.toast('Vault updated successfully');
+            },
+
+            saveConfig() {
+                this.toast('Global protocol updated', 'success');
+                const icon = document.getElementById('refresh-icon');
+                icon.classList.add('fa-spin');
+                setTimeout(() => icon.classList.remove('fa-spin'), 1000);
+            },
+
+            refresh() {
+                const icon = document.getElementById('refresh-icon');
+                icon.classList.add('fa-spin');
+                this.loadData();
+                setTimeout(() => {
+                    icon.classList.remove('fa-spin');
+                    this.toast('Nexus Node Synchronized');
+                }, 800);
+            },
+
+            toast(msg, type = 'success') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                const isSuccess = type === 'success';
+                
+                toast.className = `glass-panel px-8 py-5 rounded-[1.5rem] shadow-2xl flex items-center gap-5 border-l-4 ${isSuccess ? 'border-metro-emerald' : 'border-metro-rose'} animate-in slide-in-from-right duration-500`;
+                toast.innerHTML = `
+                    <div class="w-10 h-10 rounded-xl ${isSuccess ? 'bg-metro-emerald/10 text-metro-emerald' : 'bg-metro-rose/10 text-metro-rose'} flex items-center justify-center text-lg">
+                        <i class="fa-solid ${isSuccess ? 'fa-circle-check' : 'fa-triangle-exclamation'}"></i>
+                    </div>
+                    <span class="text-[10px] font-black uppercase tracking-widest">${msg}</span>
                 `;
-                tbody.appendChild(tr);
+                
+                container.appendChild(toast);
+                setTimeout(() => {
+                    toast.classList.add('animate-out', 'fade-out', 'slide-out-to-right');
+                    setTimeout(() => toast.remove(), 500);
+                }, 3000);
             }
-            
-            if (userCount === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="px-8 py-20 text-center text-white/20 font-black uppercase tracking-widest text-xs">No active nodes detected in the network.</td></tr>`;
-            }
-
-            document.getElementById('stat-users').innerText = userCount;
-            document.getElementById('stat-total-balance').innerText = `${Math.floor(totalVolume).toLocaleString()} ₽`;
-            document.getElementById('stat-nodes').innerText = Math.floor(Math.random() * 2) + 2;
-        }
-
-        function openEditModal(userId, userName, currentBalance) {
-            document.getElementById('modal-user-id').value = userId;
-            document.getElementById('modal-user-name').innerText = `Modifying: ${userName}`;
-            document.getElementById('modal-balance-input').value = currentBalance;
-            document.getElementById('edit-modal').classList.remove('hidden');
-        }
-
-        function closeEditModal() {
-            document.getElementById('edit-modal').classList.add('hidden');
-        }
-
-        function saveNewBalance() {
-            const userId = document.getElementById('modal-user-id').value;
-            const newBal = parseFloat(document.getElementById('modal-balance-input').value);
-            
-            if (isNaN(newBal) || newBal < 0) {
-                showToast('Invalid balance value', 'error');
-                return;
-            }
-
-            localStorage.setItem('metro_balance_' + userId, newBal);
-            
-            // Also update the vault object if it exists for this user (simulated)
-            const vaultStr = localStorage.getItem('metro_vault');
-            if (vaultStr) {
-                const vault = JSON.parse(vaultStr);
-                vault.balance = newBal;
-                localStorage.setItem('metro_vault', JSON.stringify(vault));
-            }
-            
-            closeEditModal();
-            loadUsersData();
-            showToast('Balance updated successfully');
-        }
-
-        function refreshData() {
-            const icon = document.getElementById('refresh-icon');
-            icon.classList.add('fa-spin');
-            loadUsersData();
-            setTimeout(() => {
-                icon.classList.remove('fa-spin');
-                showToast('Nexus Node Synchronized');
-            }, 800);
-        }
-
-        window.onload = () => {
-            loadUsersData();
-            setInterval(loadUsersData, 5000);
         };
+
+        window.onload = () => AdminUI.init();
     </script>
 </body>
 </html>

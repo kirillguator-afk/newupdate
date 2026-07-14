@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>METRO CASH | NEXUS ARCHITECT</title>
+    <title>METRO CASH | NEXUS ARCHITECT HUB</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -29,19 +29,20 @@
                     boxShadow: {
                         'premium': '0 25px 50px -12px rgba(0, 0, 0, 0.8)',
                         'glow': '0 0 20px rgba(251, 191, 36, 0.15)',
-                        'accent-glow': '0 0 30px rgba(251, 191, 36, 0.4)',
+                        'accent-glow': '0 0 40px rgba(251, 191, 36, 0.4)',
                         'inner-light': 'inset 0 1px 1px rgba(255, 255, 255, 0.05)'
                     },
                     animation: {
-                        'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-                        'fade-in': 'fadeIn 0.3s ease-out forwards',
-                        'shimmer': 'shimmer 2.5s infinite linear',
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'slide-up': 'slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'fade-in': 'fadeIn 0.4s ease-out forwards',
+                        'shimmer': 'shimmer 3s infinite linear',
+                        'float': 'float 6s ease-in-out infinite',
                     },
                     keyframes: {
-                        slideUp: { '0%': { transform: 'translateY(20px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+                        slideUp: { '0%': { transform: 'translateY(30px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
                         fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-                        shimmer: { '0%': { transform: 'translateX(-100%) rotate(45deg)' }, '100%': { transform: 'translateX(100%) rotate(45deg)' } }
+                        shimmer: { '0%': { transform: 'translateX(-100%) rotate(45deg)' }, '100%': { transform: 'translateX(100%) rotate(45deg)' } },
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } }
                     }
                 }
             }
@@ -63,55 +64,51 @@
             overflow: hidden;
             height: 100vh;
             font-family: 'Outfit', sans-serif;
-            background-image: radial-gradient(circle at 50% -20%, #1e293b 0%, #050505 80%);
+            background-image: radial-gradient(circle at 50% -20%, #1e293b 0%, #050505 85%);
         }
 
         .glass { 
-            background: rgba(255, 255, 255, 0.03); 
-            backdrop-filter: blur(25px); 
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.08); 
+            background: rgba(255, 255, 255, 0.02); 
+            backdrop-filter: blur(30px); 
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.06); 
         }
 
         .tab-content { display: none; height: 100%; }
-        .tab-content.active { display: block; animation: fadeIn 0.4s ease-out; }
+        .tab-content.active { display: block; animation: fadeIn 0.5s ease-out; }
         
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
         .active-nav { 
             color: #fbbf24; 
-            transform: translateY(-4px); 
-            filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.4)); 
+            transform: translateY(-6px); 
+            filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.5)); 
         }
 
         .shimmer-btn { position: relative; overflow: hidden; }
         .shimmer-btn::after {
             content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.15), transparent);
             transform: rotate(45deg); animation: shimmer 3s infinite;
         }
 
-        .p2p-card { transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1); border: 1px solid rgba(255,255,255,0.05); }
-        .p2p-card:active { transform: scale(0.97); background: rgba(255,255,255,0.08); border-color: rgba(251, 191, 36, 0.3); }
-
-        .vip-progress-glow {
-            box-shadow: 0 0 15px rgba(251, 191, 36, 0.3), inset 0 0 5px rgba(255, 255, 255, 0.2);
-        }
+        .p2p-card { transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
+        .p2p-card:active { transform: scale(0.96); background: rgba(255,255,255,0.08); }
 
         .feed-mask {
-            mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
         }
+
+        .toggle-checkbox:checked + .toggle-label { background-color: #fbbf24; }
+        .toggle-checkbox:checked + .toggle-label .toggle-dot { transform: translateX(100%); background-color: #050505; }
 
         input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
+        input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 
         .noise-bg {
-            position: fixed; inset: 0; z-index: -1; opacity: 0.02; pointer-events: none;
+            position: fixed; inset: 0; z-index: -1; opacity: 0.03; pointer-events: none;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
     </style>
@@ -120,48 +117,48 @@
     <div class="noise-bg"></div>
 
     <!-- Header HUD -->
-    <header class="pt-[calc(var(--safe-top)+1.25rem)] px-6 pb-5 flex justify-between items-center z-50 bg-black/40 backdrop-blur-3xl border-b border-white/5">
+    <header class="pt-[calc(var(--safe-top)+1.5rem)] px-6 pb-6 flex justify-between items-center z-50 bg-black/40 backdrop-blur-3xl border-b border-white/5">
         <div class="flex items-center gap-4">
             <div class="relative">
-                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-metro-accent to-metro-gold flex items-center justify-center shadow-accent-glow transform -rotate-3">
-                    <i class="fa-solid fa-bolt-lightning text-metro-black text-lg"></i>
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-metro-accent to-metro-gold flex items-center justify-center shadow-accent-glow transform -rotate-3 animate-float">
+                    <i class="fa-solid fa-bolt-lightning text-metro-black text-xl"></i>
                 </div>
-                <div class="absolute -top-1 -right-1 w-3 h-3 bg-metro-emerald rounded-full border-2 border-metro-black animate-pulse"></div>
+                <div class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-metro-emerald rounded-full border-2 border-metro-black animate-pulse"></div>
             </div>
             <div>
-                <h1 class="font-black text-xl tracking-tighter uppercase italic leading-none">Metro<span class="text-metro-accent">Cash</span></h1>
-                <div class="flex items-center gap-1.5 mt-1">
-                    <span class="w-1.5 h-1.5 bg-metro-emerald rounded-full"></span>
-                    <p class="text-[8px] text-metro-muted font-black uppercase tracking-[0.2em]">P2P Node: Online</p>
+                <h1 class="font-black text-2xl tracking-tighter uppercase italic leading-none">Metro<span class="text-metro-accent">Cash</span></h1>
+                <div class="flex items-center gap-1.5 mt-1.5">
+                    <span class="w-2 h-2 bg-metro-emerald rounded-full"></span>
+                    <p class="text-[9px] text-metro-muted font-black uppercase tracking-[0.25em]">Nexus Node: Active</p>
                 </div>
             </div>
         </div>
         
-        <div onclick="NexusApp.switchTab('profile')" class="flex items-center gap-3 bg-white/5 border border-white/10 pl-4 pr-2 py-1.5 rounded-2xl cursor-pointer active:scale-95 transition-all shadow-inner-light">
+        <div onclick="NexusApp.switchTab('profile')" class="flex items-center gap-3 bg-white/5 border border-white/10 pl-4 pr-2 py-2 rounded-2xl cursor-pointer active:scale-95 transition-all shadow-inner-light">
             <div class="text-right">
-                <span class="block text-[7px] text-metro-muted font-black uppercase leading-none mb-1">Vault</span>
-                <span class="text-sm font-black text-white tracking-tight" id="ui-balance">0 ₽</span>
+                <span class="block text-[8px] text-metro-muted font-black uppercase leading-none mb-1">Vault</span>
+                <span class="text-base font-black text-white tracking-tight" id="ui-balance">0 ₽</span>
             </div>
-            <img id="ui-avatar" src="https://ui-avatars.com/api/?background=fbbf24&color=000&name=U" class="w-9 h-9 rounded-xl border border-white/10 object-cover shadow-lg" alt="Avatar">
+            <img id="ui-avatar" src="https://ui-avatars.com/api/?background=fbbf24&color=000&name=U" class="w-10 h-10 rounded-xl border border-white/10 object-cover shadow-lg" alt="Avatar">
         </div>
     </header>
 
     <!-- Main Viewport -->
-    <main class="flex-1 overflow-y-auto hide-scrollbar px-6 pb-40 pt-6">
+    <main class="flex-1 overflow-y-auto hide-scrollbar px-6 pb-44 pt-6">
         
         <!-- TAB: HOME -->
         <div id="tab-home" class="tab-content active space-y-8">
             <!-- Hero Section -->
-            <div class="relative group overflow-hidden rounded-[2.5rem] aspect-[16/10] flex flex-col justify-end p-8 shadow-premium border border-white/10">
+            <div class="relative group overflow-hidden rounded-[3rem] aspect-[16/10] flex flex-col justify-end p-8 shadow-premium border border-white/10">
                 <div class="absolute inset-0 bg-gradient-to-t from-metro-black via-metro-black/40 to-transparent z-10"></div>
                 <img src="https://images.unsplash.com/photo-1606167668584-78701c57f13d?q=80&w=1000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover scale-105 group-hover:scale-110 transition-transform duration-1000" alt="Banner">
                 <div class="relative z-20">
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="bg-metro-accent text-metro-black text-[9px] font-black px-3 py-1 rounded-full shadow-lg">LIVE ARENA</span>
-                        <span class="text-white/60 text-[9px] font-bold uppercase tracking-widest">Real-time P2P</span>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="bg-metro-accent text-metro-black text-[10px] font-black px-4 py-1.5 rounded-full shadow-lg">LIVE ARENA</span>
+                        <span class="text-white/70 text-[10px] font-bold uppercase tracking-widest">Real-time P2P</span>
                     </div>
-                    <h2 class="text-4xl font-black leading-none mb-5 italic tracking-tighter uppercase">Nexus<br><span class="text-metro-accent text-5xl">Durak Elite</span></h2>
-                    <button onclick="NexusApp.switchTab('lobby')" class="shimmer-btn bg-white text-metro-black px-8 py-3.5 rounded-2xl font-black text-xs flex items-center gap-3 shadow-2xl active:scale-95 transition-all uppercase tracking-tighter">
+                    <h2 class="text-4xl font-black leading-none mb-6 italic tracking-tighter uppercase">Nexus<br><span class="text-metro-accent text-5xl">Durak Elite</span></h2>
+                    <button onclick="NexusApp.switchTab('lobby')" class="shimmer-btn bg-white text-metro-black px-10 py-4 rounded-2xl font-black text-xs flex items-center gap-3 shadow-2xl active:scale-95 transition-all uppercase tracking-tighter">
                         Enter Lobby <i class="fa-solid fa-chevron-right text-[10px]"></i>
                     </button>
                 </div>
@@ -169,188 +166,217 @@
 
             <!-- Quick Stats Grid -->
             <div class="grid grid-cols-3 gap-4">
-                <div class="glass rounded-[2rem] p-5 text-center border-b-2 border-metro-accent/20 shadow-inner-light">
-                    <div class="w-9 h-9 rounded-xl bg-metro-accent/10 flex items-center justify-center mx-auto mb-3">
-                        <i class="fa-solid fa-trophy text-metro-accent text-sm"></i>
+                <div class="glass rounded-[2.5rem] p-6 text-center border-b-2 border-metro-accent/20 shadow-inner-light hover:bg-white/5 transition-colors">
+                    <div class="w-10 h-10 rounded-xl bg-metro-accent/10 flex items-center justify-center mx-auto mb-3">
+                        <i class="fa-solid fa-trophy text-metro-accent text-base"></i>
                     </div>
-                    <div class="text-lg font-black" id="ui-stat-wins">0</div>
-                    <div class="text-[7px] text-metro-muted font-black uppercase tracking-widest mt-1">Wins</div>
+                    <div class="text-xl font-black" id="ui-stat-wins">0</div>
+                    <div class="text-[8px] text-metro-muted font-black uppercase tracking-widest mt-1.5">Wins</div>
                 </div>
-                <div class="glass rounded-[2rem] p-5 text-center border-b-2 border-metro-emerald/20 shadow-inner-light">
-                    <div class="w-9 h-9 rounded-xl bg-metro-emerald/10 flex items-center justify-center mx-auto mb-3">
-                        <i class="fa-solid fa-shield-check text-metro-emerald text-sm"></i>
+                <div class="glass rounded-[2.5rem] p-6 text-center border-b-2 border-metro-emerald/20 shadow-inner-light hover:bg-white/5 transition-colors">
+                    <div class="w-10 h-10 rounded-xl bg-metro-emerald/10 flex items-center justify-center mx-auto mb-3">
+                        <i class="fa-solid fa-shield-check text-metro-emerald text-base"></i>
                     </div>
-                    <div class="text-lg font-black">P2P</div>
-                    <div class="text-[7px] text-metro-muted font-black uppercase tracking-widest mt-1">Verified</div>
+                    <div class="text-xl font-black">P2P</div>
+                    <div class="text-[8px] text-metro-muted font-black uppercase tracking-widest mt-1.5">Verified</div>
                 </div>
-                <div class="glass rounded-[2rem] p-5 text-center border-b-2 border-blue-500/20 shadow-inner-light">
-                    <div class="w-9 h-9 rounded-xl bg-blue-500/10 flex items-center justify-center mx-auto mb-3">
-                        <i class="fa-solid fa-chart-line text-blue-500 text-sm"></i>
+                <div class="glass rounded-[2.5rem] p-6 text-center border-b-2 border-blue-500/20 shadow-inner-light hover:bg-white/5 transition-colors">
+                    <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center mx-auto mb-3">
+                        <i class="fa-solid fa-chart-line text-blue-500 text-base"></i>
                     </div>
-                    <div class="text-lg font-black" id="ui-stat-rank">#1</div>
-                    <div class="text-[7px] text-metro-muted font-black uppercase tracking-widest mt-1">Rank</div>
+                    <div class="text-xl font-black" id="ui-stat-rank">#1</div>
+                    <div class="text-[8px] text-metro-muted font-black uppercase tracking-widest mt-1.5">Rank</div>
                 </div>
             </div>
 
             <!-- Network Feed -->
-            <section class="feed-mask pb-4">
-                <div class="flex justify-between items-center mb-5">
-                    <h3 class="text-[9px] font-black text-metro-muted uppercase tracking-[0.3em]">System Logs</h3>
+            <section class="feed-mask pb-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-[10px] font-black text-metro-muted uppercase tracking-[0.4em]">System Activity</h3>
                     <div class="flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 bg-metro-emerald rounded-full animate-pulse"></span>
-                        <span class="text-[8px] font-bold text-metro-emerald uppercase">Active</span>
+                        <span class="w-2 h-2 bg-metro-emerald rounded-full animate-pulse"></span>
+                        <span class="text-[9px] font-bold text-metro-emerald uppercase">Live Nodes</span>
                     </div>
                 </div>
-                <div class="space-y-3" id="ui-network-feed">
-                    <!-- Real activity logs will appear here -->
+                <div class="space-y-4" id="ui-network-feed">
+                    <!-- Activity logs -->
                 </div>
             </section>
         </div>
 
         <!-- TAB: LOBBY -->
-        <div id="tab-lobby" class="tab-content space-y-6">
+        <div id="tab-lobby" class="tab-content space-y-8">
             <div class="flex justify-between items-end">
                 <div>
                     <h2 class="text-4xl font-black italic tracking-tighter uppercase">Game <span class="text-metro-accent">Lobby</span></h2>
-                    <p class="text-[9px] text-metro-muted font-black uppercase tracking-[0.2em] mt-1">Select table or host your own</p>
+                    <p class="text-[10px] text-metro-muted font-black uppercase tracking-[0.3em] mt-1.5">Select table or host your own</p>
                 </div>
-                <button onclick="LobbyManager.toggleCreateModal(true)" class="w-14 h-14 rounded-2xl bg-metro-accent text-metro-black flex items-center justify-center shadow-accent-glow active:scale-90 transition-all">
-                    <i class="fa-solid fa-plus text-2xl"></i>
+                <button onclick="LobbyManager.toggleCreateModal(true)" class="w-16 h-16 rounded-2xl bg-metro-accent text-metro-black flex items-center justify-center shadow-accent-glow active:scale-90 transition-all">
+                    <i class="fa-solid fa-plus text-3xl"></i>
                 </button>
             </div>
 
             <!-- Filters -->
-            <div class="flex gap-3 overflow-x-auto hide-scrollbar py-1">
-                <button onclick="LobbyManager.filter('ALL')" class="lobby-filter px-6 py-3 rounded-xl bg-metro-accent text-metro-black text-[9px] font-black uppercase tracking-widest shadow-lg whitespace-nowrap transition-all">All Games</button>
-                <button onclick="LobbyManager.filter('BLACKJACK')" class="lobby-filter px-6 py-3 rounded-xl bg-white/5 text-white/40 text-[9px] font-black uppercase tracking-widest border border-white/5 whitespace-nowrap transition-all">Blackjack</button>
-                <button onclick="LobbyManager.filter('DURAK')" class="lobby-filter px-6 py-3 rounded-xl bg-white/5 text-white/40 text-[9px] font-black uppercase tracking-widest border border-white/5 whitespace-nowrap transition-all">Durak P2P</button>
+            <div class="flex gap-3 overflow-x-auto hide-scrollbar py-2">
+                <button onclick="LobbyManager.filter('ALL')" class="lobby-filter px-8 py-4 rounded-2xl bg-metro-accent text-metro-black text-[10px] font-black uppercase tracking-widest shadow-lg whitespace-nowrap transition-all">All Games</button>
+                <button onclick="LobbyManager.filter('BLACKJACK')" class="lobby-filter px-8 py-4 rounded-2xl bg-white/5 text-white/40 text-[10px] font-black uppercase tracking-widest border border-white/5 whitespace-nowrap transition-all">Blackjack</button>
+                <button onclick="LobbyManager.filter('DURAK')" class="lobby-filter px-8 py-4 rounded-2xl bg-white/5 text-white/40 text-[10px] font-black uppercase tracking-widest border border-white/5 whitespace-nowrap transition-all">Durak P2P</button>
             </div>
 
-            <div id="ui-lobby-list" class="space-y-4">
+            <div id="ui-lobby-list" class="space-y-5">
                 <!-- Dynamic Lobbies -->
             </div>
         </div>
 
         <!-- TAB: PROFILE -->
-        <div id="tab-profile" class="tab-content space-y-6">
-            <div class="glass p-8 rounded-[3rem] relative overflow-hidden border border-white/10 shadow-premium">
-                <div class="absolute -right-12 -top-12 w-40 h-40 bg-metro-accent/10 rounded-full blur-[60px]"></div>
+        <div id="tab-profile" class="tab-content space-y-8">
+            <div class="glass p-10 rounded-[3.5rem] relative overflow-hidden border border-white/10 shadow-premium">
+                <div class="absolute -right-16 -top-16 w-48 h-48 bg-metro-accent/10 rounded-full blur-[70px]"></div>
                 <div class="flex flex-col items-center text-center">
-                    <div class="relative mb-5">
-                        <img id="p-avatar" src="" class="w-24 h-24 rounded-[2rem] border-4 border-metro-accent/20 object-cover shadow-2xl">
-                        <div class="absolute -bottom-2 -right-2 bg-metro-accent text-metro-black text-[8px] font-black px-3 py-1 rounded-xl shadow-xl border-2 border-metro-black">ELITE</div>
+                    <div class="relative mb-6">
+                        <img id="p-avatar" src="" class="w-28 h-28 rounded-[2.5rem] border-4 border-metro-accent/20 object-cover shadow-2xl">
+                        <div class="absolute -bottom-2 -right-2 bg-metro-accent text-metro-black text-[9px] font-black px-4 py-1.5 rounded-xl shadow-xl border-2 border-metro-black">ELITE</div>
                     </div>
                     <h2 id="p-name" class="text-3xl font-black italic tracking-tighter uppercase">User</h2>
-                    <p id="p-id" class="text-[10px] text-metro-muted font-mono mt-1 opacity-60">ID: 000000</p>
+                    <p id="p-id" class="text-[11px] text-metro-muted font-mono mt-1.5 opacity-60">ID: 000000</p>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4 mt-8">
-                    <div class="bg-black/40 rounded-2xl p-4 border border-white/5 shadow-inner-light">
-                        <span class="block text-[8px] text-metro-muted font-black uppercase mb-1 tracking-widest">Turnover</span>
-                        <span class="text-lg font-black text-metro-accent" id="p-turnover">0 ₽</span>
+                <div class="grid grid-cols-2 gap-5 mt-10">
+                    <div class="bg-black/40 rounded-3xl p-5 border border-white/5 shadow-inner-light">
+                        <span class="block text-[9px] text-metro-muted font-black uppercase mb-1.5 tracking-widest">Turnover</span>
+                        <span class="text-xl font-black text-metro-accent" id="p-turnover">0 ₽</span>
                     </div>
-                    <div class="bg-black/40 rounded-2xl p-4 border border-white/5 shadow-inner-light">
-                        <span class="block text-[8px] text-metro-muted font-black uppercase mb-1 tracking-widest">Commission</span>
-                        <span class="text-lg font-black text-white" id="p-comm">10%</span>
+                    <div class="bg-black/40 rounded-3xl p-5 border border-white/5 shadow-inner-light">
+                        <span class="block text-[9px] text-metro-muted font-black uppercase mb-1.5 tracking-widest">Commission</span>
+                        <span class="text-xl font-black text-white" id="p-comm">10%</span>
                     </div>
                 </div>
             </div>
 
             <!-- VIP Progress -->
-            <div class="glass p-6 rounded-[2.5rem] space-y-4 shadow-lg border border-white/5">
+            <div class="glass p-8 rounded-[3rem] space-y-5 shadow-lg border border-white/5">
                 <div class="flex justify-between items-end">
                     <div>
-                        <span class="text-[8px] font-black text-metro-muted uppercase tracking-widest">VIP Status</span>
-                        <h4 class="text-xl font-black italic uppercase" id="p-vip-badge">Level 0</h4>
+                        <span class="text-[9px] font-black text-metro-muted uppercase tracking-widest">VIP Status</span>
+                        <h4 class="text-2xl font-black italic uppercase" id="p-vip-badge">Level 0</h4>
                     </div>
-                    <span id="p-vip-text" class="text-[9px] font-bold text-metro-accent">0 / 50k ₽</span>
+                    <span id="p-vip-text" class="text-[10px] font-bold text-metro-accent">0 / 50k ₽</span>
                 </div>
-                <div class="h-3 w-full bg-black/50 rounded-full overflow-hidden border border-white/5 p-0.5">
-                    <div id="p-vip-bar" class="h-full bg-gradient-to-r from-metro-gold to-metro-accent rounded-full vip-progress-glow transition-all duration-1000" style="width: 0%"></div>
+                <div class="h-4 w-full bg-black/50 rounded-full overflow-hidden border border-white/5 p-1">
+                    <div id="p-vip-bar" class="h-full bg-gradient-to-r from-metro-gold to-metro-accent rounded-full shadow-[0_0_15px_rgba(251,191,36,0.4)] transition-all duration-1000" style="width: 0%"></div>
                 </div>
             </div>
 
             <!-- Actions -->
-            <div class="grid grid-cols-2 gap-4">
-                <button onclick="TxManager.open('deposit')" class="shimmer-btn bg-white text-metro-black py-5 rounded-2xl font-black text-xs shadow-2xl active:scale-95 transition-all uppercase italic tracking-tighter">Deposit</button>
-                <button onclick="TxManager.open('withdraw')" class="glass text-white py-5 rounded-2xl font-black text-xs active:scale-95 transition-all uppercase italic tracking-tighter border border-white/10">Withdraw</button>
+            <div class="grid grid-cols-2 gap-5">
+                <button onclick="TxManager.open('deposit')" class="shimmer-btn bg-white text-metro-black py-6 rounded-2xl font-black text-sm shadow-2xl active:scale-95 transition-all uppercase italic tracking-tighter">Deposit</button>
+                <button onclick="TxManager.open('withdraw')" class="glass text-white py-6 rounded-2xl font-black text-sm active:scale-95 transition-all uppercase italic tracking-tighter border border-white/10">Withdraw</button>
             </div>
         </div>
     </main>
 
     <!-- Bottom Navigation -->
-    <nav class="fixed bottom-8 left-6 right-6 h-20 glass rounded-[2.5rem] z-50 flex items-center justify-around px-4 shadow-premium border border-white/10">
-        <button onclick="NexusApp.switchTab('home')" class="nav-btn transition-all duration-300 flex flex-col items-center gap-1.5 active-nav" id="nav-home">
-            <i class="fa-solid fa-grid-2 text-xl"></i>
-            <span class="text-[8px] font-black uppercase tracking-widest">Home</span>
+    <nav class="fixed bottom-10 left-6 right-6 h-24 glass rounded-[3rem] z-50 flex items-center justify-around px-6 shadow-premium border border-white/10">
+        <button onclick="NexusApp.switchTab('home')" class="nav-btn transition-all duration-300 flex flex-col items-center gap-2 active-nav" id="nav-home">
+            <i class="fa-solid fa-grid-2 text-2xl"></i>
+            <span class="text-[9px] font-black uppercase tracking-widest">Home</span>
         </button>
-        <button onclick="NexusApp.switchTab('lobby')" class="nav-btn transition-all duration-300 text-metro-muted flex flex-col items-center gap-1.5" id="nav-lobby">
-            <i class="fa-solid fa-gamepad text-xl"></i>
-            <span class="text-[8px] font-black uppercase tracking-widest">Lobby</span>
+        <button onclick="NexusApp.switchTab('lobby')" class="nav-btn transition-all duration-300 text-metro-muted flex flex-col items-center gap-2" id="nav-lobby">
+            <i class="fa-solid fa-gamepad text-2xl"></i>
+            <span class="text-[9px] font-black uppercase tracking-widest">Lobby</span>
         </button>
-        <button onclick="NexusApp.switchTab('profile')" class="nav-btn transition-all duration-300 text-metro-muted flex flex-col items-center gap-1.5" id="nav-profile">
-            <i class="fa-solid fa-wallet text-xl"></i>
-            <span class="text-[8px] font-black uppercase tracking-widest">Vault</span>
+        <button onclick="NexusApp.switchTab('profile')" class="nav-btn transition-all duration-300 text-metro-muted flex flex-col items-center gap-2" id="nav-profile">
+            <i class="fa-solid fa-wallet text-2xl"></i>
+            <span class="text-[9px] font-black uppercase tracking-widest">Vault</span>
         </button>
     </nav>
 
     <!-- Matchmaking Overlay -->
-    <div id="overlay-matchmaking" class="fixed inset-0 z-[200] hidden bg-black/90 backdrop-blur-2xl flex flex-col items-center justify-center p-10 text-center">
-        <div class="relative mb-10">
-            <div class="w-32 h-32 rounded-full border-4 border-metro-accent/10 flex items-center justify-center">
-                <div class="w-24 h-24 rounded-full border-4 border-metro-accent border-t-transparent animate-spin"></div>
+    <div id="overlay-matchmaking" class="fixed inset-0 z-[200] hidden bg-black/95 backdrop-blur-3xl flex flex-col items-center justify-center p-10 text-center">
+        <div class="relative mb-12">
+            <div class="w-40 h-40 rounded-full border-4 border-metro-accent/10 flex items-center justify-center">
+                <div class="w-32 h-32 rounded-full border-4 border-metro-accent border-t-transparent animate-spin"></div>
             </div>
-            <i class="fa-solid fa-tower-broadcast absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl text-metro-accent animate-pulse"></i>
+            <i class="fa-solid fa-tower-broadcast absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl text-metro-accent animate-pulse"></i>
         </div>
-        <h3 class="text-3xl font-black italic tracking-tighter mb-3 uppercase">P2P <span class="text-metro-accent">Handshake</span></h3>
-        <p id="matchmaking-status" class="text-[9px] text-metro-muted font-black uppercase tracking-[0.3em]">Establishing secure connection...</p>
+        <h3 class="text-4xl font-black italic tracking-tighter mb-4 uppercase">P2P <span class="text-metro-accent">Handshake</span></h3>
+        <p id="matchmaking-status" class="text-[10px] text-metro-muted font-black uppercase tracking-[0.4em]">Establishing secure connection...</p>
         
-        <div class="mt-10 w-full max-w-xs glass rounded-3xl p-6 border border-white/10 shadow-2xl">
-            <div class="flex justify-between items-center mb-4">
-                <span class="text-[8px] font-black text-metro-muted uppercase">Latency</span>
-                <span class="text-[10px] font-bold text-metro-emerald">12ms</span>
+        <div class="mt-12 w-full max-w-xs glass rounded-[2.5rem] p-8 border border-white/10 shadow-2xl">
+            <div class="flex justify-between items-center mb-5">
+                <span class="text-[9px] font-black text-metro-muted uppercase">Latency</span>
+                <span class="text-[11px] font-bold text-metro-emerald">12ms</span>
             </div>
             <div class="flex justify-between items-center">
-                <span class="text-[8px] font-black text-metro-muted uppercase">Protocol</span>
-                <span class="text-[10px] font-bold text-white">Nexus-v2</span>
+                <span class="text-[9px] font-black text-metro-muted uppercase">Protocol</span>
+                <span class="text-[11px] font-bold text-white">Nexus-v4.2</span>
             </div>
         </div>
 
-        <button onclick="LobbyManager.cancelMatchmaking()" class="mt-12 text-metro-rose font-black text-[9px] uppercase tracking-widest border-b border-metro-rose/30 pb-1 active:opacity-50 transition-opacity">Cancel Search</button>
+        <button onclick="LobbyManager.cancelMatchmaking()" class="mt-16 text-metro-rose font-black text-[10px] uppercase tracking-widest border-b border-metro-rose/30 pb-1 active:opacity-50 transition-opacity">Cancel Search</button>
     </div>
 
-    <!-- Modal: Create Lobby -->
+    <!-- Modal: Create Lobby (DETAILED SETTINGS) -->
     <div id="modal-create" class="fixed inset-0 z-[100] hidden">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="LobbyManager.toggleCreateModal(false)"></div>
-        <div class="absolute bottom-0 left-0 right-0 glass rounded-t-[3.5rem] p-10 animate-slide-up border-t border-white/10 shadow-premium">
-            <div class="w-16 h-1 bg-white/10 rounded-full mx-auto mb-10"></div>
-            <h3 class="text-3xl font-black italic mb-2 tracking-tighter uppercase">Host <span class="text-metro-accent">Table</span></h3>
-            <p class="text-[9px] text-metro-muted font-black uppercase tracking-[0.3em] mb-8">Broadcast your game to the network</p>
+        <div class="absolute bottom-0 left-0 right-0 glass rounded-t-[4rem] p-10 animate-slide-up border-t border-white/10 shadow-premium max-h-[90vh] overflow-y-auto hide-scrollbar">
+            <div class="w-20 h-1.5 bg-white/10 rounded-full mx-auto mb-10"></div>
+            <h3 class="text-4xl font-black italic mb-2 tracking-tighter uppercase">Host <span class="text-metro-accent">Table</span></h3>
+            <p class="text-[10px] text-metro-muted font-black uppercase tracking-[0.4em] mb-10">Configure your custom game node</p>
             
-            <div class="space-y-6">
+            <div class="space-y-8">
+                <!-- Game Type -->
                 <div>
-                    <label class="block text-[8px] font-black text-metro-muted uppercase tracking-widest mb-3 ml-1">Game Protocol</label>
-                    <div class="grid grid-cols-2 gap-3">
-                        <button onclick="LobbyManager.selectGame('BLACKJACK')" id="btn-game-bj" class="py-4 rounded-2xl border-2 border-metro-accent bg-metro-accent/10 text-metro-accent font-black text-[10px] uppercase tracking-widest transition-all">Blackjack</button>
-                        <button onclick="LobbyManager.selectGame('DURAK')" id="btn-game-durak" class="py-4 rounded-2xl border-2 border-white/5 bg-white/5 text-white/40 font-black text-[10px] uppercase tracking-widest transition-all">Durak P2P</button>
+                    <label class="block text-[9px] font-black text-metro-muted uppercase tracking-widest mb-4 ml-1">Game Protocol</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button onclick="LobbyManager.selectGame('BLACKJACK')" id="btn-game-bj" class="py-5 rounded-2xl border-2 border-metro-accent bg-metro-accent/10 text-metro-accent font-black text-[11px] uppercase tracking-widest transition-all">Blackjack</button>
+                        <button onclick="LobbyManager.selectGame('DURAK')" id="btn-game-durak" class="py-5 rounded-2xl border-2 border-white/5 bg-white/5 text-white/40 font-black text-[11px] uppercase tracking-widest transition-all">Durak P2P</button>
                     </div>
                 </div>
 
+                <!-- Stake -->
                 <div>
-                    <label class="block text-[8px] font-black text-metro-muted uppercase tracking-widest mb-3 ml-1">Stake (RUB)</label>
-                    <div class="grid grid-cols-4 gap-2 mb-4">
-                        <button onclick="LobbyManager.setStake(100)" class="py-3 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black hover:bg-metro-accent hover:text-metro-black transition-all">100</button>
-                        <button onclick="LobbyManager.setStake(500)" class="py-3 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black hover:bg-metro-accent hover:text-metro-black transition-all">500</button>
-                        <button onclick="LobbyManager.setStake(1000)" class="py-3 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black hover:bg-metro-accent hover:text-metro-black transition-all">1K</button>
-                        <button onclick="LobbyManager.setStake(5000)" class="py-3 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black hover:bg-metro-accent hover:text-metro-black transition-all">5K</button>
+                    <label class="block text-[9px] font-black text-metro-muted uppercase tracking-widest mb-4 ml-1">Stake (RUB)</label>
+                    <div class="grid grid-cols-4 gap-3 mb-5">
+                        <button onclick="LobbyManager.setStake(100)" class="py-4 rounded-xl bg-white/5 border border-white/10 text-[11px] font-black hover:bg-metro-accent hover:text-metro-black transition-all">100</button>
+                        <button onclick="LobbyManager.setStake(500)" class="py-4 rounded-xl bg-white/5 border border-white/10 text-[11px] font-black hover:bg-metro-accent hover:text-metro-black transition-all">500</button>
+                        <button onclick="LobbyManager.setStake(1000)" class="py-4 rounded-xl bg-white/5 border border-white/10 text-[11px] font-black hover:bg-metro-accent hover:text-metro-black transition-all">1K</button>
+                        <button onclick="LobbyManager.setStake(5000)" class="py-4 rounded-xl bg-white/5 border border-white/10 text-[11px] font-black hover:bg-metro-accent hover:text-metro-black transition-all">5K</button>
                     </div>
                     <div class="relative">
-                        <input type="number" id="input-stake" placeholder="Enter custom amount" class="w-full bg-black/50 border border-white/10 rounded-2xl px-6 py-5 text-2xl font-black focus:outline-none focus:border-metro-accent transition-all text-white shadow-inner">
-                        <i class="fa-solid fa-coins absolute right-6 top-1/2 -translate-y-1/2 text-metro-accent text-lg"></i>
+                        <input type="number" id="input-stake" placeholder="Enter custom amount" class="w-full bg-black/50 border border-white/10 rounded-3xl px-8 py-6 text-3xl font-black focus:outline-none focus:border-metro-accent transition-all text-white shadow-inner">
+                        <i class="fa-solid fa-coins absolute right-8 top-1/2 -translate-y-1/2 text-metro-accent text-xl"></i>
                     </div>
                 </div>
 
-                <button onclick="LobbyManager.postLobby()" class="shimmer-btn w-full bg-metro-accent text-metro-black py-6 rounded-2xl font-black text-lg shadow-accent-glow active:scale-95 transition-all mt-4 uppercase italic tracking-tighter">
+                <!-- Detailed Settings (Durak Only) -->
+                <div id="durak-settings" class="hidden space-y-6 animate-fade-in">
+                    <div class="flex justify-between items-center p-5 bg-white/5 rounded-3xl border border-white/5">
+                        <div>
+                            <span class="block text-[10px] font-black text-white uppercase tracking-widest">Deck Size</span>
+                            <span class="text-[8px] text-metro-muted font-bold uppercase">36 or 52 cards</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="LobbyManager.setDeck(36)" id="deck-36" class="px-4 py-2 rounded-xl bg-metro-accent text-metro-black font-black text-[10px]">36</button>
+                            <button onclick="LobbyManager.setDeck(52)" id="deck-52" class="px-4 py-2 rounded-xl bg-white/5 text-white/40 font-black text-[10px]">52</button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center p-5 bg-white/5 rounded-3xl border border-white/5">
+                        <div>
+                            <span class="block text-[10px] font-black text-white uppercase tracking-widest">Private Table</span>
+                            <span class="text-[8px] text-metro-muted font-bold uppercase">Invite only via link</span>
+                        </div>
+                        <div class="relative inline-block w-12 h-6 transition duration-200 ease-in">
+                            <input type="checkbox" id="toggle-private" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer z-10"/>
+                            <label for="toggle-private" class="toggle-label block overflow-hidden h-6 rounded-full bg-white/10 cursor-pointer">
+                                <span class="toggle-dot block w-6 h-6 rounded-full bg-metro-muted transition-transform duration-200"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="LobbyManager.postLobby()" class="shimmer-btn w-full bg-metro-accent text-metro-black py-7 rounded-3xl font-black text-xl shadow-accent-glow active:scale-95 transition-all mt-6 uppercase italic tracking-tighter">
                     Initialize Broadcast
                 </button>
             </div>
@@ -360,30 +386,30 @@
     <!-- Modal: Transaction -->
     <div id="modal-tx" class="fixed inset-0 z-[100] hidden">
         <div class="absolute inset-0 bg-black/90 backdrop-blur-xl" onclick="TxManager.close()"></div>
-        <div class="absolute bottom-0 left-0 right-0 glass rounded-t-[3.5rem] p-10 animate-slide-up border-t border-white/10 shadow-premium">
-            <div class="w-16 h-1 bg-white/10 rounded-full mx-auto mb-10"></div>
-            <h3 id="tx-title" class="text-3xl font-black italic mb-2 tracking-tighter uppercase">Deposit</h3>
-            <p id="tx-desc" class="text-[9px] text-metro-muted font-black uppercase tracking-[0.3em] mb-8">Secure Financial Gateway</p>
+        <div class="absolute bottom-0 left-0 right-0 glass rounded-t-[4rem] p-10 animate-slide-up border-t border-white/10 shadow-premium">
+            <div class="w-20 h-1.5 bg-white/10 rounded-full mx-auto mb-10"></div>
+            <h3 id="tx-title" class="text-4xl font-black italic mb-2 tracking-tighter uppercase">Deposit</h3>
+            <p id="tx-desc" class="text-[10px] text-metro-muted font-black uppercase tracking-[0.4em] mb-10">Secure Financial Gateway</p>
             
-            <div class="space-y-6">
+            <div class="space-y-8">
                 <div class="relative">
-                    <input type="number" id="tx-amount" placeholder="0.00" class="w-full bg-black/50 border border-white/10 rounded-2xl px-6 py-6 text-3xl font-black focus:outline-none focus:border-metro-accent transition-all text-white shadow-inner">
-                    <span class="absolute right-6 top-1/2 -translate-y-1/2 text-metro-muted font-black text-xs">RUB</span>
+                    <input type="number" id="tx-amount" placeholder="0.00" class="w-full bg-black/50 border border-white/10 rounded-3xl px-8 py-7 text-4xl font-black focus:outline-none focus:border-metro-accent transition-all text-white shadow-inner">
+                    <span class="absolute right-8 top-1/2 -translate-y-1/2 text-metro-muted font-black text-sm">RUB</span>
                 </div>
                 
-                <div id="tx-address-box" class="bg-white/5 p-5 rounded-2xl border border-white/10 flex justify-between items-center shadow-inner-light">
+                <div id="tx-address-box" class="bg-white/5 p-6 rounded-3xl border border-white/10 flex justify-between items-center shadow-inner-light">
                     <div class="overflow-hidden">
-                        <span class="block text-[8px] text-metro-muted font-black uppercase mb-1.5 tracking-widest">Payment Address</span>
-                        <code class="text-[10px] font-mono text-metro-accent break-all" id="tx-address">TQx7vR9...8821</code>
+                        <span class="block text-[9px] text-metro-muted font-black uppercase mb-2 tracking-widest">Payment Address (TRC20)</span>
+                        <code class="text-[11px] font-mono text-metro-accent break-all" id="tx-address">TQx7vR9...8821</code>
                     </div>
-                    <button onclick="TxManager.copy()" class="ml-4 w-12 h-12 flex items-center justify-center rounded-xl bg-metro-accent text-metro-black shadow-accent-glow active:scale-90 transition-all"><i class="fa-solid fa-copy"></i></button>
+                    <button onclick="TxManager.copy()" class="ml-4 w-14 h-14 flex items-center justify-center rounded-2xl bg-metro-accent text-metro-black shadow-accent-glow active:scale-90 transition-all"><i class="fa-solid fa-copy text-lg"></i></button>
                 </div>
 
                 <div id="tx-withdraw-box" class="hidden">
-                    <input type="text" id="tx-user-address" placeholder="Your Wallet or Card Address" class="w-full bg-black/50 border border-white/10 rounded-2xl px-6 py-5 text-xs font-bold focus:outline-none focus:border-metro-accent transition-all text-white">
+                    <input type="text" id="tx-user-address" placeholder="Your Wallet or Card Address" class="w-full bg-black/50 border border-white/10 rounded-3xl px-8 py-6 text-sm font-bold focus:outline-none focus:border-metro-accent transition-all text-white">
                 </div>
 
-                <button onclick="TxManager.submit()" class="shimmer-btn w-full bg-white text-metro-black py-6 rounded-2xl font-black text-lg shadow-2xl active:scale-95 transition-all mt-4 uppercase italic tracking-tighter">
+                <button onclick="TxManager.submit()" class="shimmer-btn w-full bg-white text-metro-black py-7 rounded-3xl font-black text-xl shadow-2xl active:scale-95 transition-all mt-6 uppercase italic tracking-tighter">
                     Confirm Request
                 </button>
             </div>
@@ -391,14 +417,14 @@
     </div>
 
     <!-- Global Alert -->
-    <div id="ui-alert" class="fixed top-[calc(var(--safe-top)+5rem)] left-6 right-6 z-[300] pointer-events-none transform -translate-y-48 transition-all duration-500">
-        <div class="glass p-5 rounded-2xl shadow-premium flex items-center gap-4 border-l-4 border-metro-accent" id="alert-content">
-            <div class="w-10 h-10 rounded-xl bg-metro-accent/20 flex items-center justify-center">
-                <i class="fa-solid fa-circle-check text-metro-accent text-xl"></i>
+    <div id="ui-alert" class="fixed top-[calc(var(--safe-top)+6rem)] left-6 right-6 z-[300] pointer-events-none transform -translate-y-64 transition-all duration-500">
+        <div class="glass p-6 rounded-3xl shadow-premium flex items-center gap-5 border-l-4 border-metro-accent" id="alert-content">
+            <div class="w-12 h-12 rounded-2xl bg-metro-accent/20 flex items-center justify-center">
+                <i class="fa-solid fa-circle-check text-metro-accent text-2xl"></i>
             </div>
             <div>
-                <h4 class="font-black text-sm uppercase italic tracking-tight" id="alert-title">Success</h4>
-                <p class="text-[9px] text-metro-muted font-black uppercase tracking-widest" id="alert-text">Operation completed.</p>
+                <h4 class="font-black text-base uppercase italic tracking-tight" id="alert-title">Success</h4>
+                <p class="text-[10px] text-metro-muted font-black uppercase tracking-widest" id="alert-text">Operation completed.</p>
             </div>
         </div>
     </div>
@@ -406,7 +432,7 @@
     <script>
         /**
          * NEXUS ARCHITECT - METRO CASH CORE v4.2
-         * Visual bug fixes and UI polish.
+         * Optimized for TWA and P2P Handshakes.
          */
 
         const CONFIG = {
@@ -431,6 +457,7 @@
                 },
                 activeTab: 'home',
                 selectedGame: 'BLACKJACK',
+                deckSize: 36,
                 matchmakingTimer: null
             },
 
@@ -529,11 +556,11 @@
                 document.getElementById('alert-text').textContent = text;
                 
                 const isError = type === 'error';
-                content.className = `glass p-5 rounded-2xl shadow-premium flex items-center gap-4 border-l-4 ${isError ? 'border-metro-rose' : 'border-metro-accent'}`;
-                content.querySelector('i').className = isError ? 'fa-solid fa-triangle-exclamation text-metro-rose text-xl' : 'fa-solid fa-circle-check text-metro-accent text-xl';
+                content.className = `glass p-6 rounded-3xl shadow-premium flex items-center gap-5 border-l-4 ${isError ? 'border-metro-rose' : 'border-metro-accent'}`;
+                content.querySelector('i').className = isError ? 'fa-solid fa-triangle-exclamation text-metro-rose text-2xl' : 'fa-solid fa-circle-check text-metro-accent text-2xl';
 
                 box.style.transform = 'translateY(0)';
-                setTimeout(() => { box.style.transform = 'translateY(-150%)'; }, 3000);
+                setTimeout(() => { box.style.transform = 'translateY(-200%)'; }, 3000);
             },
 
             renderHistory() {
@@ -542,22 +569,22 @@
                 
                 if (history.length === 0) {
                     feed.innerHTML = `
-                        <div class="text-center py-10 opacity-30">
-                            <i class="fa-solid fa-ghost text-3xl mb-3"></i>
-                            <p class="text-[8px] font-black uppercase tracking-widest">No recent activity</p>
+                        <div class="text-center py-12 opacity-30">
+                            <i class="fa-solid fa-ghost text-4xl mb-4"></i>
+                            <p class="text-[9px] font-black uppercase tracking-widest">No recent activity</p>
                         </div>
                     `;
                     return;
                 }
 
                 feed.innerHTML = history.slice(-5).reverse().map(item => `
-                    <div class="glass p-4 rounded-2xl flex items-center gap-4 animate-fade-in border-l-2 ${item.win ? 'border-metro-emerald' : 'border-metro-rose'} shadow-inner-light">
-                        <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-[8px] font-black ${item.win ? 'text-metro-emerald' : 'text-metro-rose'}">
+                    <div class="glass p-5 rounded-3xl flex items-center gap-5 animate-fade-in border-l-2 ${item.win ? 'border-metro-emerald' : 'border-metro-rose'} shadow-inner-light">
+                        <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-[9px] font-black ${item.win ? 'text-metro-emerald' : 'text-metro-rose'}">
                             ${item.win ? 'WIN' : 'LOSS'}
                         </div>
                         <div class="flex-1">
-                            <p class="text-[10px] font-bold text-white/90">${item.game} Session</p>
-                            <p class="text-[7px] text-metro-muted font-black uppercase mt-0.5 tracking-widest">${item.amount > 0 ? '+' : ''}${item.amount} ₽ • ${item.date}</p>
+                            <p class="text-[11px] font-bold text-white/90">${item.game} Session</p>
+                            <p class="text-[8px] text-metro-muted font-black uppercase mt-1 tracking-widest">${item.amount > 0 ? '+' : ''}${item.amount} ₽ • ${item.date}</p>
                         </div>
                     </div>
                 `).join('');
@@ -583,7 +610,7 @@
                 NexusApp.haptic('light');
                 document.querySelectorAll('.lobby-filter').forEach(btn => {
                     const isMatch = btn.textContent.toUpperCase().includes(type) || (type === 'ALL' && btn.textContent.includes('All'));
-                    btn.className = isMatch ? 'lobby-filter px-6 py-3 rounded-xl bg-metro-accent text-metro-black text-[9px] font-black uppercase tracking-widest shadow-lg whitespace-nowrap transition-all' : 'lobby-filter px-6 py-3 rounded-xl bg-white/5 text-white/40 text-[9px] font-black uppercase tracking-widest border border-white/5 whitespace-nowrap transition-all';
+                    btn.className = isMatch ? 'lobby-filter px-8 py-4 rounded-2xl bg-metro-accent text-metro-black text-[10px] font-black uppercase tracking-widest shadow-lg whitespace-nowrap transition-all' : 'lobby-filter px-8 py-4 rounded-2xl bg-white/5 text-white/40 text-[10px] font-black uppercase tracking-widest border border-white/5 whitespace-nowrap transition-all';
                 });
                 this.render();
             },
@@ -593,21 +620,21 @@
                 const filtered = this.currentFilter === 'ALL' ? this.lobbies : this.lobbies.filter(l => l.type === this.currentFilter);
                 
                 container.innerHTML = filtered.map(l => `
-                    <div class="p2p-card glass p-5 rounded-[2rem] flex justify-between items-center border-l-4 ${l.type === 'BLACKJACK' ? 'border-metro-accent' : 'border-blue-500'} shadow-lg">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-xl shadow-inner">
+                    <div class="p2p-card glass p-6 rounded-[2.5rem] flex justify-between items-center border-l-4 ${l.type === 'BLACKJACK' ? 'border-metro-accent' : 'border-blue-500'} shadow-lg">
+                        <div class="flex items-center gap-5">
+                            <div class="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center text-2xl shadow-inner">
                                 <i class="fa-solid ${l.type === 'BLACKJACK' ? 'fa-suit-spades text-metro-accent' : 'fa-cards text-blue-500'}"></i>
                             </div>
                             <div>
-                                <div class="flex items-center gap-2 mb-0.5">
-                                    <span class="text-[7px] font-black bg-white/10 px-2 py-0.5 rounded uppercase tracking-widest">${l.type}</span>
-                                    <span class="text-[8px] text-metro-muted font-bold">${l.players}</span>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-[8px] font-black bg-white/10 px-2.5 py-1 rounded uppercase tracking-widest">${l.type}</span>
+                                    <span class="text-[9px] text-metro-muted font-bold">${l.players}</span>
                                 </div>
-                                <h4 class="font-black text-sm italic uppercase tracking-tight">${l.host}</h4>
-                                <p class="text-[9px] text-metro-accent font-black uppercase mt-0.5 tracking-widest">${l.stake} ₽</p>
+                                <h4 class="font-black text-base italic uppercase tracking-tight">${l.host}</h4>
+                                <p class="text-[10px] text-metro-accent font-black uppercase mt-1 tracking-widest">${l.stake} ₽</p>
                             </div>
                         </div>
-                        <button onclick="LobbyManager.startMatchmaking('JOINING', ${l.stake}, '${l.page}')" class="shimmer-btn bg-white text-metro-black px-6 py-3 rounded-xl text-[9px] font-black uppercase italic shadow-xl active:scale-90 transition-transform">Join</button>
+                        <button onclick="LobbyManager.startMatchmaking('JOINING', ${l.stake}, '${l.page}')" class="shimmer-btn bg-white text-metro-black px-8 py-4 rounded-2xl text-[10px] font-black uppercase italic shadow-xl active:scale-90 transition-transform">Join</button>
                     </div>
                 `).join('');
             },
@@ -621,13 +648,22 @@
                 NexusApp.state.selectedGame = game;
                 NexusApp.haptic('light');
                 const isBJ = game === 'BLACKJACK';
-                document.getElementById('btn-game-bj').className = isBJ ? 'py-4 rounded-2xl border-2 border-metro-accent bg-metro-accent/10 text-metro-accent font-black text-[10px] uppercase tracking-widest transition-all' : 'py-4 rounded-2xl border-2 border-white/5 bg-white/5 text-white/40 font-black text-[10px] uppercase tracking-widest transition-all';
-                document.getElementById('btn-game-durak').className = !isBJ ? 'py-4 rounded-2xl border-2 border-metro-accent bg-metro-accent/10 text-metro-accent font-black text-[10px] uppercase tracking-widest transition-all' : 'py-4 rounded-2xl border-2 border-white/5 bg-white/5 text-white/40 font-black text-[10px] uppercase tracking-widest transition-all';
+                document.getElementById('btn-game-bj').className = isBJ ? 'py-5 rounded-2xl border-2 border-metro-accent bg-metro-accent/10 text-metro-accent font-black text-[11px] uppercase tracking-widest transition-all' : 'py-5 rounded-2xl border-2 border-white/5 bg-white/5 text-white/40 font-black text-[11px] uppercase tracking-widest transition-all';
+                document.getElementById('btn-game-durak').className = !isBJ ? 'py-5 rounded-2xl border-2 border-metro-accent bg-metro-accent/10 text-metro-accent font-black text-[11px] uppercase tracking-widest transition-all' : 'py-5 rounded-2xl border-2 border-white/5 bg-white/5 text-white/40 font-black text-[11px] uppercase tracking-widest transition-all';
+                
+                document.getElementById('durak-settings').classList.toggle('hidden', isBJ);
             },
 
             setStake(val) {
                 NexusApp.haptic('light');
                 document.getElementById('input-stake').value = val;
+            },
+
+            setDeck(size) {
+                NexusApp.state.deckSize = size;
+                NexusApp.haptic('light');
+                document.getElementById('deck-36').className = size === 36 ? 'px-4 py-2 rounded-xl bg-metro-accent text-metro-black font-black text-[10px]' : 'px-4 py-2 rounded-xl bg-white/5 text-white/40 font-black text-[10px]';
+                document.getElementById('deck-52').className = size === 52 ? 'px-4 py-2 rounded-xl bg-metro-accent text-metro-black font-black text-[10px]' : 'px-4 py-2 rounded-xl bg-white/5 text-white/40 font-black text-[10px]';
             },
 
             postLobby() {
@@ -673,7 +709,9 @@
             launch(mode, stake, page) {
                 NexusApp.haptic('success');
                 const target = page || (NexusApp.state.selectedGame === 'BLACKJACK' ? 'code_artifact (15).html' : 'code_artifact (16).html');
-                window.location.href = `${target}?stake=${stake}&role=${mode === 'HOSTING' ? 'host' : 'guest'}`;
+                const deck = NexusApp.state.selectedGame === 'DURAK' ? `&deck=${NexusApp.state.deckSize}` : '';
+                const priv = document.getElementById('toggle-private').checked ? '&private=true' : '';
+                window.location.href = `${target}?stake=${stake}&role=${mode === 'HOSTING' ? 'host' : 'guest'}${deck}${priv}`;
             }
         };
 
