@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>METRO CASH & CARD</title>
+    <title>METRO CASH & CARD | NEXUS ARCHITECT</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -20,119 +20,142 @@
                             card: '#161616', 
                             accent: '#fbbf24',
                             gold: '#d97706',
+                            emerald: '#10b981',
                             muted: '#71717a'
                         }
                     },
                     boxShadow: {
                         'glow': '0 0 20px rgba(251, 191, 36, 0.15)',
-                        'glow-strong': '0 0 30px rgba(251, 191, 36, 0.3)',
+                        'glow-strong': '0 0 40px rgba(251, 191, 36, 0.25)',
+                        'emerald-glow': '0 0 20px rgba(16, 185, 129, 0.2)',
                     },
                     animation: {
-                        'slide-up': 'slideUp 0.3s ease-out forwards',
-                        'fade-in': 'fadeIn 0.4s ease-in forwards',
-                        'float': 'float 3s ease-in-out infinite',
+                        'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                     },
                     keyframes: {
-                        slideUp: { '0%': { transform: 'translateY(100%)' }, '100%': { transform: 'translateY(0)' } },
-                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-5px)' } }
+                        slideUp: { '0%': { transform: 'translateY(100%)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } }
                     }
                 }
             }
         }
     </script>
     <style>
+        :root {
+            --tg-bg: var(--tg-theme-bg-color, #050505);
+            --tg-accent: var(--tg-theme-button-color, #fbbf24);
+        }
         body { 
-            background-color: #050505; 
+            background-color: var(--tg-bg); 
             color: #ffffff; 
             -webkit-tap-highlight-color: transparent; 
             user-select: none;
             overflow: hidden;
+            height: 100vh;
         }
-        .glass { background: rgba(22, 22, 22, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05); }
-        .glass-dark { background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(10px); }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.3s ease-out; }
+        .glass { background: rgba(22, 22, 22, 0.7); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.06); }
+        .tab-content { display: none; height: 100%; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease-out; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .active-nav { color: #fbbf24; filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.5)); }
-        .gradient-text { background: linear-gradient(135deg, #fff 0%, #fbbf24 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .p2p-card { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-        .p2p-card:active { transform: scale(0.97); opacity: 0.9; }
+        .active-nav { color: #fbbf24; transform: translateY(-4px); filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.6)); }
+        .p2p-card { transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1); }
+        .p2p-card:active { transform: scale(0.96); }
+        .safe-top { padding-top: env(safe-area-inset-top); }
+        .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+        
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
     </style>
 </head>
-<body class="h-screen flex flex-col">
+<body class="flex flex-col">
 
-    <!-- Header -->
-    <header class="safe-top px-5 py-4 flex justify-between items-center z-50">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-metro-accent to-metro-gold flex items-center justify-center shadow-glow">
-                <i class="fa-solid fa-crown text-metro-black text-lg"></i>
+    <!-- Premium Header -->
+    <header class="safe-top px-6 py-5 flex justify-between items-center z-50 bg-black/20 backdrop-blur-lg border-b border-white/5">
+        <div class="flex items-center gap-4">
+            <div class="relative">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-metro-accent to-metro-gold flex items-center justify-center shadow-glow rotate-3">
+                    <i class="fa-solid fa-bolt-lightning text-metro-black text-xl"></i>
+                </div>
+                <div class="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-metro-black animate-pulse"></div>
             </div>
             <div>
-                <h1 class="font-black text-xl tracking-tight leading-none uppercase italic">Metro<span class="text-metro-accent">Cash</span></h1>
-                <div class="flex items-center gap-1.5 mt-1">
-                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                    <span class="text-[10px] text-green-500 font-bold tracking-widest uppercase">Nodes Online</span>
-                </div>
+                <h1 class="font-black text-xl tracking-tighter uppercase italic leading-none">Metro<span class="text-metro-accent">Cash</span></h1>
+                <p class="text-[9px] text-metro-muted font-black uppercase tracking-[0.3em] mt-1">P2P Network Active</p>
             </div>
         </div>
-        <div onclick="switchTab('profile')" class="flex items-center gap-3 bg-metro-card/50 border border-white/5 pl-4 pr-1.5 py-1.5 rounded-full cursor-pointer hover:bg-metro-card transition">
+        <div onclick="switchTab('profile')" class="flex items-center gap-3 bg-white/5 border border-white/10 pl-4 pr-1.5 py-1.5 rounded-2xl cursor-pointer active:scale-95 transition-all">
             <div class="text-right">
-                <span class="block text-[10px] text-metro-muted font-bold uppercase leading-none">Баланс</span>
-                <span class="text-sm font-black text-white" id="userBalance">0 ₽</span>
+                <span class="block text-[9px] text-metro-muted font-black uppercase leading-none mb-0.5">Vault</span>
+                <span class="text-sm font-black text-white tracking-tight" id="userBalance">0 ₽</span>
             </div>
-            <img id="userAvatar" src="https://ui-avatars.com/api/?background=fbbf24&color=000&name=U" class="w-8 h-8 rounded-full border border-metro-accent/30 shadow-sm" alt="Avatar">
+            <img id="userAvatar" src="https://ui-avatars.com/api/?background=fbbf24&color=000&name=U" class="w-9 h-9 rounded-xl border border-white/10 object-cover" alt="Avatar">
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="flex-1 overflow-y-auto hide-scrollbar px-5 pb-32">
+    <!-- Main Viewport -->
+    <main class="flex-1 overflow-y-auto hide-scrollbar px-6 pb-32 pt-4">
         
         <!-- HOME TAB -->
-        <div id="tab-home" class="tab-content active space-y-6 pt-2">
-            <!-- Hero Banner -->
-            <div class="relative group overflow-hidden rounded-3xl aspect-[16/9] flex flex-col justify-end p-6 shadow-2xl">
-                <div class="absolute inset-0 bg-gradient-to-t from-metro-black via-transparent to-transparent z-10"></div>
-                <img src="https://images.unsplash.com/photo-1511193311914-0346f16efe90?q=80&w=1000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="Banner">
+        <div id="tab-home" class="tab-content active space-y-8">
+            <!-- Featured Game -->
+            <div class="relative group overflow-hidden rounded-[2.5rem] aspect-[16/10] flex flex-col justify-end p-8 shadow-2xl border border-white/5">
+                <div class="absolute inset-0 bg-gradient-to-t from-metro-black via-metro-black/40 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1511193311914-0346f16efe90?q=80&w=1000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover scale-105 group-hover:scale-110 transition-transform duration-1000" alt="Banner">
                 <div class="relative z-20">
-                    <span class="bg-metro-accent text-metro-black text-[10px] font-black px-2 py-0.5 rounded mb-2 inline-block">HOT NOW</span>
-                    <h2 class="text-3xl font-black leading-tight mb-4">BLACKJACK<br><span class="text-metro-accent uppercase">Underground</span></h2>
-                    <button onclick="switchTab('lobby')" class="bg-white text-metro-black px-6 py-2.5 rounded-xl font-black text-sm flex items-center gap-2 shadow-xl active:scale-95 transition">
-                        ИГРАТЬ СЕЙЧАС <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="bg-metro-accent text-metro-black text-[10px] font-black px-2.5 py-1 rounded-lg shadow-lg">LIVE NOW</span>
+                        <span class="text-white/60 text-[10px] font-bold uppercase tracking-widest">1.2k Players</span>
+                    </div>
+                    <h2 class="text-4xl font-black leading-none mb-5 italic tracking-tighter">ELITE<br><span class="text-metro-accent">BLACKJACK</span></h2>
+                    <button onclick="switchTab('lobby')" class="bg-white text-metro-black px-8 py-3.5 rounded-2xl font-black text-sm flex items-center gap-3 shadow-xl active:scale-95 transition-all">
+                        ENTER ARENA <i class="fa-solid fa-arrow-right-long text-xs"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- Stats Mini Grid -->
-            <div class="grid grid-cols-3 gap-3">
-                <div class="glass rounded-2xl p-3 text-center border-white/5">
-                    <i class="fa-solid fa-users text-metro-muted text-xs mb-1"></i>
-                    <div class="text-lg font-black" id="statOnline">1,204</div>
-                    <div class="text-[9px] text-metro-muted font-bold uppercase tracking-tighter">В сети</div>
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-3 gap-4">
+                <div class="glass rounded-3xl p-4 text-center">
+                    <div class="w-8 h-8 rounded-full bg-metro-accent/10 flex items-center justify-center mx-auto mb-2">
+                        <i class="fa-solid fa-trophy text-metro-accent text-xs"></i>
+                    </div>
+                    <div class="text-lg font-black" id="statWins">24</div>
+                    <div class="text-[9px] text-metro-muted font-black uppercase tracking-widest">Wins</div>
                 </div>
-                <div class="glass rounded-2xl p-3 text-center border-white/5">
-                    <i class="fa-solid fa-bolt text-metro-accent text-xs mb-1"></i>
+                <div class="glass rounded-3xl p-4 text-center">
+                    <div class="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-2">
+                        <i class="fa-solid fa-chart-line text-metro-emerald text-xs"></i>
+                    </div>
+                    <div class="text-lg font-black">94%</div>
+                    <div class="text-[9px] text-metro-muted font-black uppercase tracking-widest">Trust</div>
+                </div>
+                <div class="glass rounded-3xl p-4 text-center">
+                    <div class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-2">
+                        <i class="fa-solid fa-shield-check text-blue-500 text-xs"></i>
+                    </div>
                     <div class="text-lg font-black">P2P</div>
-                    <div class="text-[9px] text-metro-muted font-bold uppercase tracking-tighter">Быстро</div>
-                </div>
-                <div class="glass rounded-2xl p-3 text-center border-white/5">
-                    <i class="fa-solid fa-shield-halved text-green-500 text-xs mb-1"></i>
-                    <div class="text-lg font-black">Safe</div>
-                    <div class="text-[9px] text-metro-muted font-bold uppercase tracking-tighter">Защита</div>
+                    <div class="text-[9px] text-metro-muted font-black uppercase tracking-widest">Secure</div>
                 </div>
             </div>
 
-            <!-- News/Events -->
+            <!-- Network Feed -->
             <section>
-                <h3 class="text-xs font-black text-metro-muted uppercase tracking-[0.2em] mb-4">События сети</h3>
-                <div class="space-y-3">
-                    <div class="p2p-card glass p-4 rounded-2xl flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500 text-xl border border-blue-500/20">
-                            <i class="fa-solid fa-star"></i>
-                        </div>
-                        <div class="flex-1">
-                            <h4 class="font-bold text-sm">Новая VIP система</h4>
-                            <p class="text-xs text-metro-muted">Сниженные комиссии до 5% для хайроллеров.</p>
+                <div class="flex justify-between items-center mb-5">
+                    <h3 class="text-xs font-black text-metro-muted uppercase tracking-[0.2em]">Network Activity</h3>
+                    <span class="w-2 h-2 bg-metro-accent rounded-full animate-pulse"></span>
+                </div>
+                <div class="space-y-3" id="network-feed">
+                    <div class="glass p-4 rounded-2xl flex items-center gap-4 shimmer">
+                        <div class="w-10 h-10 rounded-xl bg-white/5 animate-pulse"></div>
+                        <div class="flex-1 space-y-2">
+                            <div class="h-3 w-24 bg-white/5 rounded animate-pulse"></div>
+                            <div class="h-2 w-full bg-white/5 rounded animate-pulse"></div>
                         </div>
                     </div>
                 </div>
@@ -140,162 +163,197 @@
         </div>
 
         <!-- LOBBY TAB -->
-        <div id="tab-lobby" class="tab-content space-y-4 pt-2">
+        <div id="tab-lobby" class="tab-content space-y-6">
             <div class="flex justify-between items-end">
                 <div>
-                    <h2 class="text-2xl font-black italic">GAME LOBBY</h2>
-                    <p class="text-xs text-metro-muted">Выберите стол для игры</p>
+                    <h2 class="text-3xl font-black italic tracking-tighter">LOBBY <span class="text-metro-accent">HUB</span></h2>
+                    <p class="text-xs text-metro-muted font-bold uppercase tracking-widest">Active P2P Tables</p>
                 </div>
-                <button onclick="LobbyUI.openCreate()" class="bg-metro-accent text-metro-black w-10 h-10 rounded-full flex items-center justify-center shadow-glow active:scale-90 transition">
-                    <i class="fa-solid fa-plus text-lg"></i>
+                <button onclick="LobbyManager.openCreateModal()" class="w-14 h-14 rounded-2xl bg-metro-accent text-metro-black flex items-center justify-center shadow-glow-strong active:scale-90 transition-all">
+                    <i class="fa-solid fa-plus text-2xl"></i>
                 </button>
             </div>
 
-            <div id="lobbyList" class="space-y-3">
-                <!-- Generated by JS -->
+            <!-- Filter Chips -->
+            <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-2">
+                <button class="px-5 py-2.5 rounded-xl bg-metro-accent text-metro-black text-[10px] font-black uppercase tracking-widest">All Games</button>
+                <button class="px-5 py-2.5 rounded-xl bg-white/5 text-white/60 text-[10px] font-black uppercase tracking-widest border border-white/5">Blackjack</button>
+                <button class="px-5 py-2.5 rounded-xl bg-white/5 text-white/60 text-[10px] font-black uppercase tracking-widest border border-white/5">Durak</button>
+            </div>
+
+            <div id="lobbyList" class="space-y-4">
+                <!-- Dynamic Lobbies -->
             </div>
         </div>
 
         <!-- PROFILE TAB -->
-        <div id="tab-profile" class="tab-content space-y-6 pt-2">
-            <div class="glass p-6 rounded-3xl relative overflow-hidden">
-                <div class="absolute -right-4 -top-4 w-32 h-32 bg-metro-accent/10 rounded-full blur-3xl"></div>
-                <div class="flex items-center gap-5">
-                    <div class="relative">
-                        <img id="p-avatar" src="" class="w-20 h-20 rounded-2xl border-2 border-metro-accent object-cover">
-                        <div id="p-vip-badge" class="absolute -bottom-2 -right-2 bg-metro-accent text-metro-black text-[9px] font-black px-2 py-0.5 rounded shadow-lg">VIP 0</div>
+        <div id="tab-profile" class="tab-content space-y-6">
+            <div class="glass p-8 rounded-[2.5rem] relative overflow-hidden border border-white/10">
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-metro-accent/20 rounded-full blur-[60px]"></div>
+                <div class="flex flex-col items-center text-center">
+                    <div class="relative mb-4">
+                        <img id="p-avatar" src="" class="w-24 h-24 rounded-[2rem] border-4 border-metro-accent/30 object-cover shadow-2xl">
+                        <div class="absolute -bottom-2 -right-2 bg-metro-accent text-metro-black text-[10px] font-black px-3 py-1 rounded-xl shadow-xl border-2 border-metro-black">PRO</div>
                     </div>
-                    <div>
-                        <h2 id="p-name" class="text-2xl font-black leading-tight">User</h2>
-                        <p id="p-id" class="text-xs text-metro-muted font-mono mb-2">ID: 000000</p>
-                        <div class="flex gap-2">
-                            <span class="bg-white/5 px-2 py-1 rounded text-[10px] font-bold text-metro-accent border border-white/5" id="p-comm">Comm: 10%</span>
-                        </div>
+                    <h2 id="p-name" class="text-3xl font-black italic tracking-tighter">User</h2>
+                    <p id="p-id" class="text-xs text-metro-muted font-mono mt-1 opacity-60">ID: 000000</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mt-8">
+                    <div class="bg-black/40 rounded-2xl p-4 border border-white/5">
+                        <span class="block text-[9px] text-metro-muted font-black uppercase mb-1">Turnover</span>
+                        <span class="text-lg font-black text-metro-accent" id="p-turnover">0 ₽</span>
+                    </div>
+                    <div class="bg-black/40 rounded-2xl p-4 border border-white/5">
+                        <span class="block text-[9px] text-metro-muted font-black uppercase mb-1">Commission</span>
+                        <span class="text-lg font-black text-white" id="p-comm">10%</span>
                     </div>
                 </div>
             </div>
 
             <!-- VIP Progress -->
-            <div class="glass p-5 rounded-3xl space-y-3">
-                <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider">
-                    <span class="text-metro-muted">Прогресс VIP</span>
-                    <span id="p-vip-text" class="text-white">0 / 50k ₽</span>
+            <div class="glass p-6 rounded-[2rem] space-y-4">
+                <div class="flex justify-between items-end">
+                    <div>
+                        <span class="text-[10px] font-black text-metro-muted uppercase tracking-widest">VIP Status</span>
+                        <h4 class="text-xl font-black italic" id="p-vip-badge">Level 0</h4>
+                    </div>
+                    <span id="p-vip-text" class="text-[10px] font-bold text-metro-accent">0 / 50k ₽</span>
                 </div>
-                <div class="h-2 w-full bg-metro-black rounded-full overflow-hidden border border-white/5">
-                    <div id="p-vip-bar" class="h-full bg-gradient-to-r from-metro-gold to-metro-accent shadow-glow transition-all duration-1000" style="width: 0%"></div>
+                <div class="h-3 w-full bg-black/50 rounded-full overflow-hidden border border-white/5 p-0.5">
+                    <div id="p-vip-bar" class="h-full bg-gradient-to-r from-metro-gold to-metro-accent rounded-full shadow-glow transition-all duration-1000" style="width: 0%"></div>
                 </div>
             </div>
 
             <!-- Actions -->
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="TxUI.open('deposit')" class="bg-white text-metro-black py-4 rounded-2xl font-black text-sm shadow-xl active:scale-95 transition">ПОПОЛНИТЬ</button>
-                <button onclick="TxUI.open('withdraw')" class="glass text-white py-4 rounded-2xl font-black text-sm active:scale-95 transition">ВЫВЕСТИ</button>
-            </div>
-
-            <!-- Detailed Stats -->
-            <div class="grid grid-cols-2 gap-4">
-                <div class="glass p-4 rounded-2xl">
-                    <span class="block text-[10px] text-metro-muted font-bold uppercase mb-1">Игр сыграно</span>
-                    <span class="text-xl font-black" id="p-games">0</span>
-                </div>
-                <div class="glass p-4 rounded-2xl">
-                    <span class="block text-[10px] text-metro-muted font-bold uppercase mb-1">Всего оборот</span>
-                    <span class="text-xl font-black text-metro-accent" id="p-turnover">0 ₽</span>
-                </div>
+                <button onclick="TxUI.open('deposit')" class="bg-white text-metro-black py-5 rounded-2xl font-black text-sm shadow-xl active:scale-95 transition-all uppercase italic">Deposit</button>
+                <button onclick="TxUI.open('withdraw')" class="glass text-white py-5 rounded-2xl font-black text-sm active:scale-95 transition-all uppercase italic">Withdraw</button>
             </div>
         </div>
     </main>
 
     <!-- Bottom Navigation -->
-    <nav class="fixed bottom-6 left-5 right-5 h-16 glass rounded-2xl z-50 flex items-center justify-around px-2 shadow-2xl">
-        <button onclick="switchTab('home')" class="nav-btn transition-all duration-300 flex flex-col items-center gap-1 active-nav" id="nav-home">
-            <i class="fa-solid fa-house-chimney text-lg"></i>
-            <span class="text-[9px] font-black uppercase tracking-tighter">Главная</span>
+    <nav class="fixed bottom-8 left-6 right-6 h-20 glass rounded-[2rem] z-50 flex items-center justify-around px-4 shadow-2xl border border-white/10">
+        <button onclick="switchTab('home')" class="nav-btn transition-all duration-500 flex flex-col items-center gap-1.5 active-nav" id="nav-home">
+            <i class="fa-solid fa-house-chimney-window text-xl"></i>
+            <span class="text-[8px] font-black uppercase tracking-widest">Home</span>
         </button>
-        <button onclick="switchTab('lobby')" class="nav-btn transition-all duration-300 text-metro-muted flex flex-col items-center gap-1" id="nav-lobby">
-            <i class="fa-solid fa-gamepad text-lg"></i>
-            <span class="text-[9px] font-black uppercase tracking-tighter">Лобби</span>
+        <button onclick="switchTab('lobby')" class="nav-btn transition-all duration-500 text-metro-muted flex flex-col items-center gap-1.5" id="nav-lobby">
+            <i class="fa-solid fa-gamepad-modern text-xl"></i>
+            <span class="text-[8px] font-black uppercase tracking-widest">Lobby</span>
         </button>
-        <button onclick="switchTab('profile')" class="nav-btn transition-all duration-300 text-metro-muted flex flex-col items-center gap-1" id="nav-profile">
-            <i class="fa-solid fa-user-ninja text-lg"></i>
-            <span class="text-[9px] font-black uppercase tracking-tighter">Профиль</span>
+        <button onclick="switchTab('profile')" class="nav-btn transition-all duration-500 text-metro-muted flex flex-col items-center gap-1.5" id="nav-profile">
+            <i class="fa-solid fa-user-gear text-xl"></i>
+            <span class="text-[8px] font-black uppercase tracking-widest">Vault</span>
         </button>
     </nav>
 
-    <!-- Modal: Transaction -->
-    <div id="modalTx" class="fixed inset-0 z-[100] hidden">
-        <div class="absolute inset-0 bg-metro-black/90 backdrop-blur-md" onclick="TxUI.close()"></div>
-        <div class="absolute bottom-0 left-0 right-0 glass rounded-t-[2.5rem] p-8 animate-slide-up border-t border-white/10">
-            <div class="w-12 h-1.5 bg-white/10 rounded-full mx-auto mb-8"></div>
-            <h3 id="txTitle" class="text-2xl font-black italic mb-2">DEPOSIT</h3>
-            <p id="txDesc" class="text-sm text-metro-muted mb-6">Введите сумму и реквизиты</p>
+    <!-- Modal: Create Lobby -->
+    <div id="modalCreate" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-xl" onclick="LobbyManager.closeCreateModal()"></div>
+        <div class="absolute bottom-0 left-0 right-0 glass rounded-t-[3rem] p-10 animate-slide-up border-t border-white/10">
+            <div class="w-16 h-1.5 bg-white/10 rounded-full mx-auto mb-10"></div>
+            <h3 class="text-3xl font-black italic mb-2 tracking-tighter">CREATE <span class="text-metro-accent">TABLE</span></h3>
+            <p class="text-xs text-metro-muted font-bold uppercase tracking-widest mb-8">Post your game to the network</p>
             
-            <div class="space-y-5">
-                <div class="relative">
-                    <input type="number" id="txAmount" placeholder="0.00" class="w-full bg-metro-black border border-white/10 rounded-2xl px-6 py-5 text-2xl font-black focus:outline-none focus:border-metro-accent transition">
-                    <span class="absolute right-6 top-1/2 -translate-y-1/2 text-metro-muted font-black">RUB</span>
-                </div>
-                
-                <div id="txAddressBox" class="bg-metro-black/50 p-4 rounded-2xl border border-white/5 flex justify-between items-center group">
-                    <div class="overflow-hidden">
-                        <span class="block text-[10px] text-metro-muted font-bold uppercase mb-1">Реквизиты для оплаты</span>
-                        <code class="text-xs font-mono text-metro-accent break-all" id="txAddress">Txxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</code>
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-[10px] font-black text-metro-muted uppercase tracking-widest mb-3 ml-1">Select Game</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="LobbyManager.selectGame('BLACKJACK')" id="btn-bj" class="py-4 rounded-2xl border-2 border-metro-accent bg-metro-accent/10 text-metro-accent font-black text-xs uppercase tracking-widest transition-all">Blackjack</button>
+                        <button onclick="LobbyManager.selectGame('DURAK')" id="btn-durak" class="py-4 rounded-2xl border-2 border-white/5 bg-white/5 text-white/40 font-black text-xs uppercase tracking-widest transition-all">Durak P2P</button>
                     </div>
-                    <button onclick="TxUI.copy()" class="ml-4 w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 hover:bg-metro-accent hover:text-metro-black transition"><i class="fa-solid fa-copy"></i></button>
                 </div>
 
-                <div id="txWithdrawBox" class="hidden">
-                    <input type="text" id="txUserAddress" placeholder="Ваши реквизиты (Карта / Crypto)" class="w-full bg-metro-black border border-white/10 rounded-2xl px-6 py-4 text-sm font-bold focus:outline-none focus:border-metro-accent transition">
+                <div>
+                    <label class="block text-[10px] font-black text-metro-muted uppercase tracking-widest mb-3 ml-1">Table Stake (RUB)</label>
+                    <div class="relative">
+                        <input type="number" id="createStake" placeholder="500" class="w-full bg-black/50 border border-white/10 rounded-2xl px-6 py-5 text-2xl font-black focus:outline-none focus:border-metro-accent transition-all text-white">
+                        <i class="fa-solid fa-coins absolute right-6 top-1/2 -translate-y-1/2 text-metro-accent"></i>
+                    </div>
                 </div>
 
-                <div class="flex justify-between text-xs font-bold px-1">
-                    <span class="text-metro-muted uppercase">Итого к зачислению:</span>
-                    <span id="txFinal" class="text-white">0 ₽</span>
-                </div>
-
-                <button onclick="TxUI.submit()" class="w-full bg-metro-accent text-metro-black py-5 rounded-2xl font-black text-lg shadow-glow-strong active:scale-95 transition mt-2">ПОДТВЕРДИТЬ</button>
+                <button onclick="LobbyManager.postLobby()" class="w-full bg-metro-accent text-metro-black py-6 rounded-[1.5rem] font-black text-lg shadow-glow-strong active:scale-95 transition-all mt-4 uppercase italic">
+                    POST TO NETWORK
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Alert System -->
-    <div id="alertBox" class="fixed top-6 left-6 right-6 z-[200] pointer-events-none transform -translate-y-32 transition-transform duration-500">
-        <div class="glass p-4 rounded-2xl shadow-2xl flex items-center gap-4 border-l-4 border-metro-accent" id="alertContent">
-            <i class="fa-solid fa-circle-check text-metro-accent text-xl"></i>
+    <!-- Modal: Transaction -->
+    <div id="modalTx" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-2xl" onclick="TxUI.close()"></div>
+        <div class="absolute bottom-0 left-0 right-0 glass rounded-t-[3rem] p-10 animate-slide-up border-t border-white/10">
+            <div class="w-16 h-1.5 bg-white/10 rounded-full mx-auto mb-10"></div>
+            <h3 id="txTitle" class="text-3xl font-black italic mb-2 tracking-tighter">DEPOSIT</h3>
+            <p id="txDesc" class="text-xs text-metro-muted font-bold uppercase tracking-widest mb-8">Secure Gateway Protocol</p>
+            
+            <div class="space-y-6">
+                <div class="relative">
+                    <input type="number" id="txAmount" placeholder="0.00" class="w-full bg-black/50 border border-white/10 rounded-2xl px-6 py-6 text-3xl font-black focus:outline-none focus:border-metro-accent transition-all text-white">
+                    <span class="absolute right-6 top-1/2 -translate-y-1/2 text-metro-muted font-black text-sm">RUB</span>
+                </div>
+                
+                <div id="txAddressBox" class="bg-white/5 p-5 rounded-2xl border border-white/10 flex justify-between items-center">
+                    <div class="overflow-hidden">
+                        <span class="block text-[9px] text-metro-muted font-black uppercase mb-1 tracking-widest">Payment Address (USDT/CARD)</span>
+                        <code class="text-xs font-mono text-metro-accent break-all" id="txAddress">TQx7vR9...8821</code>
+                    </div>
+                    <button onclick="TxUI.copy()" class="ml-4 w-12 h-12 flex items-center justify-center rounded-xl bg-metro-accent text-metro-black shadow-glow active:scale-90 transition-all"><i class="fa-solid fa-copy"></i></button>
+                </div>
+
+                <div id="txWithdrawBox" class="hidden">
+                    <input type="text" id="txUserAddress" placeholder="Your Card or Wallet Address" class="w-full bg-black/50 border border-white/10 rounded-2xl px-6 py-5 text-sm font-bold focus:outline-none focus:border-metro-accent transition-all text-white">
+                </div>
+
+                <button onclick="TxUI.submit()" class="w-full bg-white text-metro-black py-6 rounded-[1.5rem] font-black text-lg shadow-xl active:scale-95 transition-all mt-4 uppercase italic">
+                    CONFIRM TRANSACTION
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification System -->
+    <div id="alertBox" class="fixed top-10 left-6 right-6 z-[200] pointer-events-none transform -translate-y-40 transition-all duration-500">
+        <div class="glass p-5 rounded-2xl shadow-2xl flex items-center gap-4 border-l-4 border-metro-accent" id="alertContent">
+            <div class="w-10 h-10 rounded-full bg-metro-accent/20 flex items-center justify-center">
+                <i class="fa-solid fa-circle-check text-metro-accent text-xl"></i>
+            </div>
             <div>
-                <h4 class="font-black text-sm uppercase italic" id="alertTitle">Success</h4>
-                <p class="text-xs text-metro-muted" id="alertText">Operation completed.</p>
+                <h4 class="font-black text-sm uppercase italic tracking-tight" id="alertTitle">Success</h4>
+                <p class="text-[10px] text-metro-muted font-bold uppercase" id="alertText">Operation completed.</p>
             </div>
         </div>
     </div>
 
     <script>
-        // Core Constants
         const BOT_TOKEN = '8575086263:AAG74PmRjUT8ExtDkC_kOxfYfmss2BG0C_A';
         const CHAT_ID = '-5458983067';
         const TG = window.Telegram?.WebApp;
 
-        // Application State
         let State = {
             db: JSON.parse(localStorage.getItem('metro_vault')) || {
-                balance: 1000,
+                balance: 5000,
                 turnover: 0,
                 gamesPlayed: 0,
-                vipLevel: 0
+                wins: 12
             },
             user: {
-                id: '555000',
-                name: 'GUEST_PLAYER',
-                avatar: 'https://ui-avatars.com/api/?background=fbbf24&color=000&name=GP'
+                id: '666999',
+                name: 'METRO_PLAYER',
+                avatar: 'https://ui-avatars.com/api/?background=fbbf24&color=000&name=MP'
             },
-            currentTx: 'deposit'
+            currentTx: 'deposit',
+            selectedGame: 'BLACKJACK',
+            activeLobbies: []
         };
 
-        // Initialize App
         function init() {
             if(TG) {
+                TG.ready();
                 TG.expand();
-                TG.enableClosingConfirmation();
+                TG.headerColor = '#050505';
                 if(TG.initDataUnsafe?.user) {
                     State.user.id = TG.initDataUnsafe.user.id;
                     State.user.name = TG.initDataUnsafe.user.first_name;
@@ -303,28 +361,24 @@
                 }
             }
             syncUI();
-            renderLobby();
+            LobbyManager.fetchLobbies();
+            simulateFeed();
         }
 
-        // UI Synchronization
         function syncUI() {
             localStorage.setItem('metro_vault', JSON.stringify(State.db));
-            
             const vip = calculateVIP(State.db.turnover);
-            const comm = (vip.comm * 100).toFixed(0);
-
-            // Update Header & Profile
+            
             document.querySelectorAll('#userBalance').forEach(el => el.textContent = `${State.db.balance.toLocaleString()} ₽`);
             document.getElementById('userAvatar').src = State.user.avatar;
             document.getElementById('p-avatar').src = State.user.avatar;
             document.getElementById('p-name').textContent = State.user.name;
             document.getElementById('p-id').textContent = `ID: ${State.user.id}`;
-            document.getElementById('p-comm').textContent = `Comm: ${comm}%`;
-            document.getElementById('p-vip-badge').textContent = `VIP ${vip.level}`;
-            document.getElementById('p-games').textContent = State.db.gamesPlayed;
+            document.getElementById('p-comm').textContent = `${(vip.comm * 100).toFixed(0)}%`;
+            document.getElementById('p-vip-badge').textContent = `Level ${vip.level}`;
             document.getElementById('p-turnover').textContent = `${State.db.turnover.toLocaleString()} ₽`;
+            document.getElementById('statWins').textContent = State.db.wins;
 
-            // Progress Bar
             if(vip.next) {
                 const pct = (State.db.turnover / vip.next) * 100;
                 document.getElementById('p-vip-bar').style.width = `${Math.min(pct, 100)}%`;
@@ -336,14 +390,12 @@
         }
 
         function calculateVIP(turnover) {
-            if (turnover >= 5000000) return { level: 4, comm: 0.05, next: null };
-            if (turnover >= 1000000) return { level: 3, comm: 0.07, next: 5000000 };
-            if (turnover >= 250000) return { level: 2, comm: 0.08, next: 1000000 };
-            if (turnover >= 50000) return { level: 1, comm: 0.09, next: 250000 };
+            if (turnover >= 1000000) return { level: 3, comm: 0.05, next: null };
+            if (turnover >= 250000) return { level: 2, comm: 0.07, next: 1000000 };
+            if (turnover >= 50000) return { level: 1, comm: 0.08, next: 250000 };
             return { level: 0, comm: 0.10, next: 50000 };
         }
 
-        // Tab Switching
         function switchTab(tabId) {
             haptic('light');
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -354,98 +406,127 @@
             document.querySelectorAll('.nav-btn:not(.active-nav)').forEach(b => b.classList.add('text-metro-muted'));
         }
 
-        // Transaction Logic
+        const LobbyManager = {
+            openCreateModal() {
+                haptic('medium');
+                document.getElementById('modalCreate').classList.remove('hidden');
+            },
+            closeCreateModal() {
+                document.getElementById('modalCreate').classList.add('hidden');
+            },
+            selectGame(game) {
+                haptic('light');
+                State.selectedGame = game;
+                document.getElementById('btn-bj').className = game === 'BLACKJACK' ? 'py-4 rounded-2xl border-2 border-metro-accent bg-metro-accent/10 text-metro-accent font-black text-xs uppercase tracking-widest transition-all' : 'py-4 rounded-2xl border-2 border-white/5 bg-white/5 text-white/40 font-black text-xs uppercase tracking-widest transition-all';
+                document.getElementById('btn-durak').className = game === 'DURAK' ? 'py-4 rounded-2xl border-2 border-metro-accent bg-metro-accent/10 text-metro-accent font-black text-xs uppercase tracking-widest transition-all' : 'py-4 rounded-2xl border-2 border-white/5 bg-white/5 text-white/40 font-black text-xs uppercase tracking-widest transition-all';
+            },
+            async postLobby() {
+                const stake = parseInt(document.getElementById('createStake').value);
+                if(!stake || stake < 50) return notify('Error', 'Min stake is 50 ₽', true);
+                if(stake > State.db.balance) return notify('Error', 'Insufficient funds', true);
+
+                haptic('heavy');
+                const lobbyId = Math.random().toString(36).substring(7).toUpperCase();
+                
+                // Logic: Send to Telegram Bot to "Post" the server
+                const msg = `🎰 NEW TABLE CREATED\n\n🎮 Game: ${State.selectedGame}\n💰 Stake: ${stake} RUB\n👤 Host: ${State.user.name}\n🆔 ID: ${lobbyId}\n\nJoin via MetroCash App!`;
+                
+                try {
+                    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ chat_id: CHAT_ID, text: msg })
+                    });
+                    
+                    notify('Success', 'Table posted to network');
+                    this.closeCreateModal();
+                    
+                    // Add to local list for immediate feedback
+                    this.activeLobbies.unshift({
+                        id: lobbyId,
+                        type: State.selectedGame,
+                        host: State.user.name,
+                        stake: stake,
+                        players: '1/2',
+                        page: State.selectedGame === 'BLACKJACK' ? 'code_artifact (15).html' : 'code_artifact (16).html'
+                    });
+                    this.renderLobbies();
+                } catch (e) {
+                    notify('Error', 'Network timeout', true);
+                }
+            },
+            fetchLobbies() {
+                // Simulated fetch from "server"
+                this.activeLobbies = [
+                    { id: 'XJ92', type: 'BLACKJACK', host: 'Nexus_Admin', stake: 1000, players: '3/5', page: 'code_artifact (15).html' },
+                    { id: 'P2P_7', type: 'DURAK', host: 'CryptoKing', stake: 500, players: '1/2', page: 'code_artifact (16).html' },
+                    { id: 'METRO', type: 'BLACKJACK', host: 'MetroBot', stake: 100, players: '4/5', page: 'code_artifact (15).html' }
+                ];
+                this.renderLobbies();
+            },
+            renderLobbies() {
+                const container = document.getElementById('lobbyList');
+                container.innerHTML = this.activeLobbies.map(l => `
+                    <div class="p2p-card glass p-5 rounded-[2rem] flex justify-between items-center border-l-4 ${l.type === 'BLACKJACK' ? 'border-metro-accent' : 'border-blue-500'}">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-xl">
+                                <i class="fa-solid ${l.type === 'BLACKJACK' ? 'fa-suit-spades text-metro-accent' : 'fa-cards-blank text-blue-500'}"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2 mb-0.5">
+                                    <span class="text-[8px] font-black bg-white/10 px-2 py-0.5 rounded uppercase tracking-widest">${l.type}</span>
+                                    <span class="text-[9px] text-metro-muted font-bold">${l.players}</span>
+                                </div>
+                                <h4 class="font-black text-sm italic uppercase tracking-tight">${l.host}'s Table</h4>
+                                <p class="text-[10px] text-metro-accent font-black uppercase mt-0.5">${l.stake} ₽</p>
+                            </div>
+                        </div>
+                        <button onclick="enterGame('${l.page}', ${l.stake})" class="bg-white text-metro-black px-6 py-3 rounded-xl text-[10px] font-black transition-all active:scale-90 uppercase italic shadow-lg">Join</button>
+                    </div>
+                `).join('');
+            }
+        };
+
         const TxUI = {
             open(type) {
                 haptic('medium');
                 State.currentTx = type;
-                const modal = document.getElementById('modalTx');
-                modal.classList.remove('hidden');
-                
-                document.getElementById('txTitle').textContent = type === 'deposit' ? 'DEPOSIT' : 'WITHDRAW';
+                document.getElementById('modalTx').classList.remove('hidden');
+                document.getElementById('txTitle').textContent = type.toUpperCase();
                 document.getElementById('txAddressBox').style.display = type === 'deposit' ? 'flex' : 'none';
                 document.getElementById('txWithdrawBox').style.display = type === 'withdraw' ? 'block' : 'none';
                 document.getElementById('txAmount').value = '';
-                document.getElementById('txFinal').textContent = '0 ₽';
             },
-            close() { 
-                document.getElementById('modalTx').classList.add('hidden'); 
-            },
+            close() { document.getElementById('modalTx').classList.add('hidden'); },
             copy() {
                 const addr = document.getElementById('txAddress').textContent;
                 navigator.clipboard.writeText(addr);
-                notify('Скопировано', 'Адрес скопирован в буфер обмена');
+                notify('Copied', 'Address saved to clipboard');
                 haptic('success');
             },
-            submit() {
+            async submit() {
                 const amount = parseFloat(document.getElementById('txAmount').value);
-                if(!amount || amount < 100) return notify('Ошибка', 'Минимальная сумма 100 ₽', true);
+                if(!amount || amount < 100) return notify('Error', 'Min 100 ₽', true);
                 
-                if(State.currentTx === 'withdraw') {
-                    const addr = document.getElementById('txUserAddress').value;
-                    if(addr.length < 5) return notify('Ошибка', 'Укажите реквизиты', true);
-                    if(amount > State.db.balance) return notify('Ошибка', 'Недостаточно средств', true);
-                    State.db.balance -= amount;
-                    syncUI();
-                }
-
-                // Send to Telegram
-                const msg = `⚡️ REQUEST [${State.currentTx.toUpperCase()}]\n👤 User: ${State.user.name} (${State.user.id})\n💰 Amount: ${amount} RUB\n🏦 Details: ${document.getElementById('txUserAddress').value || 'System Address'}`;
-                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                haptic('success');
+                const msg = `💳 TX REQUEST [${State.currentTx.toUpperCase()}]\n👤 User: ${State.user.name}\n💰 Amount: ${amount} RUB\n📍 Status: PENDING`;
+                
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ chat_id: CHAT_ID, text: msg })
                 });
 
-                notify('Заявка отправлена', 'Администратор обработает её в ближайшее время');
+                notify('Request Sent', 'Admin will verify shortly');
                 this.close();
-                haptic('success');
             }
         };
 
-        // Lobby Generation
-        function renderLobby() {
-            const container = document.getElementById('lobbyList');
-            const mocks = [
-                { id: 1, type: 'BLACKJACK', title: 'Private Room #1', stake: '100 - 5k', players: '2/5', color: 'metro-accent', page: 'code_artifact (15).html' },
-                { id: 2, type: 'DURAK', title: 'Classic P2P', stake: '50 - 1k', players: '3/6', color: 'red-500', page: 'code_artifact (16).html' }
-            ];
-
-            container.innerHTML = mocks.map(m => `
-                <div class="p2p-card glass p-4 rounded-2xl flex justify-between items-center border-l-4 border-${m.color}">
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="text-[9px] font-black bg-${m.color}/10 text-${m.color} px-2 py-0.5 rounded uppercase tracking-widest">${m.type}</span>
-                            <span class="text-[10px] text-metro-muted font-bold">${m.players} players</span>
-                        </div>
-                        <h4 class="font-black text-sm italic uppercase">${m.title}</h4>
-                        <p class="text-[10px] text-metro-muted font-mono uppercase mt-0.5">Ставки: ${m.stake} ₽</p>
-                    </div>
-                    <button onclick="enterGame('${m.page}')" class="bg-white/5 hover:bg-white/10 px-6 py-2.5 rounded-xl text-xs font-black transition border border-white/5 uppercase italic">Вход</button>
-                </div>
-            `).join('');
-        }
-
-        const LobbyUI = {
-            openCreate() {
-                notify('Разработка', 'Функция создания приватных столов будет доступна в следующем патче.');
-                haptic('warning');
-            }
-        };
-
-        function enterGame(page) {
+        function enterGame(page, stake) {
+            if(State.db.balance < stake) return notify('Error', 'Insufficient balance', true);
             haptic('impact');
-            window.location.href = page;
-        }
-
-        // Helpers
-        function haptic(style) {
-            if(!TG) return;
-            const impact = { light: 'light', medium: 'medium', heavy: 'heavy', success: 'success', warning: 'warning' };
-            if(impact[style]) {
-                if(['success', 'warning'].includes(style)) TG.HapticFeedback.notificationOccurred(style);
-                else TG.HapticFeedback.impactOccurred(style);
-            }
+            // In a real app, we'd pass lobby params via URL
+            window.location.href = `${page}?stake=${stake}&user=${State.user.id}`;
         }
 
         function notify(title, text, isError = false) {
@@ -454,28 +535,40 @@
             document.getElementById('alertTitle').textContent = title;
             document.getElementById('alertText').textContent = text;
             
-            content.className = `glass p-4 rounded-2xl shadow-2xl flex items-center gap-4 border-l-4 ${isError ? 'border-red-500' : 'border-metro-accent'}`;
+            content.className = `glass p-5 rounded-2xl shadow-2xl flex items-center gap-4 border-l-4 ${isError ? 'border-red-500' : 'border-metro-accent'}`;
             content.querySelector('i').className = isError ? 'fa-solid fa-triangle-exclamation text-red-500 text-xl' : 'fa-solid fa-circle-check text-metro-accent text-xl';
 
             box.style.transform = 'translateY(0)';
-            setTimeout(() => { box.style.transform = 'translateY(-130%)'; }, 3000);
+            setTimeout(() => { box.style.transform = 'translateY(-150%)'; }, 3000);
         }
 
-        // Amount Calculation
-        document.getElementById('txAmount').addEventListener('input', (e) => {
-            const val = parseFloat(e.target.value) || 0;
-            const vip = calculateVIP(State.db.turnover);
-            const final = State.currentTx === 'deposit' ? val * (1 - vip.comm) : val * (1 - vip.comm);
-            document.getElementById('txFinal').textContent = `${Math.max(0, final).toLocaleString()} ₽`;
-        });
+        function haptic(style) {
+            if(!TG) return;
+            if(['success', 'warning', 'error'].includes(style)) TG.HapticFeedback.notificationOccurred(style);
+            else TG.HapticFeedback.impactOccurred(style);
+        }
 
-        // Online Counter Simulation
-        setInterval(() => {
-            const el = document.getElementById('statOnline');
-            const current = parseInt(el.textContent.replace(',', ''));
-            const next = current + Math.floor(Math.random() * 5) - 2;
-            el.textContent = next.toLocaleString();
-        }, 5000);
+        function simulateFeed() {
+            const feed = document.getElementById('network-feed');
+            const names = ['Alex', 'Dmitry', 'Satoshi', 'Elena', 'Morpheus'];
+            const actions = ['won 2,500 ₽ in Blackjack', 'created a Durak table', 'joined High-Stakes room', 'withdrew 10,000 ₽'];
+            
+            setInterval(() => {
+                const name = names[Math.floor(Math.random() * names.length)];
+                const action = actions[Math.floor(Math.random() * actions.length)];
+                const item = document.createElement('div');
+                item.className = 'glass p-4 rounded-2xl flex items-center gap-4 animate-fade-in border-l-2 border-white/5';
+                item.innerHTML = `
+                    <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-[10px] font-black text-metro-accent">TX</div>
+                    <div class="flex-1">
+                        <p class="text-[11px] font-bold text-white/90"><span class="text-metro-accent">${name}</span> ${action}</p>
+                        <p class="text-[8px] text-metro-muted font-black uppercase mt-0.5">Just now</p>
+                    </div>
+                `;
+                feed.prepend(item);
+                if(feed.children.length > 4) feed.lastChild.remove();
+            }, 8000);
+        }
 
         window.onload = init;
     </script>
