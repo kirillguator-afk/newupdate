@@ -96,6 +96,12 @@
         .feed-mask {
             mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
         }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
     </style>
 </head>
 <body class="flex flex-col">
@@ -139,11 +145,11 @@
                 <div class="relative z-20">
                     <div class="flex items-center gap-2 mb-3">
                         <span class="bg-metro-accent text-metro-black text-[9px] font-black px-3 py-1 rounded-full shadow-lg">LIVE ARENA</span>
-                        <span class="text-white/60 text-[9px] font-bold uppercase tracking-widest">3.2k Active</span>
+                        <span class="text-white/60 text-[9px] font-bold uppercase tracking-widest">Real-time P2P</span>
                     </div>
-                    <h2 class="text-4xl font-black leading-none mb-5 italic tracking-tighter uppercase">Nexus<br><span class="text-metro-accent text-5xl">Durak P2P</span></h2>
+                    <h2 class="text-4xl font-black leading-none mb-5 italic tracking-tighter uppercase">Nexus<br><span class="text-metro-accent text-5xl">Durak Elite</span></h2>
                     <button onclick="NexusApp.switchTab('lobby')" class="shimmer-btn bg-white text-metro-black px-8 py-3.5 rounded-2xl font-black text-xs flex items-center gap-3 shadow-2xl active:scale-95 transition-all uppercase tracking-tighter">
-                        Find Match <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        Enter Lobby <i class="fa-solid fa-chevron-right text-[10px]"></i>
                     </button>
                 </div>
             </div>
@@ -162,7 +168,7 @@
                         <i class="fa-solid fa-shield-check text-metro-emerald text-sm"></i>
                     </div>
                     <div class="text-lg font-black">P2P</div>
-                    <div class="text-[7px] text-metro-muted font-black uppercase tracking-widest mt-1">Secure</div>
+                    <div class="text-[7px] text-metro-muted font-black uppercase tracking-widest mt-1">Verified</div>
                 </div>
                 <div class="glass rounded-[2rem] p-5 text-center border-b-2 border-blue-500/20">
                     <div class="w-9 h-9 rounded-xl bg-blue-500/10 flex items-center justify-center mx-auto mb-3">
@@ -176,14 +182,14 @@
             <!-- Network Feed -->
             <section class="feed-mask">
                 <div class="flex justify-between items-center mb-5">
-                    <h3 class="text-[9px] font-black text-metro-muted uppercase tracking-[0.3em]">Network Activity</h3>
+                    <h3 class="text-[9px] font-black text-metro-muted uppercase tracking-[0.3em]">System Logs</h3>
                     <div class="flex items-center gap-2">
                         <span class="w-1.5 h-1.5 bg-metro-emerald rounded-full animate-pulse"></span>
-                        <span class="text-[8px] font-bold text-metro-emerald uppercase">Live</span>
+                        <span class="text-[8px] font-bold text-metro-emerald uppercase">Active</span>
                     </div>
                 </div>
                 <div class="space-y-3" id="ui-network-feed">
-                    <!-- Feed items injected via JS -->
+                    <!-- Real activity logs will appear here -->
                 </div>
             </section>
         </div>
@@ -202,9 +208,9 @@
 
             <!-- Filters -->
             <div class="flex gap-3 overflow-x-auto hide-scrollbar py-1">
-                <button class="px-6 py-3 rounded-xl bg-metro-accent text-metro-black text-[9px] font-black uppercase tracking-widest shadow-lg whitespace-nowrap">All Games</button>
-                <button class="px-6 py-3 rounded-xl bg-white/5 text-white/40 text-[9px] font-black uppercase tracking-widest border border-white/5 whitespace-nowrap">Blackjack</button>
-                <button class="px-6 py-3 rounded-xl bg-white/5 text-white/40 text-[9px] font-black uppercase tracking-widest border border-white/5 whitespace-nowrap">Durak P2P</button>
+                <button onclick="LobbyManager.filter('ALL')" class="lobby-filter px-6 py-3 rounded-xl bg-metro-accent text-metro-black text-[9px] font-black uppercase tracking-widest shadow-lg whitespace-nowrap transition-all">All Games</button>
+                <button onclick="LobbyManager.filter('BLACKJACK')" class="lobby-filter px-6 py-3 rounded-xl bg-white/5 text-white/40 text-[9px] font-black uppercase tracking-widest border border-white/5 whitespace-nowrap transition-all">Blackjack</button>
+                <button onclick="LobbyManager.filter('DURAK')" class="lobby-filter px-6 py-3 rounded-xl bg-white/5 text-white/40 text-[9px] font-black uppercase tracking-widest border border-white/5 whitespace-nowrap transition-all">Durak P2P</button>
             </div>
 
             <div id="ui-lobby-list" class="space-y-4">
@@ -319,8 +325,14 @@
 
                 <div>
                     <label class="block text-[8px] font-black text-metro-muted uppercase tracking-widest mb-3 ml-1">Stake (RUB)</label>
+                    <div class="grid grid-cols-4 gap-2 mb-4">
+                        <button onclick="LobbyManager.setStake(100)" class="py-3 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black hover:bg-metro-accent hover:text-metro-black transition-all">100</button>
+                        <button onclick="LobbyManager.setStake(500)" class="py-3 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black hover:bg-metro-accent hover:text-metro-black transition-all">500</button>
+                        <button onclick="LobbyManager.setStake(1000)" class="py-3 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black hover:bg-metro-accent hover:text-metro-black transition-all">1K</button>
+                        <button onclick="LobbyManager.setStake(5000)" class="py-3 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black hover:bg-metro-accent hover:text-metro-black transition-all">5K</button>
+                    </div>
                     <div class="relative">
-                        <input type="number" id="input-stake" placeholder="500" class="w-full bg-black/50 border border-white/10 rounded-2xl px-6 py-5 text-2xl font-black focus:outline-none focus:border-metro-accent transition-all text-white shadow-inner">
+                        <input type="number" id="input-stake" placeholder="Enter custom amount" class="w-full bg-black/50 border border-white/10 rounded-2xl px-6 py-5 text-2xl font-black focus:outline-none focus:border-metro-accent transition-all text-white shadow-inner">
                         <i class="fa-solid fa-coins absolute right-6 top-1/2 -translate-y-1/2 text-metro-accent text-lg"></i>
                     </div>
                 </div>
@@ -380,8 +392,8 @@
 
     <script>
         /**
-         * NEXUS ARCHITECT - METRO CASH CORE v4.0
-         * Modular, Scalable, P2P-Ready
+         * NEXUS ARCHITECT - METRO CASH CORE v4.1
+         * Refactored for real data integrity and P2P stability.
          */
 
         const CONFIG = {
@@ -396,7 +408,8 @@
                     balance: 5000,
                     turnover: 0,
                     gamesPlayed: 0,
-                    wins: 0
+                    wins: 0,
+                    history: []
                 },
                 user: {
                     id: '666999',
@@ -418,11 +431,24 @@
                         this.state.user.id = tgUser.id;
                         this.state.user.name = tgUser.first_name;
                         if (tgUser.photo_url) this.state.user.avatar = tgUser.photo_url;
+                        
+                        // Sync with Admin Panel expectations
+                        localStorage.setItem('metro_user_id_' + tgUser.id, tgUser.id);
+                        localStorage.setItem('metro_user_name_' + tgUser.id, tgUser.first_name);
                     }
                 }
+                
+                // Real-time balance sync from other game windows
+                window.addEventListener('storage', (e) => {
+                    if (e.key === 'metro_vault') {
+                        this.state.vault = JSON.parse(e.newValue);
+                        this.syncUI();
+                    }
+                });
+
                 this.syncUI();
                 LobbyManager.refresh();
-                this.simulateNetworkFeed();
+                this.renderHistory();
             },
 
             haptic(style = 'light') {
@@ -437,10 +463,11 @@
             syncUI() {
                 const { vault, user } = this.state;
                 localStorage.setItem('metro_vault', JSON.stringify(vault));
+                localStorage.setItem('metro_balance_' + user.id, vault.balance);
                 
                 const vip = this.calculateVIP(vault.turnover);
                 
-                document.getElementById('ui-balance').textContent = `${vault.balance.toLocaleString()} ₽`;
+                document.getElementById('ui-balance').textContent = `${Math.floor(vault.balance).toLocaleString()} ₽`;
                 document.getElementById('ui-avatar').src = user.avatar;
                 document.getElementById('ui-stat-wins').textContent = vault.wins;
                 
@@ -448,7 +475,7 @@
                 document.getElementById('p-avatar').src = user.avatar;
                 document.getElementById('p-name').textContent = user.name;
                 document.getElementById('p-id').textContent = `ID: ${user.id}`;
-                document.getElementById('p-turnover').textContent = `${vault.turnover.toLocaleString()} ₽`;
+                document.getElementById('p-turnover').textContent = `${Math.floor(vault.turnover).toLocaleString()} ₽`;
                 document.getElementById('p-comm').textContent = `${(vip.comm * 100).toFixed(0)}%`;
                 document.getElementById('p-vip-badge').textContent = `Level ${vip.level}`;
                 
@@ -457,7 +484,7 @@
                 if (vip.next) {
                     const pct = (vault.turnover / vip.next) * 100;
                     bar.style.width = `${Math.min(pct, 100)}%`;
-                    text.textContent = `${vault.turnover.toLocaleString()} / ${(vip.next/1000).toFixed(0)}k ₽`;
+                    text.textContent = `${Math.floor(vault.turnover).toLocaleString()} / ${(vip.next/1000).toFixed(0)}k ₽`;
                 } else {
                     bar.style.width = '100%';
                     text.textContent = 'MAX LEVEL';
@@ -499,47 +526,64 @@
                 setTimeout(() => { box.style.transform = 'translateY(-150%)'; }, 3000);
             },
 
-            simulateNetworkFeed() {
+            renderHistory() {
                 const feed = document.getElementById('ui-network-feed');
-                const users = ['Nexus_Dev', 'Crypto_King', 'Metro_Elite', 'Satoshi_N', 'Alpha_P2P'];
-                const actions = ['won 2,500 ₽', 'hosted a table', 'joined Blackjack', 'withdrew 10k ₽'];
+                const history = this.state.vault.history || [];
                 
-                const addItem = () => {
-                    const user = users[Math.floor(Math.random() * users.length)];
-                    const action = actions[Math.floor(Math.random() * actions.length)];
-                    const div = document.createElement('div');
-                    div.className = 'glass p-4 rounded-2xl flex items-center gap-4 animate-fade-in border-l-2 border-white/5';
-                    div.innerHTML = `
-                        <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-[8px] font-black text-metro-accent">P2P</div>
-                        <div class="flex-1">
-                            <p class="text-[10px] font-bold text-white/90"><span class="text-metro-accent">${user}</span> ${action}</p>
-                            <p class="text-[7px] text-metro-muted font-black uppercase mt-0.5 tracking-widest">Just now</p>
+                if (history.length === 0) {
+                    feed.innerHTML = `
+                        <div class="text-center py-10 opacity-30">
+                            <i class="fa-solid fa-ghost text-3xl mb-3"></i>
+                            <p class="text-[8px] font-black uppercase tracking-widest">No recent activity</p>
                         </div>
                     `;
-                    feed.prepend(div);
-                    if (feed.children.length > 4) feed.lastChild.remove();
-                };
+                    return;
+                }
 
-                for(let i=0; i<3; i++) addItem();
-                setInterval(addItem, 8000);
+                feed.innerHTML = history.slice(-5).reverse().map(item => `
+                    <div class="glass p-4 rounded-2xl flex items-center gap-4 animate-fade-in border-l-2 ${item.win ? 'border-metro-emerald' : 'border-metro-rose'}">
+                        <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-[8px] font-black ${item.win ? 'text-metro-emerald' : 'text-metro-rose'}">
+                            ${item.win ? 'WIN' : 'LOSS'}
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-[10px] font-bold text-white/90">${item.game} Session</p>
+                            <p class="text-[7px] text-metro-muted font-black uppercase mt-0.5 tracking-widest">${item.amount > 0 ? '+' : ''}${item.amount} ₽ • ${item.date}</p>
+                        </div>
+                    </div>
+                `).join('');
             }
         };
 
         const LobbyManager = {
             lobbies: [],
+            currentFilter: 'ALL',
 
             refresh() {
+                // Simulated dynamic lobbies based on real game logic
                 this.lobbies = [
-                    { id: 'BJ_1', type: 'BLACKJACK', host: 'Metro_Bot', stake: 100, players: '4/5', page: 'code_artifact (15).html' },
-                    { id: 'DR_7', type: 'DURAK', host: 'Nexus_Admin', stake: 500, players: '1/2', page: 'code_artifact (16).html' },
-                    { id: 'BJ_X', type: 'BLACKJACK', host: 'Whale_Player', stake: 5000, players: '2/5', page: 'code_artifact (15).html' }
+                    { id: 'BJ_1', type: 'BLACKJACK', host: 'Nexus_Bot', stake: 100, players: '4/5', page: 'code_artifact (15).html' },
+                    { id: 'DR_7', type: 'DURAK', host: 'Elite_Player', stake: 500, players: '1/2', page: 'code_artifact (16).html' },
+                    { id: 'BJ_X', type: 'BLACKJACK', host: 'Whale_Node', stake: 1000, players: '2/5', page: 'code_artifact (15).html' },
+                    { id: 'DR_9', type: 'DURAK', host: 'Shadow_P2P', stake: 2500, players: '1/2', page: 'code_artifact (16).html' }
                 ];
+                this.render();
+            },
+
+            filter(type) {
+                this.currentFilter = type;
+                NexusApp.haptic('light');
+                document.querySelectorAll('.lobby-filter').forEach(btn => {
+                    const isMatch = btn.textContent.toUpperCase().includes(type) || (type === 'ALL' && btn.textContent.includes('All'));
+                    btn.className = isMatch ? 'lobby-filter px-6 py-3 rounded-xl bg-metro-accent text-metro-black text-[9px] font-black uppercase tracking-widest shadow-lg whitespace-nowrap transition-all' : 'lobby-filter px-6 py-3 rounded-xl bg-white/5 text-white/40 text-[9px] font-black uppercase tracking-widest border border-white/5 whitespace-nowrap transition-all';
+                });
                 this.render();
             },
 
             render() {
                 const container = document.getElementById('ui-lobby-list');
-                container.innerHTML = this.lobbies.map(l => `
+                const filtered = this.currentFilter === 'ALL' ? this.lobbies : this.lobbies.filter(l => l.type === this.currentFilter);
+                
+                container.innerHTML = filtered.map(l => `
                     <div class="p2p-card glass p-5 rounded-[2rem] flex justify-between items-center border-l-4 ${l.type === 'BLACKJACK' ? 'border-metro-accent' : 'border-blue-500'} shadow-lg">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-xl shadow-inner">
@@ -572,6 +616,11 @@
                 document.getElementById('btn-game-durak').className = !isBJ ? 'py-4 rounded-2xl border-2 border-metro-accent bg-metro-accent/10 text-metro-accent font-black text-[10px] uppercase tracking-widest transition-all' : 'py-4 rounded-2xl border-2 border-white/5 bg-white/5 text-white/40 font-black text-[10px] uppercase tracking-widest transition-all';
             },
 
+            setStake(val) {
+                NexusApp.haptic('light');
+                document.getElementById('input-stake').value = val;
+            },
+
             postLobby() {
                 const stake = parseInt(document.getElementById('input-stake').value);
                 if (!stake || stake < 50) return NexusApp.notify('Error', 'Min stake is 50 ₽', 'error');
@@ -582,6 +631,11 @@
             },
 
             startMatchmaking(mode, stake, page = null) {
+                if (stake > NexusApp.state.vault.balance) {
+                    NexusApp.notify('Error', 'Insufficient funds', 'error');
+                    return;
+                }
+
                 NexusApp.haptic('medium');
                 const overlay = document.getElementById('overlay-matchmaking');
                 const status = document.getElementById('matchmaking-status');
@@ -598,7 +652,7 @@
                         clearInterval(NexusApp.state.matchmakingTimer);
                         this.launch(mode, stake, page);
                     }
-                }, 1000);
+                }, 800);
             },
 
             cancelMatchmaking() {
@@ -610,6 +664,7 @@
             launch(mode, stake, page) {
                 NexusApp.haptic('success');
                 const target = page || (NexusApp.state.selectedGame === 'BLACKJACK' ? 'code_artifact (15).html' : 'code_artifact (16).html');
+                // We don't subtract balance here, the game engine will do it upon start to ensure integrity
                 window.location.href = `${target}?stake=${stake}&role=${mode === 'HOSTING' ? 'host' : 'guest'}`;
             }
         };
@@ -642,8 +697,12 @@
                 const amount = parseFloat(document.getElementById('tx-amount').value);
                 if (!amount || amount < 100) return NexusApp.notify('Error', 'Min 100 ₽', 'error');
                 
+                if (this.type === 'withdraw' && amount > NexusApp.state.vault.balance) {
+                    return NexusApp.notify('Error', 'Insufficient balance', 'error');
+                }
+
                 NexusApp.haptic('success');
-                const text = `💳 TX REQUEST [${this.type.toUpperCase()}]\n👤 User: ${NexusApp.state.user.name}\n💰 Amount: ${amount} RUB\n📍 Status: PENDING`;
+                const text = `💳 TX REQUEST [${this.type.toUpperCase()}]\n👤 User: ${NexusApp.state.user.name}\n🆔 ID: ${NexusApp.state.user.id}\n💰 Amount: ${amount} RUB\n📍 Status: PENDING`;
                 
                 try {
                     await fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/sendMessage`, {
