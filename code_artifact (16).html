@@ -128,7 +128,7 @@
             bet: 0, state: 'betting', turn: 'player', // player, ai
             
             init() { document.getElementById('gameBalance').textContent = db.balance.toLocaleString() + ' ₽'; },
-            exit() { localStorage.setItem('metro_db', JSON.stringify(db)); window.location.href = 'index.html'; },
+            exit() { localStorage.setItem('metro_db', JSON.stringify(db)); window.location.href = 'metro_cash_app.html'; },
 
             addBet(a) { if(db.balance >= a) { this.bet += a; db.balance -= a; document.getElementById('currentBet').textContent = this.bet; this.init(); } },
             clearBet() { db.balance += this.bet; this.bet = 0; document.getElementById('currentBet').textContent = 0; this.init(); },
