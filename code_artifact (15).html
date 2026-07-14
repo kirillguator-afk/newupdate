@@ -2,136 +2,189 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Блэкджек - METRO CASH</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Blackjack Elite - METRO CASH</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: { metro: { dark: '#0a0a0a', table: '#064E3B', accent: '#d97706' } }
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    colors: {
+                        metro: { 
+                            black: '#050505', 
+                            dark: '#0f0f0f', 
+                            accent: '#fbbf24',
+                            gold: '#d97706',
+                            emerald: '#064e3b'
+                        }
+                    }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #0a0a0a; color: white; user-select: none; -webkit-tap-highlight-color: transparent;}
-        
-        /* Анимации и стили карт */
+        body { 
+            background-color: #050505; 
+            color: white; 
+            user-select: none; 
+            -webkit-tap-highlight-color: transparent;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .casino-mesh {
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(6, 78, 59, 0.4) 0%, transparent 70%),
+                radial-gradient(circle at 0% 0%, rgba(251, 191, 36, 0.05) 0%, transparent 40%),
+                #050505;
+            position: relative;
+        }
+
+        .casino-mesh::before {
+            content: ""; position: absolute; inset: 0;
+            background-image: url("https://www.transparenttextures.com/patterns/felt.png");
+            opacity: 0.03; pointer-events: none;
+        }
+
+        /* Premium Card Design */
         .card { 
-            width: 70px; height: 100px; 
-            background: white; border-radius: 8px; 
-            box-shadow: -2px 4px 10px rgba(0,0,0,0.5);
-            display: flex; flex-direction: column; justify-content: space-between; padding: 4px;
-            color: black; font-weight: bold; position: relative;
+            width: 72px; height: 104px; 
+            background: #ffffff; border-radius: 10px; 
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(0,0,0,0.05);
+            display: flex; flex-direction: column; justify-content: space-between; padding: 6px;
+            color: #1a1a1a; font-weight: 800; position: relative;
             transform-style: preserve-3d;
-            animation: dealCard 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: dealCard 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
             opacity: 0;
-            transform: translateY(-100px) rotateY(180deg) scale(0.5);
+            transform: translate(200px, -200px) rotate(20deg) scale(0.5);
         }
         
         @keyframes dealCard {
-            to { opacity: 1; transform: translateY(0) rotateY(0) scale(1); }
+            to { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
         }
 
-        .card-red { color: #DC2626; }
+        .card-red { color: #e11d48; }
         
         .card-back {
-            background: radial-gradient(circle, #1e3a8a 0%, #172554 100%);
-            border: 3px solid white;
-            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.1) 0, rgba(255,255,255,0.1) 2px, transparent 2px, transparent 4px);
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 3px solid #ffffff;
+            position: relative;
+            overflow: hidden;
         }
-        .suit-center { font-size: 2.5rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.15; }
+        .card-back::after {
+            content: "M"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 2rem; color: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            width: 70%; height: 70%; display: flex; align-items: center; justify-content: center; border-radius: 6px;
+        }
+
+        .suit-center { font-size: 2.2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.08; }
         
-        /* Стили Фишек */
+        /* Premium Chips */
         .chip {
-            width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: black; border: 4px dashed rgba(255,255,255,0.3); cursor: pointer;
-            box-shadow: 0 6px 0 rgba(0,0,0,0.6), inset 0 2px 5px rgba(255,255,255,0.4); 
-            transition: all 0.1s; text-shadow: 1px 1px 2px black;
+            width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; border: 4px dashed rgba(255,255,255,0.2); cursor: pointer;
+            box-shadow: 0 8px 0 rgba(0,0,0,0.4), 0 15px 20px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.3); 
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            font-size: 0.8rem;
         }
-        .chip:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,0.6), inset 0 2px 5px rgba(255,255,255,0.4); }
+        .chip:active { transform: translateY(4px) scale(0.95); box-shadow: 0 2px 0 rgba(0,0,0,0.4); }
+        
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); }
         
         .game-msg-anim {
-            animation: bounceIn 0.6s cubic-bezier(0.2, 1.3, 0.3, 1) forwards;
+            animation: premiumPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
-        @keyframes bounceIn {
-            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
-            80% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        @keyframes premiumPop {
+            0% { transform: translate(-50%, -50%) scale(0.5) rotate(-5deg); opacity: 0; filter: blur(10px); }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(0); opacity: 1; filter: blur(0); }
+        }
+
+        .score-badge {
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
     </style>
 </head>
-<body class="h-screen w-full flex flex-col overflow-hidden relative">
+<body class="flex flex-col casino-mesh">
 
-    <header class="p-3 flex justify-between items-center bg-black/60 z-10 absolute top-0 w-full backdrop-blur-md border-b border-white/5">
-        <button onclick="Game.exit()" class="text-gray-300 hover:text-white flex items-center gap-2 bg-white/10 px-4 py-1.5 rounded-full text-sm font-bold transition">
-            <i class="fa-solid fa-door-open"></i> В Лобби
+    <!-- Header -->
+    <header class="fixed top-0 w-full z-50 px-5 py-4 flex justify-between items-center bg-black/20 backdrop-blur-md border-b border-white/5">
+        <button onclick="Game.exit()" class="flex items-center gap-2 bg-white/5 hover:bg-white/10 px-4 py-2 rounded-2xl text-xs font-bold transition border border-white/5">
+            <i class="fa-solid fa-chevron-left text-metro-accent"></i> ЛОББИ
         </button>
-        <div class="text-center bg-black/50 px-4 py-1 rounded-full border border-metro-accent/30">
-            <div class="font-bold text-metro-accent text-sm" id="gameBalance">0 ₽</div>
+        <div class="flex flex-col items-end">
+            <span class="text-[10px] text-gray-400 font-black uppercase tracking-widest">Ваш Баланс</span>
+            <div class="font-black text-white text-lg" id="gameBalance">0 ₽</div>
         </div>
     </header>
 
-    <main class="flex-1 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-700 via-green-900 to-black pt-20 pb-36 flex flex-col justify-between relative shadow-[inset_0_0_100px_rgba(0,0,0,0.8)]">
+    <main class="flex-1 flex flex-col justify-between pt-24 pb-40 relative">
         
-        <!-- Дилер -->
-        <div class="flex flex-col items-center mt-2">
-            <div class="bg-black/60 px-5 py-1 rounded-full text-sm text-gray-300 mb-3 border border-white/10 shadow-lg font-bold">
-                Дилер <span id="dealerScore" class="font-black text-white ml-2 bg-white/20 px-2 py-0.5 rounded">?</span>
+        <!-- Dealer Section -->
+        <div class="flex flex-col items-center">
+            <div class="score-badge px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4 flex items-center gap-2">
+                Дилер <span id="dealerScore" class="text-white bg-white/10 px-2 py-0.5 rounded-md">?</span>
             </div>
-            <div id="dealerCards" class="flex justify-center -space-x-8 h-[100px] perspective-[1000px]"></div>
+            <div id="dealerCards" class="flex justify-center -space-x-10 h-[104px] perspective-[1000px]"></div>
         </div>
 
-        <!-- Центральное уведомление -->
-        <div id="gameMessage" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-5xl font-black text-center drop-shadow-[0_5px_15px_rgba(0,0,0,1)] opacity-0 pointer-events-none z-20 w-full tracking-wider">
-            ПОБЕДА
+        <!-- Center Message -->
+        <div id="gameMessage" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-5xl md:text-7xl font-black text-center drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] opacity-0 pointer-events-none z-30 w-full italic tracking-tighter">
+            WINNER
         </div>
 
-        <!-- Игрок -->
-        <div class="flex flex-col items-center mb-4">
-            <div id="betDisplay" class="text-yellow-400 text-lg font-black mb-5 bg-black/70 px-6 py-2 rounded-full border border-yellow-500/50 shadow-[0_0_20px_rgba(234,179,8,0.3)] transition-all">
-                Ставка: <span id="currentBet">0</span> ₽
+        <!-- Player Section -->
+        <div class="flex flex-col items-center">
+            <div id="betDisplay" class="mb-8 transition-all duration-300">
+                <div class="bg-metro-accent/10 border border-metro-accent/30 px-6 py-2 rounded-2xl shadow-[0_0_30px_rgba(251,191,36,0.1)]">
+                    <span class="text-[10px] font-black text-metro-accent uppercase tracking-widest block text-center mb-0.5">Текущая Ставка</span>
+                    <span class="text-xl font-black text-white block text-center" id="currentBet">0 ₽</span>
+                </div>
             </div>
-            <div id="playerCards" class="flex justify-center -space-x-8 h-[100px] mb-3 perspective-[1000px]"></div>
-            <div class="bg-black/60 px-5 py-1 rounded-full text-sm text-gray-300 border border-white/10 shadow-lg font-bold">
-                Вы <span id="playerScore" class="font-black text-white ml-2 bg-metro-accent/30 text-metro-accent px-2 py-0.5 rounded">0</span>
+            
+            <div id="playerCards" class="flex justify-center -space-x-10 h-[104px] mb-6 perspective-[1000px]"></div>
+            
+            <div class="score-badge px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-2">
+                Игрок <span id="playerScore" class="text-metro-accent bg-metro-accent/10 px-2 py-0.5 rounded-md">0</span>
             </div>
         </div>
     </main>
 
-    <div class="bg-metro-dark p-5 pb-8 rounded-t-[2rem] shadow-[0_-15px_30px_rgba(0,0,0,0.8)] z-10 border-t border-white/10 relative">
+    <!-- Controls Panel -->
+    <div class="fixed bottom-0 w-full p-6 pb-10 glass rounded-t-[2.5rem] z-40 border-t border-white/10">
         
-        <!-- Фаза ставок -->
-        <div id="bettingPhase" class="flex flex-col items-center gap-5">
-            <div class="text-xs text-gray-400 font-bold uppercase tracking-widest">Выберите фишки</div>
-            <div class="flex gap-4 justify-center flex-wrap">
-                <div onclick="Game.addBet(100)" class="chip bg-blue-600 text-white border-blue-300">100</div>
-                <div onclick="Game.addBet(500)" class="chip bg-purple-600 text-white border-purple-300">500</div>
-                <div onclick="Game.addBet(1000)" class="chip bg-yellow-500 text-black border-yellow-200">1K</div>
-                <div onclick="Game.addBet(5000)" class="chip bg-red-600 text-white border-red-300">5K</div>
+        <!-- Betting Phase -->
+        <div id="bettingPhase" class="flex flex-col gap-6">
+            <div class="flex justify-around items-center">
+                <div onclick="Game.addBet(100)" class="chip bg-gradient-to-br from-blue-500 to-blue-700">100</div>
+                <div onclick="Game.addBet(500)" class="chip bg-gradient-to-br from-purple-500 to-purple-700">500</div>
+                <div onclick="Game.addBet(1000)" class="chip bg-gradient-to-br from-amber-500 to-amber-700 text-black">1K</div>
+                <div onclick="Game.addBet(5000)" class="chip bg-gradient-to-br from-rose-500 to-rose-700">5K</div>
             </div>
-            <div class="flex gap-3 w-full mt-2">
-                <button onclick="Game.clearBet()" class="flex-1 py-3.5 rounded-xl bg-gray-800 border border-white/10 font-bold text-sm text-gray-300 active:bg-gray-700">Сброс</button>
-                <button onclick="Game.deal()" class="flex-[2] py-3.5 rounded-xl bg-metro-accent text-black font-black text-lg shadow-[0_0_20px_rgba(217,119,6,0.5)] active:scale-95 transition-transform">РАЗДАТЬ</button>
+            <div class="flex gap-3">
+                <button onclick="Game.clearBet()" class="flex-1 py-4 rounded-2xl bg-white/5 border border-white/10 font-black text-xs text-gray-400 uppercase tracking-widest active:bg-white/10 transition">Сброс</button>
+                <button onclick="Game.deal()" class="flex-[2] py-4 rounded-2xl bg-gradient-to-r from-metro-accent to-metro-gold text-metro-black font-black text-lg shadow-glow active:scale-95 transition-all uppercase italic tracking-tighter">Раздать</button>
             </div>
         </div>
 
-        <!-- Фаза игры -->
-        <div id="playingPhase" class="hidden flex gap-3 w-full mt-1">
-            <button onclick="Game.hit()" class="flex-1 py-5 rounded-xl bg-green-600 border border-green-400 text-white font-black text-lg flex flex-col items-center shadow-lg active:scale-95 transition">
-                <i class="fa-solid fa-plus text-2xl mb-1 drop-shadow-md"></i> ЕЩЕ
+        <!-- Playing Phase -->
+        <div id="playingPhase" class="hidden flex gap-4">
+            <button onclick="Game.hit()" class="flex-1 py-5 rounded-2xl bg-emerald-600 border border-emerald-400/50 text-white font-black text-lg flex flex-col items-center justify-center shadow-lg active:scale-95 transition">
+                <i class="fa-solid fa-plus mb-1"></i> ЕЩЕ
             </button>
-            <button onclick="Game.stand()" class="flex-1 py-5 rounded-xl bg-red-600 border border-red-400 text-white font-black text-lg flex flex-col items-center shadow-lg active:scale-95 transition">
-                <i class="fa-solid fa-hand text-2xl mb-1 drop-shadow-md"></i> ХВАТИТ
+            <button onclick="Game.stand()" class="flex-1 py-5 rounded-2xl bg-rose-600 border border-rose-400/50 text-white font-black text-lg flex flex-col items-center justify-center shadow-lg active:scale-95 transition">
+                <i class="fa-solid fa-hand mb-1"></i> ХВАТИТ
             </button>
         </div>
 
-        <!-- Конец игры -->
-        <div id="gameOverPhase" class="hidden w-full mt-1">
-            <button onclick="Game.reset()" class="w-full py-5 rounded-xl bg-metro-accent border border-yellow-300 text-black font-black text-xl shadow-[0_0_30px_rgba(217,119,6,0.5)] active:scale-95 transition-transform flex items-center justify-center gap-3">
-                <i class="fa-solid fa-rotate-right"></i> НОВАЯ ИГРА
+        <!-- Game Over Phase -->
+        <div id="gameOverPhase" class="hidden">
+            <button onclick="Game.reset()" class="w-full py-5 rounded-2xl bg-white text-metro-black font-black text-xl shadow-xl active:scale-95 transition-all flex items-center justify-center gap-3 uppercase italic">
+                <i class="fa-solid fa-rotate-right"></i> Новая игра
             </button>
         </div>
     </div>
@@ -139,23 +192,32 @@
     <script>
         const suits = ['♠', '♥', '♦', '♣'];
         const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+        const TG = window.Telegram?.WebApp;
         
-        let db = JSON.parse(localStorage.getItem('metro_db')) || { balance: 5000, turnover: 0, gamesPlayed: 0 };
+        let db = JSON.parse(localStorage.getItem('metro_vault')) || { balance: 5000, turnover: 0, gamesPlayed: 0 };
 
         const Game = {
             deck: [], playerHand: [], dealerHand: [],
-            bet: 0, state: 'betting', // betting, playing, dealerTurn, gameOver
+            bet: 0, state: 'betting',
             
-            init() { this.updateUI(); },
-
-            exit() {
-                localStorage.setItem('metro_db', JSON.stringify(db)); // Сохраняем в кэш
-                window.location.href = 'metro_cash_app.html'; // Выход в лобби
+            init() { 
+                if(TG) TG.ready();
+                this.updateUI(); 
             },
 
-            saveState() {
-                db.gamesPlayed++;
-                localStorage.setItem('metro_db', JSON.stringify(db));
+            haptic(style) {
+                if(!TG) return;
+                if(['success', 'warning', 'error'].includes(style)) TG.HapticFeedback.notificationOccurred(style);
+                else TG.HapticFeedback.impactOccurred(style);
+            },
+
+            exit() {
+                this.saveToDB();
+                window.location.href = 'metro_cash_app.html';
+            },
+
+            saveToDB() {
+                localStorage.setItem('metro_vault', JSON.stringify(db));
             },
 
             buildDeck() {
@@ -169,18 +231,19 @@
 
             addBet(amount) {
                 if(db.balance >= amount) {
+                    this.haptic('light');
                     this.bet += amount;
                     db.balance -= amount;
                     this.updateUI();
                     
                     const betEl = document.getElementById('betDisplay');
-                    betEl.classList.remove('scale-100');
                     betEl.classList.add('scale-110');
                     setTimeout(() => betEl.classList.remove('scale-110'), 150);
                 }
             },
 
             clearBet() {
+                this.haptic('medium');
                 db.balance += this.bet;
                 this.bet = 0;
                 this.updateUI();
@@ -188,30 +251,40 @@
 
             deal() {
                 if(this.bet === 0) return;
+                this.haptic('heavy');
                 this.buildDeck();
-                db.turnover += this.bet; // Учет в VIP
+                db.turnover += this.bet;
+                db.gamesPlayed++;
+                
                 this.playerHand = [this.deck.pop(), this.deck.pop()];
                 this.dealerHand = [this.deck.pop(), this.deck.pop()];
                 this.state = 'playing';
                 this.updateUI();
                 
-                if(this.getScore(this.playerHand) === 21) setTimeout(() => this.endGame('blackjack'), 1000);
+                if(this.getScore(this.playerHand) === 21) {
+                    setTimeout(() => this.endGame('blackjack'), 1000);
+                }
             },
 
             hit() {
                 if(this.state !== 'playing') return;
+                this.haptic('medium');
                 this.playerHand.push(this.deck.pop());
                 this.updateUI();
-                if(this.getScore(this.playerHand) > 21) setTimeout(() => this.endGame('bust'), 500);
+                if(this.getScore(this.playerHand) > 21) {
+                    setTimeout(() => this.endGame('bust'), 500);
+                }
             },
 
             stand() {
                 if(this.state !== 'playing') return;
+                this.haptic('heavy');
                 this.state = 'dealerTurn';
                 this.updateUI();
                 
                 const dealerPlay = () => {
                     if(this.getScore(this.dealerHand) < 17) {
+                        this.haptic('light');
                         this.dealerHand.push(this.deck.pop());
                         this.updateUI();
                         setTimeout(dealerPlay, 800);
@@ -246,27 +319,32 @@
                 let msg = "", msgColor = "";
                 
                 if(result === 'blackjack') {
-                    msg = "БЛЭКДЖЕК!"; msgColor = "text-yellow-400";
+                    this.haptic('success');
+                    msg = "BLACKJACK"; msgColor = "text-metro-accent";
                     db.balance += this.bet * 2.5;
                 } else if(result === 'win') {
-                    msg = "ПОБЕДА"; msgColor = "text-green-400";
+                    this.haptic('success');
+                    msg = "YOU WIN"; msgColor = "text-emerald-400";
                     db.balance += this.bet * 2;
                 } else if(result === 'lose' || result === 'bust') {
-                    msg = result === 'bust' ? "ПЕРЕБОР" : "ПОРАЖЕНИЕ"; msgColor = "text-red-500";
+                    this.haptic('error');
+                    msg = result === 'bust' ? "BUSTED" : "DEALER WINS"; msgColor = "text-rose-500";
                 } else {
-                    msg = "НИЧЬЯ"; msgColor = "text-gray-300";
+                    this.haptic('warning');
+                    msg = "PUSH"; msgColor = "text-gray-400";
                     db.balance += this.bet;
                 }
 
                 const msgEl = document.getElementById('gameMessage');
-                msgEl.className = `absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-5xl md:text-7xl font-black text-center drop-shadow-[0_10px_20px_rgba(0,0,0,1)] z-20 game-msg-anim ${msgColor}`;
+                msgEl.className = `absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-5xl md:text-7xl font-black text-center drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] z-30 game-msg-anim ${msgColor}`;
                 msgEl.textContent = msg;
                 
-                this.saveState();
+                this.saveToDB();
                 this.updateUI();
             },
 
             reset() {
+                this.haptic('light');
                 this.playerHand = []; this.dealerHand = []; this.bet = 0;
                 this.state = 'betting';
                 document.getElementById('gameMessage').classList.remove('game-msg-anim');
@@ -280,19 +358,19 @@
                 const colorClass = card.isRed ? 'card-red' : '';
                 return `
                     <div class="card ${colorClass}" style="animation-delay: ${delay}s; z-index: ${index}">
-                        <div class="text-sm">${card.value}</div>
+                        <div class="text-xs leading-none">${card.value}<br><span class="text-[10px]">${card.suit}</span></div>
                         <div class="suit-center">${card.suit}</div>
-                        <div class="text-sm self-end transform rotate-180">${card.value}</div>
+                        <div class="text-xs leading-none self-end transform rotate-180">${card.value}<br><span class="text-[10px]">${card.suit}</span></div>
                     </div>`;
             },
 
             updateUI() {
                 document.getElementById('gameBalance').textContent = db.balance.toLocaleString() + ' ₽';
-                document.getElementById('currentBet').textContent = this.bet.toLocaleString();
+                document.getElementById('currentBet').textContent = this.bet.toLocaleString() + ' ₽';
                 
                 document.getElementById('bettingPhase').classList.toggle('hidden', this.state !== 'betting');
                 document.getElementById('playingPhase').classList.toggle('hidden', this.state !== 'playing');
-                document.getElementById('gameOverPhase').classList.toggle('hidden', this.state === 'gameOver');
+                document.getElementById('gameOverPhase').classList.toggle('hidden', this.state !== 'gameOver');
 
                 document.getElementById('playerCards').innerHTML = this.playerHand.map((c, i) => this.renderCard(c, i)).join('');
                 document.getElementById('playerScore').textContent = this.getScore(this.playerHand) || '0';
